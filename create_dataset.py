@@ -2,6 +2,7 @@ from PIL import Image
 import numpy as np
 import random
 import tensorflow as tf
+import math
 
 # amount training images are rotated in file (wrp to x axis)
 prerotation = {1: 90, 2: 0, 3: 45}
@@ -22,11 +23,11 @@ def generate_data(size):
         data = np.matmul(np.asarray(dst_im), [1.0 / 3.0, 1.0 / 3.0, 1 / 3.0, 0]).reshape(img_shape)
         label = (rot_ang + prerotation[2]) % 360
         x.append(data)
-        y.append(label)
+        y.append([math.sin(math.radians(label)), math.cos(math.radians(label))])
     x = np.asarray(x, dtype=np.float64)
     y = np.asarray(y, dtype=np.float64)
     x = tf.contrib.data.Dataset.from_tensors(tf.constant(x))
     y = tf.contrib.data.Dataset.from_tensors(tf.constant(y))
     return tf.contrib.data.Dataset.zip((x, y))
 
-print generate_data(1)
+print generate_data(10)

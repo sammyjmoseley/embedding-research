@@ -8,6 +8,7 @@ from matplotlib import offsetbox
 def plot_embedding(X, images, title=None):
     x_min, x_max = np.min(X, 0), np.max(X, 0)
     X = (X - x_min) / (x_max - x_min)
+    ax_dist_sq = np.sum((x_max-x_min)**2)
 
     plt.figure()
     ax = plt.subplot(111)
@@ -20,15 +21,13 @@ def plot_embedding(X, images, title=None):
         # only print thumbnails with matplotlib > 1.0
         shown_images = np.array([[1., 1.]])  # just something big
         for i in range(images.shape[0]):
-            dist = np.sum((X[i] - shown_images) ** 2, 1)
-            if np.min(dist) < 4e-3:
-                # don't show points that are too close
+            dist = np.sum((X[i] - shown_images)**2, 1)
+            if np.min(dist) < 5e-6*ax_dist_sq:   # don't show points that are too close
                 continue
-                # pass
             shown_images = np.r_[shown_images, [X[i]]]
             imagebox = offsetbox.AnnotationBbox(
                 offsetbox.OffsetImage(images[i], cmap=plt.cm.gray_r, zoom=0.5),
-                X[i])
+                xy=X[i], frameon=False)
             ax.add_artist(imagebox)
     plt.xticks([]), plt.yticks([])
     if title is not None:

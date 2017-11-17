@@ -80,10 +80,10 @@ class MnistDatasetSmallRotations(object):
             phi = random.randint(-30, 30)
 
             def trans_p(img):
-                interpolation.rotate(img, theta, reshape=False)
+                return interpolation.rotate(img, theta, reshape=False)
 
             def trans_n(img):
-                interpolation.rotate(img, phi, reshape=False)
+                return interpolation.rotate(img, phi, reshape=False)
 
             weights.append(abs(theta-phi))
             x.append(trans_p(a[0][1]))

@@ -25,11 +25,11 @@ def visualize(embed, x_test):
     shown_images = np.array([[1., 1.]])
     for i in range(feat.shape[0]):
         dist = np.sum((feat[i] - shown_images)**2, 1)
-        # if np.min(dist) < 3e-4*ax_dist_sq:   # don't show points that are too close
-            # continue
+        if np.min(dist) < 3e-4*ax_dist_sq:   # don't show points that are too close
+            continue
         shown_images = np.r_[shown_images, [feat[i]]]
         imagebox = offsetbox.AnnotationBbox(
-            offsetbox.OffsetImage(x_test[i], zoom=0.6, cmap=plt.cm.gray_r),
+            offsetbox.OffsetImage(x_test[i], zoom=0.5, cmap=plt.cm.gray_r),
             xy=feat[i], frameon=False
         )
         ax.add_artist(imagebox)

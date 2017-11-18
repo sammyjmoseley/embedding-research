@@ -1,6 +1,7 @@
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 import random
+import math
 from scipy.ndimage import interpolation
 
 class MnistDataset(object):
@@ -85,7 +86,7 @@ class MnistDatasetSmallRotations(object):
             def trans_n(img):
                 return interpolation.rotate(img, phi, reshape=False)
 
-            weights.append(abs(theta-phi))
+            weights.append(math.pow((theta-phi)/60, 2.0))
             x.append(trans_p(a[0][1]))
             xp.append(trans_p(a[1][1]))
             xn.append(trans_n(a[2][1]))

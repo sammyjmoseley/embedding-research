@@ -63,7 +63,7 @@ class MnistDatasetSmallRotations(object):
 
         images = []
         for image, label in zip(mnist.test.images, mnist.test.labels):
-            images.append([label, np.reshape(image, (28,28,1))])
+            images.append([np.array([np.argmax(label)]), np.reshape(image, (28,28,1))])
         images = np.array(images)
         idx = int(len(images) * self.train_split)
         self.train_images = images[:idx]
@@ -76,20 +76,23 @@ class MnistDatasetSmallRotations(object):
         weights = []
         for i in range(batch_size):
             # Draw a random class
-            a = arr[[random.randint(0, len(arr) - 1) for _ in range(0, 3)]]
-            theta = random.randint(-30, 30)
-            phi = random.randint(-30, 30)
+            a = arr[[random.randint(0, len(arr) - 1) for _ in range(0, 2)]]
+            if a[0][0] == a[1][0]:
+                i = i-1
+                continue
+            #theta = random.randint(-30, 30)
+            theta = 0
 
-            def trans_p(img):
+            def augment(img):
                 return interpolation.rotate(img, theta, reshape=False)
 
-            def trans_n(img):
-                return interpolation.rotate(img, phi, reshape=False)
-
-            weights.append(math.pow((theta-phi)/60, 2.0))
-            x.append(trans_p(a[0][1]))
-            xp.append(trans_p(a[1][1]))
-            xn.append(trans_n(a[2][1]))
+            #weights.append(math.pow((theta)/60, 2.0))
+            x.append(a[0][1])
+            label = a[0][0]
+            indices = np.where(arr[:,0] == label)[0]
+            xp.append(arr[np.random.choice(indices)][1])
+            #xp.append(augment(a[0][1]))
+            xn.append(a[1][1])
 
         return np.array(x), np.array(xp), np.array(xn), np.array(weights)
 

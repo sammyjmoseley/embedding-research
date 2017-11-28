@@ -1,10 +1,9 @@
-# 2-stage integrated embedding
-# Embed; (freeze embedding if freeze_embed=True); train FC
+# 1-stage integrated embedding
+# Use embedding as regularizer
 
 from models import Embedding
 from models import Classifier
 import tensorflow as tf
-import numpy as np
 
 def compute_euclidean_distances(x, y, w=None):
 	d = tf.square(tf.subtract(x, y))
@@ -13,12 +12,12 @@ def compute_euclidean_distances(x, y, w=None):
 	d = tf.sqrt(tf.reduce_sum(d))
 	return d
 
-class TwoStageIntegratedEmbeddingClassifier:
+class OneStageIntegratedEmbeddingClassifier:
 
-	def __init__(self, freeze_embed=True):
-		self.freeze_embed = freeze_embed
+	def __init__(self):
+		pass
 
-	def construct(self):
+	def construct(self, alpha=1):
 		# Input and label placeholders
 		with tf.variable_scope('input'):
 			self.x = tf.placeholder(tf.float32, shape=[None, 28, 28, 1], name='x')
@@ -49,43 +48,29 @@ class TwoStageIntegratedEmbeddingClassifier:
 		with tf.variable_scope('class_loss'):
 			self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
 
-	def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0, embed_iterations=100, embed_batch_size=16):
-		embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
-		embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
-		class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
-		if (self.freeze_embed == True):
-			class_train_step = tf.train.AdamOptimizer().minimize(self.class_loss, var_list = class_train_vars)
-		else:
-			class_train_step = tf.train.AdamOptimizer().minimize(self.class_loss)
+		with tf.variable_scope('weighted_loss'):
+			self.weighted_loss = self.class_loss + alpha * self.embed_loss
+
+	def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
+		train_step = tf.train.AdamOptimizer().minimize(self.weighted_loss)
 
 		with tf.Session() as sess:
 			sess.run(tf.global_variables_initializer())
 
 			# Stage 1: Embedding
-			for i in range(embed_iterations):
-				triplet_batch = data_generator.triplet_train(embed_batch_size)
-
-				if i % log_freq == 0:
-					loss = sess.run(self.embed_loss,
-						feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
-					print('iteration %d, embedding loss %g' % (i, loss))
-
-				embed_train_step.run(feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
-
-			# Stage 2: Classification
 			for i in range(iterations):
-				batch_x, batch_y_ = data_generator.train(batch_size)
+				triplet_batch = data_generator.triplet_train(batch_size)
 
 				if i % log_freq == 0:
-					loss, acc = sess.run([self.class_loss, self.accuracy], 
-						feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
-					print('iteration %d, training loss %g, training accuracy %g' % (i, loss, acc))
+					e_loss, c_loss, w_loss, acc = sess.run([self.embed_loss, self.class_loss, self.weighted_loss, self.accuracy], 
+						feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: 1.0})
+					print('iteration %d, embed loss %g, training loss %g, weighted loss %g, training accuracy %g' % (i, e_loss, c_loss, w_loss, acc))
 					#v_batch_x, v_batch_y_ = data_generator.validation()
 					#v_loss, v_acc = sess.run([self.class_loss, self.accuracy], 
 					#	feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
 					#print('iteration %d, validation loss %g, validation accuracy %g' % (i, v_loss, v_acc))
 
-				class_train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
+				train_step.run(feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: keep_prob})
 
 			t_batch_x, t_batch_y_ = data_generator.test()
 			t_loss, t_acc = sess.run([self.class_loss, self.accuracy],

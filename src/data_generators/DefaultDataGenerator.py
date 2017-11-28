@@ -43,7 +43,7 @@ class TripletDataset(object):
         return self.p
 
     def get_negative(self):
-        return self.p
+        return self.n
 
     def get_reference_class(self):
         return self.r_class

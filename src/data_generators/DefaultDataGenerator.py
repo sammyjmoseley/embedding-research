@@ -129,13 +129,56 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def triplet_train(self, batch_size):
         if self.triplet_technique == TripletTechnique.AUGMENTATION:
-            reference =
-        elif self.triplet_technique == TripletTechnique.IMAGE_AUGMENTATION:
-            pass
+            references = []
+            positives = []
+            negatives = []
+            for i in range(0, 9):
+                mask = self.train_images_iteration_technique.mask
 
-    def validation(self, batch_size=None):
-        idx = len(self.test_images) if batch_size is None else batch_size
-        return self.valid_images[:idx], self.valid_image_classes[:idx]
+                pos_mask = mask * (self.train_image_classes == i)
+                neg_mask = mask * (self.train_image_classes != i)
+
+                pos_size = len(pos_mask)
+                neg_size = len(neg_mask)
+
+                pos_idxs = np.array(range(0, pos_size))[pos_mask]
+                neg_idxs = np.array(range(0, neg_size))[neg_mask]
+
+                pos_batch_size = min(pos_size, batch_size/5)
+                neg_batch_size = min(neg_size, batch_size/10)
+
+                pos_batch_size = pos_batch_size - (pos_batch_size % 2)
+                neg_batch_size = neg_batch_size - (neg_batch_size % 2)
+
+                batch_size = min(pos_batch_size, neg_batch_size)
+                if batch_size == 0:
+                    continue
+                pos_random_idxs = np.random.choice(pos_idxs, batch_size)
+                neg_random_idxs = np.random.choice(neg_idxs, batch_size)
+                references.append(pos_random_idxs[:batch_size/2])
+                positives.append(pos_random_idxs[batch_size/2:])
+                negatives.append(neg_random_idxs)
+
+            references = np.append(np.array([]), references)
+            positives = np.append(np.array([]), positives)
+            negatives = np.append(np.array([]), negatives)
+
+            reference_images = self.train_images[references]
+            reference_classes = self.train_image_classes[references]
+            positive_images = self.train_images[positives]
+            positive_classes = self.train_image_classes[positives]
+            negative_images = self.train_images[negatives]
+            negative_classes = self.train_image_classes[negatives]
+
+            return TripletDataset(r=reference_images,
+                                  p=positive_images,
+                                  n=negative_images,
+                                  r_class=reference_classes,
+                                  p_class=positive_classes,
+                                  n_class=negative_classes)
+
+        elif self.triplet_technique == TripletTechnique.IMAGE_AUGMENTATION:
+            raise BaseException('not implemented')
 
     def test(self, batch_size=None):
         idx = len(self.test_images) if batch_size is None else batch_size

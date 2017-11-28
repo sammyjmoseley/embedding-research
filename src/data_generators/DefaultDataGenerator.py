@@ -133,10 +133,8 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
             positives = []
             negatives = []
             for i in range(0, 9):
-                mask = self.train_images_iteration_technique.mask
-
-                pos_mask = mask * (self.train_image_classes == i)
-                neg_mask = mask * (self.train_image_classes != i)
+                pos_mask = self.train_image_classes == i
+                neg_mask = self.train_image_classes != i
 
                 pos_size = len(pos_mask)
                 neg_size = len(neg_mask)

@@ -165,9 +165,9 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
                 positives.append(pos_random_idxs[int(batch_size/2):])
                 negatives.append(neg_random_idxs)
 
-            references = np.append(np.array([]), references)
-            positives = np.append(np.array([]), positives)
-            negatives = np.append(np.array([]), negatives)
+            references = np.array(references).flatten()
+            positives = np.array(positives).flatten()
+            negatives = np.array(negatives).flatten()
             print(references)
             reference_images = self.train_images[references]
             reference_classes = self.train_image_classes[references]
@@ -181,7 +181,8 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
                                   n=negative_images,
                                   r_class=reference_classes,
                                   p_class=positive_classes,
-                                  n_class=negative_classes)
+                                  n_class=negative_classes,
+                                  weights=None)
 
         elif self.triplet_technique == TripletTechnique.IMAGE_AUGMENTATION:
             raise BaseException('not implemented')

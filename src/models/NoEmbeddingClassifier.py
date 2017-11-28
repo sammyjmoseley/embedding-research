@@ -1,5 +1,5 @@
-import Embedding
-import Classifier
+from models import Embedding
+from models import Classifier
 import tensorflow as tf
 
 class NoEmbeddingClassifier:
@@ -31,25 +31,20 @@ class NoEmbeddingClassifier:
 			sess.run(tf.global_variables_initializer())
 
 			for i in range(iterations):
-				batch = data_generator.train(batch_size)
+				batch_x, batch_y_ = data_generator.train(batch_size)
 
-				if i % log_frequency == 0:
+				if i % log_freq == 0:
 					loss, acc = sess.run([self.class_loss, self.accuracy], 
-						feed_dict={self.x: batch[0], self.y_: batch[1], self.keep_prob: 1.0})
+						feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
 					print('iteration %d, training loss %g, training accuracy %g' % (i, loss, acc))
-					validation_set = data_generator.validation()
+					v_batch_x, v_batch_y_ = data_generator.validation()
 					v_loss, v_acc = sess.run([self.class_loss, self.accuracy], 
-						feed_dict={self.x: validation_set[0], self.y_: validation_set[1], self.keep_prob: 1.0})
+						feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
 					print('iteration %d, validation loss %g, validation accuracy %g' % (i, v_loss, v_acc))
 
-				train_step.run(feed_dict={self.x: batch[0], self.y_: batch[1], self.keep_prob: keep_prob})
+				train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
 
-			test_set = data_generator.test()
+			t_batch_x, t_batch_y_ = data_generator.test()
 			t_loss, t_acc = sess.run([self.class_loss, self.accuracy],
-				feed_dict={self.x: test_set[0], self.y_: test_set[1], self.keep_prob: 1.0})
+				feed_dict={self.x: t_batch_x, self.y_: t_batch_y_, self.keep_prob: 1.0})
 			print('test loss %g, test accuracy %g' % (t_loss, t_acc))
-
-if __name__ == "__main__":
-	model = NoEmbeddingClassifier()
-	model.construct()
-	model.train()

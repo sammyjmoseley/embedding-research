@@ -1,9 +1,9 @@
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
-import enum
+from enum import Enum
 import random
 
-class TripletTechnique(enum):
+class TripletTechnique(Enum):
     AUGMENTATION = 1
     IMAGE_AUGMENTATION = 2
 
@@ -110,7 +110,8 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def train(self, batch_size):
         if type(self.train_images_iteration_technique) is RandomIterationTechnique:
-            return np.random.choice(self.train_images, size=batch_size)
+            indices = np.random.choice(self.train_images.shape[0], size=batch_size)
+            return self.train_images[indices], self.train_image_classes[indices]
 
         elif type(self.train_images_iteration_technique) is SequentialIterationTechnique:
             raise BaseException('not implemented')
@@ -124,7 +125,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def validation(self, batch_size=None):
         idx = len(self.test_images) if batch_size is None else batch_size
-        return self.valid_images[:idx], self.valid_images[:idx]
+        return self.valid_images[:idx], self.valid_image_classes[:idx]
 
     def test(self, batch_size=None):
         idx = len(self.test_images) if batch_size is None else batch_size

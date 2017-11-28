@@ -112,17 +112,27 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         if type(self.train_images_iteration_technique) is RandomIterationTechnique:
             return np.random.choice(self.train_images, size=batch_size)
 
+        elif type(self.train_images_iteration_technique) is SequentialIterationTechnique:
+            raise BaseException('not implemented')
+
+        else:
+            raise BaseException('unknown iteration technique')
+
+
     def triplet_train(self, batch_size):
         return None
 
-    def test(self, batch_size=None):
-        return None, None
-
     def validation(self, batch_size=None):
-        return None
+        idx = len(self.test_images) if batch_size is None else batch_size
+        return self.valid_images[:idx], self.valid_images[:idx]
+
+    def test(self, batch_size=None):
+        idx = len(self.test_images) if batch_size is None else batch_size
+        return self.test_images[:idx], self.test_image_classes[:idx]
 
     def reset(self):
-        pass
+        if type(self.train_images_iteration_technique) is SequentialIterationTechnique:
+            self.train_images_iteration_technique.reset()
 
     def data_shape(self):
         return (28, 28)

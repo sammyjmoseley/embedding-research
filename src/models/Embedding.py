@@ -15,13 +15,6 @@ def max_pool_2x2(x):
 	return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
 						strides=[1, 2, 2, 1], padding='SAME')
 
-def compute_euclidean_distances(x, y, w=None):
-	d = tf.square(tf.subtract(x, y))
-	if w is not None:
-		d = tf.transpose(tf.multiply(tf.transpose(d), w))
-	d = tf.sqrt(tf.reduce_sum(d))
-	return d
-
 class Embedding:
 
 	def __init__(self):

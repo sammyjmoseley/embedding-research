@@ -1,3 +1,6 @@
+# Full network trained end-to-end on classification
+# (No embedding component at all)
+
 from models import Embedding
 from models import Classifier
 import tensorflow as tf

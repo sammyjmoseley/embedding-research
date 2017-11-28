@@ -1,33 +1,30 @@
-class AbstractTripletTechnique(object):
-    def next_triplet(self):
-        raise BaseException("not implemented")
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+import enum
+import random
 
-
-'''
-reference_img != positive_img
-reference_aug == positive_aug
-'''
-
-
-class AugmentationTripletTechnique(AbstractTripletTechnique):
-    def next_triplet(self):
-        return [None, None, None], [None, None, None], None
+class TripletTechnique(enum):
+    AUGMENTATION = 1
+    IMAGE_AUGMENTATION = 2
 
 
 class AbstractIterationTechnique(object):
-    def next(self):
-        raise BaseException("not implemented")
+    pass
+
+
+class SequentialIterationTechnique(AbstractIterationTechnique):
+    def __init__(self):
+        self.index = 0
+
+    def increment(self, n=1):
+        self.index += n
 
     def reset(self):
-        raise BaseException("not implemented")
+        self.index = 0
 
 
 class RandomIterationTechnique(AbstractIterationTechnique):
-    def next(self):
-        return None
-
-    def reset(self):
-        pass
+    pass
 
 
 class TripletDataset(object):
@@ -61,31 +58,81 @@ class TripletDataset(object):
     def get_weights(self):
         return None
 
+class AbstractGenerator(object):
+    def __next_image(self):
+        raise BaseException("not implemented")
 
-class RotatedMNISTDataGenerator(object):
+
+class RotatedMNISTDataGenerator(AbstractGenerator):
     def __init__(self,
                  train_ratio=0.85,
                  valid_ratio=0.05,
                  test_ratio=0.1,
-                 triplet_technique=AugmentationTripletTechnique(),
-                 train_iteration_technique=RandomIterationTechnique()):
-        pass
+                 triplet_technique=TripletTechnique.AUGMENTATION,
+                 train_iteration_technique=RandomIterationTechnique):
+        self.train_images = []
+        self.valid_images = []
+        self.test_images = []
+        self.train_image_classes = []
+        self.valid_image_classes = []
+        self.test_image_classes = []
+
+        self.triplet_technique = triplet_technique
+        self.train_images_iteration_technique = train_iteration_technique()
+        if train_ratio + valid_ratio + test_ratio > 1.0:
+            raise BaseException('cannot have ratios go greater than 1.0')
+
+        mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+        images = []
+        labels = []
+        for image, label in zip(mnist.test.images, mnist.test.labels):
+            images.append(np.reshape(image, (28, 28, 1)))
+            labels.append(label)
+        images = np.array(images)
+        labels = np.array(labels)
+
+        valid_ratio += train_ratio
+        test_ratio += valid_ratio
+
+        train_idx = int(len(images) * train_ratio)
+        valid_idx = int(len(images) * valid_ratio)
+        test_idx = int(len(images) * test_ratio)
+
+        self.train_images = images[:train_idx]
+        self.train_image_classes = labels[:train_idx]
+
+        self.valid_images = images[train_idx:valid_idx]
+        self.valid_image_classes = labels[train_idx:valid_idx]
+
+        self.test_images = images[valid_idx:test_idx]
+        self.test_image_classes = labels[valid_idx:test_idx]
 
 
     def train(self, batch_size):
-        return None, None
+        if type(self.train_images_iteration_technique) is RandomIterationTechnique:
+            return np.random.choice(self.train_images, size=batch_size)
+
+        elif type(self.train_images_iteration_technique) is SequentialIterationTechnique:
+            raise BaseException('not implemented')
+
+        else:
+            raise BaseException('unknown iteration technique')
+
 
     def triplet_train(self, batch_size):
         return None
 
-    def test(self, batch_size=None):
-        return None, None
-
     def validation(self, batch_size=None):
-        return None
+        idx = len(self.test_images) if batch_size is None else batch_size
+        return self.valid_images[:idx], self.valid_images[:idx]
+
+    def test(self, batch_size=None):
+        idx = len(self.test_images) if batch_size is None else batch_size
+        return self.test_images[:idx], self.test_image_classes[:idx]
 
     def reset(self):
-        pass
+        if type(self.train_images_iteration_technique) is SequentialIterationTechnique:
+            self.train_images_iteration_technique.reset()
 
     def data_shape(self):
         return (28, 28)

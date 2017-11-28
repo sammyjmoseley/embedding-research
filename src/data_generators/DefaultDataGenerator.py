@@ -1,6 +1,7 @@
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 import enum
+import random
 
 class TripletTechnique(enum):
     AUGMENTATION = 1
@@ -72,29 +73,44 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         self.train_images = []
         self.valid_images = []
         self.test_images = []
+        self.train_image_classes = []
+        self.valid_image_classes = []
+        self.test_image_classes = []
+
         self.triplet_technique = triplet_technique
-        self.train_images = train_iteration_technique()
+        self.train_images_iteration_technique = train_iteration_technique()
         if train_ratio + valid_ratio + test_ratio > 1.0:
             raise BaseException('cannot have ratios go greater than 1.0')
 
         mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
         images = []
+        labels = []
         for image, label in zip(mnist.test.images, mnist.test.labels):
-            images.append([label, np.reshape(image, (28, 28, 1))])
+            images.append(np.reshape(image, (28, 28, 1)))
+            labels.append(label)
         images = np.array(images)
+        labels = np.array(labels)
 
         valid_ratio += train_ratio
         test_ratio += valid_ratio
 
         train_idx = int(len(images) * train_ratio)
         valid_idx = int(len(images) * valid_ratio)
+        test_idx = int(len(images) * test_ratio)
 
         self.train_images = images[:train_idx]
+        self.train_image_classes = labels[:train_idx]
+
         self.valid_images = images[train_idx:valid_idx]
-        self.test_images = images[valid_idx:test_ratio]
+        self.valid_image_classes = labels[train_idx:valid_idx]
+
+        self.test_images = images[valid_idx:test_idx]
+        self.test_image_classes = labels[valid_idx:test_idx]
+
 
     def train(self, batch_size):
-        return None, None
+        if type(self.train_images_iteration_technique) is RandomIterationTechnique:
+            return np.random.choice(self.train_images, size=batch_size)
 
     def triplet_train(self, batch_size):
         return None

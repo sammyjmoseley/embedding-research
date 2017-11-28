@@ -147,12 +147,9 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
                 pos_idxs = np.array(range(0, pos_size))[pos_mask]
                 neg_idxs = np.array(range(0, neg_size))[neg_mask]
 
-                pos_batch_size = min(pos_size, count)
-                neg_batch_size = min(neg_size, count)
+                pos_batch_size = int(min(pos_size, count))
+                neg_batch_size = int(min(neg_size, count))
 
-                pos_batch_size = pos_batch_size - (pos_batch_size % 2)
-                neg_batch_size = neg_batch_size - (neg_batch_size % 2)
-                print((pos_batch_size, neg_batch_size))
                 batch_size = min(pos_batch_size, neg_batch_size)
 
                 if batch_size == 0:
@@ -161,14 +158,13 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
                 pos_random_idxs = np.random.choice(pos_idxs, batch_size*2)
                 neg_random_idxs = np.random.choice(neg_idxs, batch_size)
 
-                references.append(pos_random_idxs[:int(batch_size/2)])
-                positives.append(pos_random_idxs[int(batch_size/2):])
+                references.append(pos_random_idxs[:int(batch_size)])
+                positives.append(pos_random_idxs[int(batch_size):])
                 negatives.append(neg_random_idxs)
 
-            references = np.array(references).flatten()
-            positives = np.array(positives).flatten()
-            negatives = np.array(negatives).flatten()
-            print(references)
+            references = np.concatenate(references)
+            positives = np.concatenate(positives)
+            negatives = np.concatenate(negatives)
             reference_images = self.train_images[references]
             reference_classes = self.train_image_classes[references]
             positive_images = self.train_images[positives]

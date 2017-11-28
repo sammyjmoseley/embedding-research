@@ -132,35 +132,43 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
             references = []
             positives = []
             negatives = []
-            for i in range(0, 9):
-                pos_mask = self.train_image_classes == i
-                neg_mask = self.train_image_classes != i
 
-                pos_size = len(pos_mask)
-                neg_size = len(neg_mask)
+            distribution = np.random.choice(10, batch_size)
+
+            for i in range(0, 9):
+                count = np.sum(distribution == i)
+
+                pos_mask = (np.argmax(self.train_image_classes, axis=1) == i)
+                neg_mask = (np.argmax(self.train_image_classes, axis=1) != i)
+
+                pos_size = pos_mask.size
+                neg_size = neg_mask.size
 
                 pos_idxs = np.array(range(0, pos_size))[pos_mask]
                 neg_idxs = np.array(range(0, neg_size))[neg_mask]
 
-                pos_batch_size = min(pos_size, batch_size/5)
-                neg_batch_size = min(neg_size, batch_size/10)
+                pos_batch_size = min(pos_size, count)
+                neg_batch_size = min(neg_size, count)
 
                 pos_batch_size = pos_batch_size - (pos_batch_size % 2)
                 neg_batch_size = neg_batch_size - (neg_batch_size % 2)
-
+                print((pos_batch_size, neg_batch_size))
                 batch_size = min(pos_batch_size, neg_batch_size)
+
                 if batch_size == 0:
                     continue
-                pos_random_idxs = np.random.choice(pos_idxs, batch_size)
+
+                pos_random_idxs = np.random.choice(pos_idxs, batch_size*2)
                 neg_random_idxs = np.random.choice(neg_idxs, batch_size)
-                references.append(pos_random_idxs[:batch_size/2])
-                positives.append(pos_random_idxs[batch_size/2:])
+
+                references.append(pos_random_idxs[:int(batch_size/2)])
+                positives.append(pos_random_idxs[int(batch_size/2):])
                 negatives.append(neg_random_idxs)
 
             references = np.append(np.array([]), references)
             positives = np.append(np.array([]), positives)
             negatives = np.append(np.array([]), negatives)
-
+            print(references)
             reference_images = self.train_images[references]
             reference_classes = self.train_image_classes[references]
             positive_images = self.train_images[positives]
@@ -188,3 +196,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def data_shape(self):
         return (28, 28)
+
+if __name__ == "__main__":
+    generator = RotatedMNISTDataGenerator()
+    generator.triplet_train(16)

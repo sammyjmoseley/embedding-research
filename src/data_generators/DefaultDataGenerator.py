@@ -1,9 +1,9 @@
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
-import enum
+from enum import Enum
 import random
 
-class TripletTechnique(enum):
+class TripletTechnique(Enum):
     AUGMENTATION = 1
     IMAGE_AUGMENTATION = 2
 
@@ -14,13 +14,12 @@ class AbstractIterationTechnique(object):
 
 class SequentialIterationTechnique(AbstractIterationTechnique):
     def __init__(self):
-        self.index = 0
+        self.used = None
+        self.mask = None
 
-    def increment(self, n=1):
-        self.index += n
+    def reset(self, dataset):
+        self.mask = np.array(map(lambda _: True, dataset))
 
-    def reset(self):
-        self.index = 0
 
 
 class RandomIterationTechnique(AbstractIterationTechnique):
@@ -38,25 +37,25 @@ class TripletDataset(object):
         self.weights = weights
 
     def get_reference(self):
-        return None
+        return self.r
 
     def get_positive(self):
-        return None
+        return self.p
 
     def get_negative(self):
-        return None
+        return self.p
 
     def get_reference_class(self):
-        return None
+        return self.r_class
 
     def get_positive_class(self):
-        return None
+        return self.p_class
 
     def get_negative_class(self):
-        return None
+        return self.n_class
 
     def get_weights(self):
-        return None
+        return self.weights
 
 class AbstractGenerator(object):
     def __next_image(self):
@@ -107,20 +106,31 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         self.test_images = images[valid_idx:test_idx]
         self.test_image_classes = labels[valid_idx:test_idx]
 
+        if type(self.train_images_iteration_technique) is SequentialIterationTechnique:
+            self.train_images_iteration_technique.reset(self.train_images)
 
     def train(self, batch_size):
         if type(self.train_images_iteration_technique) is RandomIterationTechnique:
             return np.random.choice(self.train_images, size=batch_size)
 
         elif type(self.train_images_iteration_technique) is SequentialIterationTechnique:
-            raise BaseException('not implemented')
+            mask = self.train_images_iteration_technique.mask
+            size = len(mask)
+            idxs = np.array(range(0, size))[mask]
+            if len(idxs) == 0:
+                return None
+            idxs = idxs[:max(len(idxs), batch_size)]
+            mask[idxs] = False
+            return self.train_images[idxs], self.train_image_classes[idxs]
 
         else:
             raise BaseException('unknown iteration technique')
 
-
     def triplet_train(self, batch_size):
-        return None
+        if self.triplet_technique == TripletTechnique.AUGMENTATION:
+            reference =
+        elif self.triplet_technique == TripletTechnique.IMAGE_AUGMENTATION:
+            pass
 
     def validation(self, batch_size=None):
         idx = len(self.test_images) if batch_size is None else batch_size
@@ -132,7 +142,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def reset(self):
         if type(self.train_images_iteration_technique) is SequentialIterationTechnique:
-            self.train_images_iteration_technique.reset()
+            self.train_images_iteration_technique.reset(self.train_images)
 
     def data_shape(self):
         return (28, 28)

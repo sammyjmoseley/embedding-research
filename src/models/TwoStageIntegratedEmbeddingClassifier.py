@@ -5,6 +5,7 @@ from models import Embedding
 from models import Classifier
 import tensorflow as tf
 import numpy as np
+from datetime import datetime
 
 def compute_euclidean_distances(x, y, w=None):
     d = tf.square(tf.subtract(x, y))
@@ -65,7 +66,7 @@ class TwoStageIntegratedEmbeddingClassifier:
             sess.run(tf.global_variables_initializer())
 
             merged = tf.summary.merge_all("embedding")
-            train_writer = tf.summary.FileWriter('./train', sess.graph)
+            train_writer = tf.summary.FileWriter('./train/run_{}'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')), sess.graph)
             # Stage 1: Embedding
             for i in range(embed_iterations):
                 triplet_batch = data_generator.triplet_train(embed_batch_size)

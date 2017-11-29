@@ -2,6 +2,8 @@ import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 from enum import Enum
 import random
+from data_generators.augmentation import RotationAugmentation
+from functools import reduce
 
 class TripletTechnique(Enum):
     AUGMENTATION = 1
@@ -75,9 +77,10 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         self.train_image_classes = []
         self.valid_image_classes = []
         self.test_image_classes = []
-
         self.triplet_technique = triplet_technique
         self.train_images_iteration_technique = train_iteration_technique()
+        self.augmentor = RotationAugmentation()
+
         if train_ratio + valid_ratio + test_ratio > 1.0:
             raise BaseException('cannot have ratios go greater than 1.0')
 
@@ -172,13 +175,23 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
             negative_images = self.train_images[negatives]
             negative_classes = self.train_image_classes[negatives]
 
+            images = np.array([reference_images, positive_images, negative_images])
+            aug_images = map(lambda x: self.augmentor.random_augmentation()(*x), zip(reference_images, positive_images, negative_images))
+            aug_images = list(aug_images)
+
+            ns = (1, 28, 28, 1)
+            reference_images = np.concatenate(list(map(lambda x: np.reshape(x[0], ns), aug_images)))
+            positive_images = np.concatenate(list(map(lambda x: np.reshape(x[1], ns), aug_images)))
+            negative_images = np.concatenate(list(map(lambda x: np.reshape(x[2], ns), aug_images)))
+            weights = np.array(list(map(lambda x: x[3], aug_images)))
+
             return TripletDataset(r=reference_images,
                                   p=positive_images,
                                   n=negative_images,
                                   r_class=reference_classes,
                                   p_class=positive_classes,
                                   n_class=negative_classes,
-                                  weights=None)
+                                  weights=weights)
 
         elif self.triplet_technique == TripletTechnique.IMAGE_AUGMENTATION:
             raise BaseException('not implemented')
@@ -196,4 +209,4 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
 if __name__ == "__main__":
     generator = RotatedMNISTDataGenerator()
-    generator.triplet_train(16)
+    print(generator.triplet_train(16).get_reference().shape)

@@ -84,8 +84,6 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         self.train_images_iteration_technique = train_iteration_technique()
         self.augmentor = RotationAugmentation()
 
-        random.seed(1)
-
         if train_ratio + valid_ratio + test_ratio > 1.0:
             raise BaseException('cannot have ratios go greater than 1.0')
 
@@ -201,10 +199,20 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         elif self.triplet_technique == TripletTechnique.IMAGE_AUGMENTATION:
             raise BaseException('not implemented')
 
+    def validation(self, batch_size=None):
+        random.seed(a=1)
+        idx = len(self.valid_images) if batch_size is None else batch_size
+        valid_images = self.valid_images[:idx]
+        valid_images = self.__single_augment(valid_images)
+        random.seed(a=None)
+        return valid_images, self.test_image_classes[:idx]
+
     def test(self, batch_size=None):
+        random.seed(a=20)
         idx = len(self.test_images) if batch_size is None else batch_size
         test_images = self.test_images[:idx]
         test_images = self.__single_augment(test_images)
+        random.seed(a=None)
         return test_images, self.test_image_classes[:idx]
 
     def reset(self):

@@ -201,14 +201,18 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def test(self, batch_size=None):
         idx = len(self.test_images) if batch_size is None else batch_size
-        return self.test_images[:idx], self.test_image_classes[:idx]
+        test_images = self.test_images[:idx]
+        new_shape = (1, 28, 28, 1)
+        f = lambda x: np.reshape(self.augmentor.random_single_augmentation()(x), new_shape)
+        test_images = np.concatenate(list(map(f, test_images)))
+        return test_images, self.test_image_classes[:idx]
 
     def reset(self):
         if type(self.train_images_iteration_technique) is SequentialIterationTechnique:
             self.train_images_iteration_technique.reset(self.train_images)
 
     def data_shape(self):
-        return (28, 28)
+        return 28, 28, 1
 
 if __name__ == "__main__":
     generator = RotatedMNISTDataGenerator()

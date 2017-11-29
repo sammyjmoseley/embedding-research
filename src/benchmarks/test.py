@@ -1,9 +1,11 @@
-from models import NoEmbeddingClassifier
+from models import NoEmbeddingClassifier, TwoStageIntegratedEmbeddingClassifier, OneStageIntegratedEmbeddingClassifier, OneStageConcatenatedEmbeddingClassifier, TwoStageConcatenatedEmbeddingClassifier
 from data_generators import DefaultDataGenerator
 
 datagen = DefaultDataGenerator.RotatedMNISTDataGenerator()
-model = NoEmbeddingClassifier.NoEmbeddingClassifier()
-#model = TwoStageIntegratedEmbeddingClassifier.TwoStageIntegratedEmbeddingClassifier(freeze_embed=False)
+#model = NoEmbeddingClassifier.NoEmbeddingClassifier()
+#model = TwoStageIntegratedEmbeddingClassifier.TwoStageIntegratedEmbeddingClassifier(freeze_embed=True)
 #model = OneStageIntegratedEmbeddingClassifier.OneStageIntegratedEmbeddingClassifier()
+#model = OneStageConcatenatedEmbeddingClassifier.OneStageConcatenatedEmbeddingClassifier()
+model = TwoStageConcatenatedEmbeddingClassifier.TwoStageConcatenatedEmbeddingClassifier(freeze_embed=False)
 model.construct()
-model.train(datagen, log_freq=5, iterations=500, keep_prob=0.5)
+model.train(datagen, log_freq=5, embed_iterations=0, iterations=500, keep_prob=0.5)

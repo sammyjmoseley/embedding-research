@@ -207,11 +207,12 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         random.seed(a=None)
         return valid_images, self.valid_image_classes[:idx]
 
-    def test(self, batch_size=None):
+    def test(self, batch_size=None, augment=True):
         random.seed(a=20)
         idx = len(self.test_images) if batch_size is None else batch_size
         test_images = self.test_images[:idx]
-        test_images = self.__single_augment(test_images)
+        if augment:
+            test_images = self.__single_augment(test_images)
         random.seed(a=None)
         return test_images, self.test_image_classes[:idx]
 

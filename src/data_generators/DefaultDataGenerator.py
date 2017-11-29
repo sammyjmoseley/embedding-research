@@ -84,6 +84,8 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         self.train_images_iteration_technique = train_iteration_technique()
         self.augmentor = RotationAugmentation()
 
+        random.seed(1)
+
         if train_ratio + valid_ratio + test_ratio > 1.0:
             raise BaseException('cannot have ratios go greater than 1.0')
 

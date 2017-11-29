@@ -29,10 +29,10 @@ class TwoStageConcatenatedEmbeddingClassifier:
 
         e = Embedding.Embedding()
         with tf.variable_scope('embedding') as scope:
-            self.o = e.construct(self.x, init_dim=16)
+            self.o = e.construct(self.x, init_dim=2)
             scope.reuse_variables()
-            self.op = e.construct(self.xp, init_dim=16)
-            self.on = e.construct(self.xn, init_dim=16)
+            self.op = e.construct(self.xp, init_dim=2)
+            self.on = e.construct(self.xn, init_dim=2)
 
         with tf.variable_scope('distances'):
             self.dp = compute_euclidean_distances(self.o, self.op)
@@ -43,7 +43,7 @@ class TwoStageConcatenatedEmbeddingClassifier:
             self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
 
         with tf.variable_scope('classifier'):
-            self.f = e.construct(self.x, init_dim=16)
+            self.f = e.construct(self.x, init_dim=2)
             c = Classifier.Classifier()
             self.y, self.accuracy = c.construct(tf.concat([self.o, self.f], 3), self.y_, self.keep_prob)
 

@@ -20,12 +20,12 @@ class Embedding:
 	def __init__(self):
 		pass
 
-	def construct(self, x, init_dim=32):
+	def construct(self, x, init_dim=4):
 		dim = x.get_shape()[3].value
 
 		with tf.variable_scope('conv1'):
 			out = init_dim
-			w = weight_variable([5, 5, dim, out])
+			w = weight_variable([3, 3, dim, out])
 			b = bias_variable([out])
 			h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
 			dim = out
@@ -33,7 +33,7 @@ class Embedding:
 
 		with tf.variable_scope('conv2'):
 			out = dim * 2
-			w = weight_variable([5, 5, dim, out])
+			w = weight_variable([3, 3, dim, out])
 			b = bias_variable([out])
 			h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
 			dim = out

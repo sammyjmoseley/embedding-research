@@ -95,7 +95,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
             labels.append(label)
         images = np.array(images)
         labels = np.array(labels)
-
+        
         valid_ratio += train_ratio
         test_ratio += valid_ratio
 
@@ -205,7 +205,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         valid_images = self.valid_images[:idx]
         valid_images = self.__single_augment(valid_images)
         random.seed(a=None)
-        return valid_images, self.test_image_classes[:idx]
+        return valid_images, self.valid_image_classes[:idx]
 
     def test(self, batch_size=None):
         random.seed(a=20)

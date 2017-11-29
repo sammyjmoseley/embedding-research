@@ -39,11 +39,10 @@ class NoEmbeddingClassifier:
 				if i % log_freq == 0:
 					loss, acc = sess.run([self.class_loss, self.accuracy], 
 						feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
-					print('iteration %d, training loss %g, training accuracy %g' % (i, loss, acc))
-					#v_batch_x, v_batch_y_ = data_generator.validation()
-					#v_loss, v_acc = sess.run([self.class_loss, self.accuracy], 
-					#	feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
-					#print('iteration %d, validation loss %g, validation accuracy %g' % (i, v_loss, v_acc))
+					v_batch_x, v_batch_y_ = data_generator.validation()
+					v_loss, v_acc = sess.run([self.class_loss, self.accuracy], 
+						feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
+					print('iteration %d, training loss %g, training accuracy %g, validation loss %g, validation accuracy %g' % (i, loss, acc, v_loss, v_acc))
 
 				train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
 

@@ -64,11 +64,10 @@ class OneStageIntegratedEmbeddingClassifier:
 				if i % log_freq == 0:
 					e_loss, c_loss, w_loss, acc = sess.run([self.embed_loss, self.class_loss, self.weighted_loss, self.accuracy], 
 						feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: 1.0})
-					print('iteration %d, embed loss %g, training loss %g, weighted loss %g, training accuracy %g' % (i, e_loss, c_loss, w_loss, acc))
-					#v_batch_x, v_batch_y_ = data_generator.validation()
-					#v_loss, v_acc = sess.run([self.class_loss, self.accuracy], 
-					#	feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
-					#print('iteration %d, validation loss %g, validation accuracy %g' % (i, v_loss, v_acc))
+					v_batch_x, v_batch_y_ = data_generator.validation()
+					v_loss, v_acc = sess.run([self.class_loss, self.accuracy], 
+						feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
+					print('iteration %d, embed loss %g, training loss %g, weighted loss %g, training accuracy %g, validation loss %g, validation accuracy %g' % (i, e_loss, c_loss, w_loss, acc, v_loss, v_acc))
 
 				train_step.run(feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: keep_prob})
 

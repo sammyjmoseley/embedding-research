@@ -3,10 +3,10 @@ from data_generators import DefaultDataGenerator
 
 datagen = DefaultDataGenerator.RotatedMNISTDataGenerator()
 # model = NoEmbeddingClassifier.NoEmbeddingClassifier()
-model = TwoStageIntegratedEmbeddingClassifier.TwoStageIntegratedEmbeddingClassifier(freeze_embed=True)
+model = TwoStageIntegratedEmbeddingClassifier.TwoStageIntegratedEmbeddingClassifier(freeze_embed=False)
 #model = OneStageIntegratedEmbeddingClassifier.OneStageIntegratedEmbeddingClassifier()
 #model = OneStageConcatenatedEmbeddingClassifier.OneStageConcatenatedEmbeddingClassifier()
 # model = TwoStageConcatenatedEmbeddingClassifier.TwoStageConcatenatedEmbeddingClassifier(freeze_embed=False)
 model.construct()
 # model.train(datagen, log_freq=5, embed_iterations=100, iterations=100, keep_prob=0.5)
-model.train(datagen)
+model.train(datagen, embed_iterations=25, embed_batch_size=128)

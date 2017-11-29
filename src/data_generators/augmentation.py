@@ -25,6 +25,7 @@ class RotationAugmentation(AbstractAugmentation):
         rot = im.rotate(rot_ang, expand=1).resize((28, 28))
         dst_im.paste(rot, (0, 0), rot)
         data = np.matmul(np.asarray(dst_im), [1.0 / 3.0, 1.0 / 3.0, 1 / 3.0, 0]).reshape(img.shape)
+        data = np.float64(data)/255.0
         return data
 
     def random_single_augmentation(self):

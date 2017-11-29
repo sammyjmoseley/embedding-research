@@ -3,7 +3,6 @@ import random
 import numpy as np
 import math
 
-
 class AbstractAugmentation(object):
     def __init__(self):
         pass
@@ -16,6 +15,7 @@ class AbstractAugmentation(object):
 
 
 class RotationAugmentation(AbstractAugmentation):
+    ang_range = (-45, 45)
     @staticmethod
     def rotator(img, rot_ang):
         img = np.reshape(np.uint8(img * 255), (28, 28))
@@ -30,12 +30,12 @@ class RotationAugmentation(AbstractAugmentation):
     def random_single_augmentation(self):
         rotator = RotationAugmentation.rotator
 
-        return lambda x: rotator(x, random.randrange(0, 360))
+        return lambda x: rotator(x, random.randrange(*self.ang_range))
 
     def random_augmentation(self):
         def augmentor(r, p, n):
             rotator = RotationAugmentation.rotator
-            rot_ang_p = random.randrange(0, 360)
+            rot_ang_p = random.randrange(*self.ang_range)
             # rot_ang_n = random.randrange(0, 360)
             rot_ang_n = 0
             delta = math.pow(rot_ang_p-rot_ang_n, 2.0)/math.pow(2.0*math.pi, 2.0)

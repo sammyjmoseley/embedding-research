@@ -118,7 +118,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
     def train(self, batch_size):
         if type(self.train_images_iteration_technique) is RandomIterationTechnique:
             indices = np.random.choice(self.train_images.shape[0], size=batch_size)
-            return self.train_images[indices], self.train_image_classes[indices]
+            return self.__single_augment(self.train_images[indices]), self.train_image_classes[indices]
 
         elif type(self.train_images_iteration_technique) is SequentialIterationTechnique:
             mask = self.train_images_iteration_technique.mask
@@ -128,7 +128,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
                 return None
             idxs = idxs[:max(len(idxs), batch_size)]
             mask[idxs] = False
-            return self.train_images[idxs], self.train_image_classes[idxs]
+            return self.__single_augment(self.train_images[idxs]), self.train_image_classes[idxs]
 
         else:
             raise BaseException('unknown iteration technique')
@@ -202,9 +202,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
     def test(self, batch_size=None):
         idx = len(self.test_images) if batch_size is None else batch_size
         test_images = self.test_images[:idx]
-        new_shape = (1, 28, 28, 1)
-        f = lambda x: np.reshape(self.augmentor.random_single_augmentation()(x), new_shape)
-        test_images = np.concatenate(list(map(f, test_images)))
+        test_images = self.__single_augment(test_images)
         return test_images, self.test_image_classes[:idx]
 
     def reset(self):
@@ -213,6 +211,13 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def data_shape(self):
         return 28, 28, 1
+
+
+    def __single_augment(self, images):
+        new_shape = (1, 28, 28, 1)
+        f = lambda x: np.reshape(self.augmentor.random_single_augmentation()(x), new_shape)
+        images = np.concatenate(list(map(f, images)))
+        return images
 
 if __name__ == "__main__":
     generator = RotatedMNISTDataGenerator()

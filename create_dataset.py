@@ -9,8 +9,7 @@ prerotation = {1: 90, 2: 0, 3: 45}
 img_size = (28, 28)
 img_shape = img_size + (1,)
 
-src_im = Image.open('data/arrow2.png')
-im = src_im.convert('RGBA')
+
 
 def generate_data(size):
     x = []

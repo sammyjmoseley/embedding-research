@@ -59,6 +59,9 @@ class TripletDataset(object):
     def get_weights(self):
         return self.weights
 
+    def __iter__(self):
+        return zip(zip(self.r, self.p, self.n), zip(self.r_class, self.p_class, self.n_class), self.weights)
+
 class AbstractGenerator(object):
     def __next_image(self):
         raise BaseException("not implemented")

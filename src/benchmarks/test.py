@@ -1,6 +1,7 @@
 from models import NoEmbeddingClassifier, TwoStageIntegratedEmbeddingClassifier, OneStageIntegratedEmbeddingClassifier, OneStageConcatenatedEmbeddingClassifier, TwoStageConcatenatedEmbeddingClassifier
 # from data_generators import DefaultDataGenerator as DataGenerator
 import data_generators.augmentation_data_generator as DataGenerator
+from data_generators.augmentation_data_generator import AugmentationDataGenerator
 
 datagen = DataGenerator.load_augmentation_data_generator()
 #model = NoEmbeddingClassifier.NoEmbeddingClassifier()

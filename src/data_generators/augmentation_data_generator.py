@@ -209,7 +209,7 @@ class AugmentationDataGenerator(AbstractGenerator):
 file_location = "rotated_dataset.gz"
 augmentation_clazz = AugmentationDataGenerator
 def load_augmentation_data_generator():
-    if os.path.exists(file_location) and False:
+    if os.path.exists(file_location):
         f = gzip.open(file_location, "rb")
         unpickler = pickle.Unpickler(f)
         unpickler.find_class("data_generators.augmentation_data_generator", "AugmentationDataGenerator")

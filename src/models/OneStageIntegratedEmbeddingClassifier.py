@@ -68,6 +68,7 @@ class OneStageIntegratedEmbeddingClassifier:
             sess.run(tf.global_variables_initializer())
 
             run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+            print(run_name)
 
             # Visualize:
             vis_batch_x, vis_batch_y_ = data_generator.get_embedding_visualization_data()

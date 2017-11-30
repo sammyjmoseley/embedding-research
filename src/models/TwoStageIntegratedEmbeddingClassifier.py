@@ -70,7 +70,8 @@ class TwoStageIntegratedEmbeddingClassifier:
               embed_iterations=100,
               embed_batch_size=16,
               embed_visualize=False,
-              embed_visualize_size=100):
+              embed_visualize_size=100,
+              only_originals=False):
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
         embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
         class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
@@ -85,6 +86,7 @@ class TwoStageIntegratedEmbeddingClassifier:
             merged = tf.summary.merge_all("embedding")
 
             run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+            print(run_name)
             train_writer = tf.summary.FileWriter(run_name, sess.graph)
 
             # Visualize:
@@ -113,7 +115,7 @@ class TwoStageIntegratedEmbeddingClassifier:
 
             # Stage 2: Classification
             for i in range(iterations):
-                batch_x, batch_y_ = data_generator.train(batch_size)
+                batch_x, batch_y_ = data_generator.train(batch_size, only_originals=only_originals)
 
                 if i % log_freq == 0:
 

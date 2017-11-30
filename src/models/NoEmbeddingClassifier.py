@@ -33,6 +33,9 @@ class NoEmbeddingClassifier:
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
 
+            run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+            print(run_name)
+
             for i in range(iterations):
                 batch_x, batch_y_ = data_generator.train(batch_size)
 

@@ -19,17 +19,6 @@ def pca_visualize(x, embed, y_):
     ax_max = np.max(embed,0)
     ax_dist_sq = np.sum((ax_max-ax_min)**2)
 
-    # JITTER
-    """stdev = 0.01*ax_dist_sq
-    jitter = np.random.randn(embed.shape[0], embed.shape[1]) * stdev
-    embed = embed + jitter
-    print (jitter)
-
-    ax_min = np.min(embed,0)
-    ax_max = np.max(embed,0)
-    ax_dist_sq = np.sum((ax_max-ax_min)**2)"""
-    # END JITTER
-
     feat = embed
 
     plt.figure(1, figsize=(10,40))
@@ -37,7 +26,7 @@ def pca_visualize(x, embed, y_):
     ax = plt.subplot(411)
     colors = []
     for i in range(embed.shape[0]):
-        colors.append(plt.cm.Set1(y_[i] / 10.))
+        colors.append(plt.cm.tab10(y_[i] / 10.))
     plt.scatter(embed[:, 0], embed[:, 1], c=colors, alpha=0.5)
     plt.axis([ax_min[0], ax_max[0], ax_min[1], ax_max[1]])
     plt.title('PCA Embedding Classes')
@@ -72,7 +61,7 @@ def plot_tsne_embedding(x, embed, y_, title):
     ax = plt.subplot(413)
     colors = []
     for i in range(embed.shape[0]):
-        colors.append(plt.cm.Set1(y_[i] / 10.))
+        colors.append(plt.cm.tab10(y_[i] / 10.))
     plt.scatter(embed[:, 0], embed[:, 1], c=colors, alpha=0.5)
     plt.title('t-SNE Embedding Classes')
 
@@ -99,3 +88,6 @@ def visualize(x, embed, y_, file_path):
     pca_visualize(x, embed, y_)
     tsne_visualize(x, embed, y_)
     plt.savefig(file_path+".png")
+    plt.cla()
+    plt.clf()
+    plt.close()

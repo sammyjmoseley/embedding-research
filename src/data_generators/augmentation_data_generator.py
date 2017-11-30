@@ -24,7 +24,11 @@ def __rotator(old_img, rot_ang):
     data = np.float64(data) / 255.0
     return data, np.array([rot_ang])
 
-default_augmentations = [(lambda ang: lambda x: __rotator(x, ang))(i) for i in range(-30, 30, 5)]
+default_augmentations = [(lambda ang: lambda x: __rotator(x, ang))(i) for i in range(-30, 31, 15)]
+def random_augmentation(img):
+    angle = np.random.uniform(-30, 31)
+    return __rotator(img, angle)
+
 
 
 class AugmentationDataGenerator(AbstractGenerator):
@@ -69,6 +73,13 @@ class AugmentationDataGenerator(AbstractGenerator):
         labels = np.array(labels)
         img_ids = np.array(list(range(0, len(images))))
 
+        # make it deterministic
+        np.random.seed(1)
+        random.seed(1)
+
+        for i in range(images.shape[0]):
+            images[i] = random_augmentation(images[i])[0]
+
         image_augmentor = lambda x: map(lambda f: f(x), augmentations)
         label_augmentor = lambda x: map(lambda f: x, augmentations)
 
@@ -90,10 +101,6 @@ class AugmentationDataGenerator(AbstractGenerator):
         valid_ratio += train_ratio
         test_ratio += valid_ratio
 
-        # make it deterministic
-        np.random.seed(1)
-        random.seed(1)
-
         def random_idxs(size):
             l = list(range(0, size))
             np.random.shuffle(l)
@@ -113,6 +120,8 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.train_image_augs = augs[:train_idx]
         self.train_image_classes = labels[:train_idx]
         self.train_image_ids = img_ids[:train_idx]
+        augs = np.sum(np.square(self.train_image_augs), axis=1)
+        self.train_image_orig = [augs==0]
 
         self.valid_images = images[train_idx:valid_idx]
         self.valid_image_augs = augs[train_idx:valid_idx]
@@ -132,22 +141,28 @@ class AugmentationDataGenerator(AbstractGenerator):
     def __next_image(self):
         raise BaseException("not implemented")
 
-    def train(self, batch_size):
+    def train(self, batch_size, only_originals=False):
+        actual_train_images = self.train_images
+        actual_train_image_classes = self.train_image_classes
+        if only_originals:
+            actual_train_images = self.train_images[self.train_image_orig]
+            actual_train_image_classes = self.train_image_classes[self.train_image_orig]
+
         if self.is_epochal:
-            if self.train_epochal >= len(self.train_images):
-                return None
-            batch_size = min(batch_size, len(self.train_images)-self.train_epochal)
-            idxs = range(np.sum(self.train_epochal), len(self.train_images))[:batch_size]
+            if self.train_epochal >= len(actual_train_images):
+                self.reset()
+            batch_size = min(batch_size, len(actual_train_images)-self.train_epochal)
+            idxs = range(np.sum(self.train_epochal), len(actual_train_images))[:batch_size]
             self.train_epochal += batch_size
-            return self.train_images[idxs], self.train_image_classes[idxs]
+            return actual_train_images[idxs], actual_train_image_classes[idxs]
         else:
-            idxs = random.sample(range(0, len(self.train_images)), batch_size)
-            return self.train_images[idxs], self.train_image_classes[idxs]
+            idxs = random.sample(range(0, len(actual_train_images)), batch_size)
+            return actual_train_images[idxs], actual_train_image_classes[idxs]
 
     def triplet_train(self, batch_size):
         if self.is_epochal:
             if self.train_epochal >= len(self.train_images):
-                return None
+                self.reset()
             batch_size = min(batch_size, len(self.train_images)-self.train_epochal)
             idxs = range(np.sum(self.train_epochal), len(self.train_images))[:batch_size]
             self.train_epochal += batch_size
@@ -213,6 +228,13 @@ class AugmentationDataGenerator(AbstractGenerator):
 
     def reset(self):
         if self.is_epochal:
+            shuffle_idx = np.random.permutation(len(self.train_images))
+            self.train_images = self.train_images[shuffle_idx]
+            self.train_image_augs = self.train_image_augs[shuffle_idx]
+            self.train_image_classes = self.train_image_classes[shuffle_idx]
+            self.train_image_ids = self.train_image_ids[shuffle_idx]
+            augs = np.sum(np.square(self.train_image_augs), axis=1)
+            self.train_image_orig = [augs==0]
             self.train_epochal = 0
         else:
             pass

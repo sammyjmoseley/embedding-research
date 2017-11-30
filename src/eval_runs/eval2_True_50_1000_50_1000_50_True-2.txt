@@ -1,0 +1,1015 @@
+./train/run_2017-11-30_07-09-30
+Computing t-SNE embedding
+iteration 0, embedding loss 0.249957
+iteration 5, embedding loss 0.249659
+iteration 10, embedding loss 0.248704
+iteration 15, embedding loss 0.245715
+iteration 20, embedding loss 0.245531
+iteration 25, embedding loss 0.227902
+iteration 30, embedding loss 0.219489
+iteration 35, embedding loss 0.179253
+iteration 40, embedding loss 0.19205
+iteration 45, embedding loss 0.113471
+iteration 50, embedding loss 0.0856686
+iteration 55, embedding loss 0.0146319
+iteration 60, embedding loss 0.124927
+iteration 65, embedding loss 0.000956171
+iteration 70, embedding loss 0.00956096
+iteration 75, embedding loss 0.00969489
+iteration 80, embedding loss 0.117695
+iteration 85, embedding loss 4.3086e-06
+iteration 90, embedding loss 4.59114e-05
+iteration 95, embedding loss 6.62381e-06
+iteration 100, embedding loss 0.000580917
+iteration 105, embedding loss 0.00657873
+iteration 110, embedding loss 5.29375e-05
+iteration 115, embedding loss 0.00126749
+iteration 120, embedding loss 0.00536442
+iteration 125, embedding loss 0.00167907
+iteration 130, embedding loss 0.00289309
+iteration 135, embedding loss 0.00252643
+iteration 140, embedding loss 0.000227055
+iteration 145, embedding loss 0.000165165
+iteration 150, embedding loss 0.0129698
+iteration 155, embedding loss 1.59927e-05
+iteration 160, embedding loss 8.45929e-05
+iteration 165, embedding loss 2.34028e-05
+iteration 170, embedding loss 0.00397877
+iteration 175, embedding loss 5.09756e-06
+iteration 180, embedding loss 0.000193239
+iteration 185, embedding loss 0.00102587
+iteration 190, embedding loss 2.1913e-06
+iteration 195, embedding loss 5.01326e-05
+iteration 200, embedding loss 3.99441e-05
+iteration 205, embedding loss 1.53523e-07
+iteration 210, embedding loss 5.12179e-06
+iteration 215, embedding loss 5.85494e-05
+iteration 220, embedding loss 0.000123366
+iteration 225, embedding loss 7.50358e-05
+iteration 230, embedding loss 8.0886e-07
+iteration 235, embedding loss 0.000263606
+iteration 240, embedding loss 8.45382e-05
+iteration 245, embedding loss 0.00174255
+iteration 250, embedding loss 7.79993e-06
+iteration 255, embedding loss 7.13453e-07
+iteration 260, embedding loss 3.72843e-06
+iteration 265, embedding loss 0.000244227
+iteration 270, embedding loss 0.00401862
+iteration 275, embedding loss 0.000781367
+iteration 280, embedding loss 1.02179e-06
+iteration 285, embedding loss 1.99262e-06
+iteration 290, embedding loss 5.14419e-09
+iteration 295, embedding loss 4.56859e-06
+iteration 300, embedding loss 0.00253517
+iteration 305, embedding loss 0.000250592
+iteration 310, embedding loss 7.92416e-07
+iteration 315, embedding loss 4.01357e-05
+iteration 320, embedding loss 8.37895e-06
+iteration 325, embedding loss 5.24807e-07
+iteration 330, embedding loss 5.42135e-08
+iteration 335, embedding loss 4.43786e-08
+iteration 340, embedding loss 1.2822e-06
+iteration 345, embedding loss 3.75425e-05
+iteration 350, embedding loss 0.000191623
+iteration 355, embedding loss 0.000506481
+iteration 360, embedding loss 0.000307003
+iteration 365, embedding loss 0.000606657
+iteration 370, embedding loss 7.06262e-07
+iteration 375, embedding loss 6.07299e-05
+iteration 380, embedding loss 3.59022e-07
+iteration 385, embedding loss 2.03089e-07
+iteration 390, embedding loss 6.56353e-05
+iteration 395, embedding loss 0.00320819
+iteration 400, embedding loss 9.36192e-08
+iteration 405, embedding loss 8.33565e-07
+iteration 410, embedding loss 2.62485e-06
+iteration 415, embedding loss 5.89329e-05
+iteration 420, embedding loss 1.91194e-06
+iteration 425, embedding loss 4.90072e-06
+iteration 430, embedding loss 7.66498e-08
+iteration 435, embedding loss 1.66254e-07
+iteration 440, embedding loss 8.90994e-07
+iteration 445, embedding loss 0.000840876
+iteration 450, embedding loss 1.64849e-06
+iteration 455, embedding loss 4.32305e-08
+iteration 460, embedding loss 1.20031e-06
+iteration 465, embedding loss 0.000222587
+iteration 470, embedding loss 4.61681e-05
+iteration 475, embedding loss 6.03713e-06
+iteration 480, embedding loss 7.98796e-06
+iteration 485, embedding loss 8.3619e-10
+iteration 490, embedding loss 2.55432e-05
+iteration 495, embedding loss 5.27947e-07
+iteration 500, embedding loss 1.83965e-05
+iteration 505, embedding loss 1.47529e-07
+iteration 510, embedding loss 1.73998e-07
+iteration 515, embedding loss 2.92284e-05
+iteration 520, embedding loss 4.03873e-06
+iteration 525, embedding loss 6.43316e-05
+iteration 530, embedding loss 6.64083e-08
+iteration 535, embedding loss 3.59477e-09
+iteration 540, embedding loss 8.07353e-09
+iteration 545, embedding loss 0.0001165
+iteration 550, embedding loss 4.34647e-06
+iteration 555, embedding loss 8.97993e-07
+iteration 560, embedding loss 1.99136e-06
+iteration 565, embedding loss 3.01217e-07
+iteration 570, embedding loss 7.43157e-06
+iteration 575, embedding loss 3.02643e-06
+iteration 580, embedding loss 0.00010041
+iteration 585, embedding loss 1.69719e-06
+iteration 590, embedding loss 3.70147e-06
+iteration 595, embedding loss 3.214e-08
+iteration 600, embedding loss 4.35911e-08
+iteration 605, embedding loss 2.48738e-06
+iteration 610, embedding loss 3.07083e-06
+iteration 615, embedding loss 2.08235e-05
+iteration 620, embedding loss 1.64071e-07
+iteration 625, embedding loss 7.65301e-09
+iteration 630, embedding loss 1.82851e-06
+iteration 635, embedding loss 2.48157e-06
+iteration 640, embedding loss 1.57531e-06
+iteration 645, embedding loss 1.471e-07
+iteration 650, embedding loss 1.50318e-10
+iteration 655, embedding loss 2.29808e-06
+iteration 660, embedding loss 2.41854e-07
+iteration 665, embedding loss 0.000127956
+iteration 670, embedding loss 4.89635e-07
+iteration 675, embedding loss 3.30457e-06
+iteration 680, embedding loss 4.57102e-05
+iteration 685, embedding loss 4.53084e-05
+iteration 690, embedding loss 6.52959e-09
+iteration 695, embedding loss 4.95691e-07
+iteration 700, embedding loss 4.23247e-05
+iteration 705, embedding loss 1.19053e-07
+iteration 710, embedding loss 3.7774e-08
+iteration 715, embedding loss 2.31722e-07
+iteration 720, embedding loss 8.93942e-05
+iteration 725, embedding loss 3.43234e-06
+iteration 730, embedding loss 0.000277205
+iteration 735, embedding loss 5.49882e-06
+iteration 740, embedding loss 3.62167e-07
+iteration 745, embedding loss 3.47964e-09
+iteration 750, embedding loss 7.85635e-07
+iteration 755, embedding loss 6.36933e-05
+iteration 760, embedding loss 3.54176e-06
+iteration 765, embedding loss 1.60116e-06
+iteration 770, embedding loss 7.63006e-05
+iteration 775, embedding loss 1.04233e-07
+iteration 780, embedding loss 1.17774e-08
+iteration 785, embedding loss 0.00117546
+iteration 790, embedding loss 8.19256e-07
+iteration 795, embedding loss 5.04858e-08
+iteration 800, embedding loss 0.000410334
+iteration 805, embedding loss 1.09978e-07
+iteration 810, embedding loss 3.64366e-06
+iteration 815, embedding loss 2.88478e-05
+iteration 820, embedding loss 1.15369e-06
+iteration 825, embedding loss 6.30127e-05
+iteration 830, embedding loss 7.1862e-07
+iteration 835, embedding loss 5.71163e-09
+iteration 840, embedding loss 1.71098e-07
+iteration 845, embedding loss 4.09562e-07
+iteration 850, embedding loss 2.12783e-08
+iteration 855, embedding loss 1.55538e-06
+iteration 860, embedding loss 1.82851e-06
+iteration 865, embedding loss 4.96695e-08
+iteration 870, embedding loss 4.24813e-09
+iteration 875, embedding loss 1.71164e-10
+iteration 880, embedding loss 0.000155883
+iteration 885, embedding loss 1.41147e-06
+iteration 890, embedding loss 4.65661e-08
+iteration 895, embedding loss 2.20821e-07
+iteration 900, embedding loss 2.83393e-06
+iteration 905, embedding loss 1.05203e-05
+iteration 910, embedding loss 8.13159e-07
+iteration 915, embedding loss 4.5807e-09
+iteration 920, embedding loss 6.87571e-09
+iteration 925, embedding loss 1.41515e-06
+iteration 930, embedding loss 1.42264e-08
+iteration 935, embedding loss 1.77952e-08
+iteration 940, embedding loss 2.1666e-05
+iteration 945, embedding loss 1.13205e-08
+iteration 950, embedding loss 2.00009e-06
+iteration 955, embedding loss 1.33952e-05
+iteration 960, embedding loss 1.69329e-06
+iteration 965, embedding loss 2.127e-06
+iteration 970, embedding loss 1.51755e-05
+iteration 975, embedding loss 7.94914e-08
+iteration 980, embedding loss 2.72079e-08
+iteration 985, embedding loss 4.34622e-06
+iteration 990, embedding loss 1.4099e-07
+iteration 995, embedding loss 4.18095e-07
+Computing t-SNE embedding
+iteration 0, training loss 2.29021, training accuracy 0.12, validation loss 2.31339, validation accuracy 0.1052
+iteration 5, training loss 2.26593, training accuracy 0.24, validation loss 2.29486, validation accuracy 0.1456
+iteration 10, training loss 2.21261, training accuracy 0.2, validation loss 2.26488, validation accuracy 0.2424
+iteration 15, training loss 2.09923, training accuracy 0.5, validation loss 2.23272, validation accuracy 0.2412
+iteration 20, training loss 2.00352, training accuracy 0.5, validation loss 2.20487, validation accuracy 0.1928
+iteration 25, training loss 2.1003, training accuracy 0.24, validation loss 2.16873, validation accuracy 0.232
+iteration 30, training loss 1.99689, training accuracy 0.36, validation loss 2.12843, validation accuracy 0.2556
+iteration 35, training loss 1.80602, training accuracy 0.64, validation loss 2.10003, validation accuracy 0.2744
+iteration 40, training loss 1.68693, training accuracy 0.5, validation loss 2.16943, validation accuracy 0.2072
+iteration 45, training loss 1.63431, training accuracy 0.46, validation loss 2.1302, validation accuracy 0.2296
+iteration 50, training loss 1.48228, training accuracy 0.5, validation loss 2.0115, validation accuracy 0.2828
+iteration 55, training loss 1.39105, training accuracy 0.54, validation loss 2.02889, validation accuracy 0.2788
+iteration 60, training loss 1.35564, training accuracy 0.6, validation loss 2.05299, validation accuracy 0.2628
+iteration 65, training loss 1.20423, training accuracy 0.72, validation loss 2.02101, validation accuracy 0.2948
+iteration 70, training loss 1.2278, training accuracy 0.64, validation loss 1.9657, validation accuracy 0.334
+iteration 75, training loss 1.12227, training accuracy 0.6, validation loss 2.18369, validation accuracy 0.2668
+iteration 80, training loss 1.06904, training accuracy 0.6, validation loss 1.99189, validation accuracy 0.314
+iteration 85, training loss 0.979436, training accuracy 0.8, validation loss 1.92105, validation accuracy 0.3548
+iteration 90, training loss 1.04035, training accuracy 0.68, validation loss 1.97434, validation accuracy 0.3332
+iteration 95, training loss 1.01273, training accuracy 0.7, validation loss 1.85853, validation accuracy 0.3584
+iteration 100, training loss 0.948546, training accuracy 0.64, validation loss 1.85836, validation accuracy 0.3652
+iteration 105, training loss 0.879012, training accuracy 0.7, validation loss 1.94966, validation accuracy 0.3568
+iteration 110, training loss 0.860697, training accuracy 0.76, validation loss 1.87252, validation accuracy 0.3708
+iteration 115, training loss 0.80933, training accuracy 0.76, validation loss 1.86022, validation accuracy 0.3776
+iteration 120, training loss 0.840092, training accuracy 0.76, validation loss 1.9702, validation accuracy 0.352
+iteration 125, training loss 0.800068, training accuracy 0.72, validation loss 1.84593, validation accuracy 0.394
+iteration 130, training loss 0.833298, training accuracy 0.74, validation loss 1.76105, validation accuracy 0.398
+iteration 135, training loss 0.959251, training accuracy 0.64, validation loss 1.82441, validation accuracy 0.3876
+iteration 140, training loss 0.877808, training accuracy 0.7, validation loss 1.81288, validation accuracy 0.404
+iteration 145, training loss 0.644659, training accuracy 0.82, validation loss 1.77652, validation accuracy 0.4164
+iteration 150, training loss 0.71898, training accuracy 0.78, validation loss 1.88095, validation accuracy 0.3896
+iteration 155, training loss 0.641322, training accuracy 0.76, validation loss 1.77091, validation accuracy 0.4148
+iteration 160, training loss 0.782216, training accuracy 0.78, validation loss 1.73989, validation accuracy 0.424
+iteration 165, training loss 0.663981, training accuracy 0.74, validation loss 1.78645, validation accuracy 0.4044
+iteration 170, training loss 0.801056, training accuracy 0.78, validation loss 1.67169, validation accuracy 0.4548
+iteration 175, training loss 0.604799, training accuracy 0.84, validation loss 1.7048, validation accuracy 0.428
+iteration 180, training loss 0.560335, training accuracy 0.86, validation loss 1.7144, validation accuracy 0.4256
+iteration 185, training loss 0.42806, training accuracy 0.9, validation loss 1.74793, validation accuracy 0.4188
+iteration 190, training loss 0.58897, training accuracy 0.82, validation loss 1.70942, validation accuracy 0.4396
+iteration 195, training loss 0.61649, training accuracy 0.78, validation loss 1.60394, validation accuracy 0.4552
+iteration 200, training loss 0.496437, training accuracy 0.84, validation loss 1.55783, validation accuracy 0.474
+iteration 205, training loss 0.901438, training accuracy 0.7, validation loss 1.49722, validation accuracy 0.4996
+iteration 210, training loss 0.697284, training accuracy 0.74, validation loss 1.48183, validation accuracy 0.5004
+iteration 215, training loss 0.544395, training accuracy 0.88, validation loss 1.61047, validation accuracy 0.4576
+iteration 220, training loss 0.635595, training accuracy 0.76, validation loss 1.74563, validation accuracy 0.4268
+iteration 225, training loss 0.715056, training accuracy 0.76, validation loss 1.69785, validation accuracy 0.4396
+iteration 230, training loss 0.439082, training accuracy 0.9, validation loss 1.51826, validation accuracy 0.484
+iteration 235, training loss 0.565808, training accuracy 0.86, validation loss 1.45035, validation accuracy 0.512
+iteration 240, training loss 0.641085, training accuracy 0.8, validation loss 1.51807, validation accuracy 0.4928
+iteration 245, training loss 0.657668, training accuracy 0.8, validation loss 1.63676, validation accuracy 0.4568
+iteration 250, training loss 0.46984, training accuracy 0.88, validation loss 1.63162, validation accuracy 0.4436
+iteration 255, training loss 0.567858, training accuracy 0.8, validation loss 1.53527, validation accuracy 0.4984
+iteration 260, training loss 0.499194, training accuracy 0.88, validation loss 1.56745, validation accuracy 0.478
+iteration 265, training loss 0.541604, training accuracy 0.8, validation loss 1.57652, validation accuracy 0.4648
+iteration 270, training loss 0.510791, training accuracy 0.84, validation loss 1.5127, validation accuracy 0.4732
+iteration 275, training loss 0.370182, training accuracy 0.9, validation loss 1.43122, validation accuracy 0.5168
+iteration 280, training loss 0.686605, training accuracy 0.8, validation loss 1.4672, validation accuracy 0.4968
+iteration 285, training loss 0.564092, training accuracy 0.86, validation loss 1.49847, validation accuracy 0.5016
+iteration 290, training loss 0.767426, training accuracy 0.78, validation loss 1.50944, validation accuracy 0.484
+iteration 295, training loss 0.443522, training accuracy 0.86, validation loss 1.44924, validation accuracy 0.5052
+iteration 300, training loss 0.421323, training accuracy 0.94, validation loss 1.42017, validation accuracy 0.5264
+iteration 305, training loss 0.450505, training accuracy 0.9, validation loss 1.45441, validation accuracy 0.5228
+iteration 310, training loss 0.504424, training accuracy 0.84, validation loss 1.55518, validation accuracy 0.4924
+iteration 315, training loss 0.466478, training accuracy 0.9, validation loss 1.50973, validation accuracy 0.4988
+iteration 320, training loss 0.542736, training accuracy 0.82, validation loss 1.39047, validation accuracy 0.534
+iteration 325, training loss 0.641638, training accuracy 0.76, validation loss 1.33499, validation accuracy 0.548
+iteration 330, training loss 0.621441, training accuracy 0.86, validation loss 1.36245, validation accuracy 0.5396
+iteration 335, training loss 0.424047, training accuracy 0.84, validation loss 1.45811, validation accuracy 0.5016
+iteration 340, training loss 0.404751, training accuracy 0.9, validation loss 1.51362, validation accuracy 0.492
+iteration 345, training loss 0.621399, training accuracy 0.74, validation loss 1.5811, validation accuracy 0.4792
+iteration 350, training loss 0.396485, training accuracy 0.86, validation loss 1.42392, validation accuracy 0.5232
+iteration 355, training loss 0.37775, training accuracy 0.9, validation loss 1.35281, validation accuracy 0.5544
+iteration 360, training loss 0.410851, training accuracy 0.86, validation loss 1.30796, validation accuracy 0.5616
+iteration 365, training loss 0.686971, training accuracy 0.8, validation loss 1.33719, validation accuracy 0.5572
+iteration 370, training loss 0.469243, training accuracy 0.84, validation loss 1.40432, validation accuracy 0.53
+iteration 375, training loss 0.840909, training accuracy 0.82, validation loss 1.38598, validation accuracy 0.5312
+iteration 380, training loss 0.233064, training accuracy 0.96, validation loss 1.39052, validation accuracy 0.5288
+iteration 385, training loss 0.328137, training accuracy 0.94, validation loss 1.39008, validation accuracy 0.5296
+iteration 390, training loss 0.330578, training accuracy 0.9, validation loss 1.37453, validation accuracy 0.5352
+iteration 395, training loss 0.416518, training accuracy 0.86, validation loss 1.3527, validation accuracy 0.548
+iteration 400, training loss 0.590437, training accuracy 0.82, validation loss 1.29728, validation accuracy 0.5656
+iteration 405, training loss 0.366217, training accuracy 0.88, validation loss 1.31901, validation accuracy 0.5596
+iteration 410, training loss 0.276661, training accuracy 0.96, validation loss 1.33941, validation accuracy 0.5376
+iteration 415, training loss 0.334402, training accuracy 0.96, validation loss 1.3134, validation accuracy 0.5444
+iteration 420, training loss 0.569764, training accuracy 0.88, validation loss 1.27573, validation accuracy 0.5712
+iteration 425, training loss 0.542527, training accuracy 0.88, validation loss 1.29961, validation accuracy 0.5676
+iteration 430, training loss 0.235712, training accuracy 0.96, validation loss 1.34484, validation accuracy 0.5484
+iteration 435, training loss 0.277621, training accuracy 0.92, validation loss 1.33029, validation accuracy 0.546
+iteration 440, training loss 0.34125, training accuracy 0.9, validation loss 1.30381, validation accuracy 0.5508
+iteration 445, training loss 0.250257, training accuracy 0.92, validation loss 1.28877, validation accuracy 0.5764
+iteration 450, training loss 0.20928, training accuracy 0.94, validation loss 1.3241, validation accuracy 0.5652
+iteration 455, training loss 0.375585, training accuracy 0.86, validation loss 1.34812, validation accuracy 0.558
+iteration 460, training loss 0.27814, training accuracy 0.94, validation loss 1.37024, validation accuracy 0.5412
+iteration 465, training loss 0.29664, training accuracy 0.88, validation loss 1.30056, validation accuracy 0.5652
+iteration 470, training loss 0.351354, training accuracy 0.9, validation loss 1.23509, validation accuracy 0.5916
+iteration 475, training loss 0.308326, training accuracy 0.88, validation loss 1.24446, validation accuracy 0.5864
+iteration 480, training loss 0.158107, training accuracy 0.98, validation loss 1.33326, validation accuracy 0.5552
+iteration 485, training loss 0.312901, training accuracy 0.88, validation loss 1.39442, validation accuracy 0.5332
+iteration 490, training loss 0.540077, training accuracy 0.78, validation loss 1.32273, validation accuracy 0.56
+iteration 495, training loss 0.342072, training accuracy 0.92, validation loss 1.28638, validation accuracy 0.5708
+iteration 500, training loss 0.432177, training accuracy 0.84, validation loss 1.2942, validation accuracy 0.5636
+iteration 505, training loss 0.240704, training accuracy 0.96, validation loss 1.35079, validation accuracy 0.55
+iteration 510, training loss 0.200253, training accuracy 0.98, validation loss 1.32917, validation accuracy 0.5616
+iteration 515, training loss 0.221382, training accuracy 0.94, validation loss 1.29795, validation accuracy 0.576
+iteration 520, training loss 0.158101, training accuracy 0.96, validation loss 1.25744, validation accuracy 0.5888
+iteration 525, training loss 0.355226, training accuracy 0.92, validation loss 1.25748, validation accuracy 0.5808
+iteration 530, training loss 0.339492, training accuracy 0.86, validation loss 1.33031, validation accuracy 0.5548
+iteration 535, training loss 0.237018, training accuracy 0.94, validation loss 1.27392, validation accuracy 0.57
+iteration 540, training loss 0.262788, training accuracy 0.94, validation loss 1.23306, validation accuracy 0.5784
+iteration 545, training loss 0.376994, training accuracy 0.9, validation loss 1.20207, validation accuracy 0.6028
+iteration 550, training loss 0.499651, training accuracy 0.84, validation loss 1.22189, validation accuracy 0.5956
+iteration 555, training loss 0.221688, training accuracy 0.98, validation loss 1.22308, validation accuracy 0.5952
+iteration 560, training loss 0.399877, training accuracy 0.9, validation loss 1.23924, validation accuracy 0.5904
+iteration 565, training loss 0.353231, training accuracy 0.86, validation loss 1.27648, validation accuracy 0.5752
+iteration 570, training loss 0.364922, training accuracy 0.92, validation loss 1.28256, validation accuracy 0.5656
+iteration 575, training loss 0.409215, training accuracy 0.88, validation loss 1.24043, validation accuracy 0.584
+iteration 580, training loss 0.23267, training accuracy 0.96, validation loss 1.26154, validation accuracy 0.5824
+iteration 585, training loss 0.275018, training accuracy 0.92, validation loss 1.26478, validation accuracy 0.5812
+iteration 590, training loss 0.460836, training accuracy 0.86, validation loss 1.21258, validation accuracy 0.5996
+iteration 595, training loss 0.279212, training accuracy 0.88, validation loss 1.22575, validation accuracy 0.5928
+iteration 600, training loss 0.277228, training accuracy 0.92, validation loss 1.26721, validation accuracy 0.5704
+iteration 605, training loss 0.297434, training accuracy 0.9, validation loss 1.29274, validation accuracy 0.5584
+iteration 610, training loss 0.295834, training accuracy 0.9, validation loss 1.26633, validation accuracy 0.5756
+iteration 615, training loss 0.462044, training accuracy 0.86, validation loss 1.27812, validation accuracy 0.5728
+iteration 620, training loss 0.173466, training accuracy 0.98, validation loss 1.23724, validation accuracy 0.5904
+iteration 625, training loss 0.277896, training accuracy 0.94, validation loss 1.18631, validation accuracy 0.6092
+iteration 630, training loss 0.173825, training accuracy 0.96, validation loss 1.16693, validation accuracy 0.6112
+iteration 635, training loss 0.0955295, training accuracy 0.98, validation loss 1.18881, validation accuracy 0.6068
+iteration 640, training loss 0.279179, training accuracy 0.92, validation loss 1.25019, validation accuracy 0.586
+iteration 645, training loss 0.202977, training accuracy 0.94, validation loss 1.27543, validation accuracy 0.5724
+iteration 650, training loss 0.148186, training accuracy 0.94, validation loss 1.24745, validation accuracy 0.5912
+iteration 655, training loss 0.201249, training accuracy 0.94, validation loss 1.22773, validation accuracy 0.5904
+iteration 660, training loss 0.214901, training accuracy 0.94, validation loss 1.20667, validation accuracy 0.5944
+iteration 665, training loss 0.230913, training accuracy 0.92, validation loss 1.19776, validation accuracy 0.5924
+iteration 670, training loss 0.399583, training accuracy 0.84, validation loss 1.1684, validation accuracy 0.6124
+iteration 675, training loss 0.435119, training accuracy 0.9, validation loss 1.19603, validation accuracy 0.6104
+iteration 680, training loss 0.228528, training accuracy 0.94, validation loss 1.23113, validation accuracy 0.6048
+iteration 685, training loss 0.260988, training accuracy 0.9, validation loss 1.21164, validation accuracy 0.6068
+iteration 690, training loss 0.177062, training accuracy 0.94, validation loss 1.21104, validation accuracy 0.5944
+iteration 695, training loss 0.310778, training accuracy 0.92, validation loss 1.23476, validation accuracy 0.596
+iteration 700, training loss 0.437261, training accuracy 0.94, validation loss 1.25273, validation accuracy 0.5968
+iteration 705, training loss 0.162346, training accuracy 0.94, validation loss 1.22827, validation accuracy 0.602
+iteration 710, training loss 0.158827, training accuracy 0.94, validation loss 1.20906, validation accuracy 0.6044
+iteration 715, training loss 0.19758, training accuracy 0.96, validation loss 1.23471, validation accuracy 0.6044
+iteration 720, training loss 0.279242, training accuracy 0.94, validation loss 1.18977, validation accuracy 0.6116
+iteration 725, training loss 0.17659, training accuracy 0.96, validation loss 1.18003, validation accuracy 0.61
+iteration 730, training loss 0.102694, training accuracy 1, validation loss 1.17798, validation accuracy 0.6128
+iteration 735, training loss 0.102151, training accuracy 0.98, validation loss 1.19079, validation accuracy 0.6052
+iteration 740, training loss 0.168427, training accuracy 0.94, validation loss 1.19201, validation accuracy 0.6056
+iteration 745, training loss 0.203567, training accuracy 0.96, validation loss 1.15829, validation accuracy 0.62
+iteration 750, training loss 0.341858, training accuracy 0.94, validation loss 1.1529, validation accuracy 0.6172
+iteration 755, training loss 0.124605, training accuracy 0.96, validation loss 1.1545, validation accuracy 0.6184
+iteration 760, training loss 0.159031, training accuracy 0.94, validation loss 1.13999, validation accuracy 0.6256
+iteration 765, training loss 0.257132, training accuracy 0.92, validation loss 1.18061, validation accuracy 0.612
+iteration 770, training loss 0.222226, training accuracy 0.96, validation loss 1.2082, validation accuracy 0.602
+iteration 775, training loss 0.271335, training accuracy 0.88, validation loss 1.19213, validation accuracy 0.6068
+iteration 780, training loss 0.221654, training accuracy 0.94, validation loss 1.18472, validation accuracy 0.6044
+iteration 785, training loss 0.16831, training accuracy 0.96, validation loss 1.15178, validation accuracy 0.614
+iteration 790, training loss 0.329208, training accuracy 0.9, validation loss 1.1502, validation accuracy 0.6136
+iteration 795, training loss 0.219555, training accuracy 0.92, validation loss 1.1405, validation accuracy 0.6168
+iteration 800, training loss 0.164977, training accuracy 0.96, validation loss 1.1361, validation accuracy 0.6276
+iteration 805, training loss 0.209641, training accuracy 0.92, validation loss 1.12772, validation accuracy 0.6232
+iteration 810, training loss 0.174916, training accuracy 0.98, validation loss 1.12252, validation accuracy 0.6248
+iteration 815, training loss 0.107126, training accuracy 0.98, validation loss 1.15831, validation accuracy 0.6196
+iteration 820, training loss 0.20506, training accuracy 0.98, validation loss 1.19069, validation accuracy 0.6088
+iteration 825, training loss 0.366347, training accuracy 0.94, validation loss 1.16444, validation accuracy 0.6176
+iteration 830, training loss 0.356361, training accuracy 0.94, validation loss 1.18862, validation accuracy 0.6072
+iteration 835, training loss 0.197784, training accuracy 0.92, validation loss 1.23184, validation accuracy 0.5932
+iteration 840, training loss 0.293047, training accuracy 0.9, validation loss 1.18967, validation accuracy 0.6108
+iteration 845, training loss 0.340529, training accuracy 0.86, validation loss 1.15648, validation accuracy 0.6168
+iteration 850, training loss 0.206996, training accuracy 0.96, validation loss 1.15163, validation accuracy 0.6224
+iteration 855, training loss 0.286416, training accuracy 0.88, validation loss 1.16297, validation accuracy 0.6212
+iteration 860, training loss 0.0995982, training accuracy 0.96, validation loss 1.1635, validation accuracy 0.624
+iteration 865, training loss 0.386102, training accuracy 0.88, validation loss 1.16716, validation accuracy 0.622
+iteration 870, training loss 0.120605, training accuracy 0.98, validation loss 1.15546, validation accuracy 0.6164
+iteration 875, training loss 0.0910762, training accuracy 1, validation loss 1.16473, validation accuracy 0.6144
+iteration 880, training loss 0.253712, training accuracy 0.98, validation loss 1.17266, validation accuracy 0.6104
+iteration 885, training loss 0.260137, training accuracy 0.9, validation loss 1.19867, validation accuracy 0.616
+iteration 890, training loss 0.133469, training accuracy 0.98, validation loss 1.13933, validation accuracy 0.6236
+iteration 895, training loss 0.17843, training accuracy 0.94, validation loss 1.12082, validation accuracy 0.6312
+iteration 900, training loss 0.180563, training accuracy 0.96, validation loss 1.09181, validation accuracy 0.6396
+iteration 905, training loss 0.291785, training accuracy 0.92, validation loss 1.08267, validation accuracy 0.6424
+iteration 910, training loss 0.146283, training accuracy 0.98, validation loss 1.1152, validation accuracy 0.6288
+iteration 915, training loss 0.135576, training accuracy 0.98, validation loss 1.15237, validation accuracy 0.6204
+iteration 920, training loss 0.113371, training accuracy 1, validation loss 1.14957, validation accuracy 0.628
+iteration 925, training loss 0.262757, training accuracy 0.92, validation loss 1.17098, validation accuracy 0.62
+iteration 930, training loss 0.355921, training accuracy 0.92, validation loss 1.13042, validation accuracy 0.6272
+iteration 935, training loss 0.182514, training accuracy 0.98, validation loss 1.11019, validation accuracy 0.6324
+iteration 940, training loss 0.121992, training accuracy 0.96, validation loss 1.09426, validation accuracy 0.642
+iteration 945, training loss 0.184592, training accuracy 0.94, validation loss 1.0899, validation accuracy 0.6436
+iteration 950, training loss 0.314022, training accuracy 0.88, validation loss 1.07895, validation accuracy 0.6512
+iteration 955, training loss 0.179305, training accuracy 0.92, validation loss 1.09876, validation accuracy 0.6436
+iteration 960, training loss 0.23915, training accuracy 0.96, validation loss 1.12897, validation accuracy 0.634
+iteration 965, training loss 0.16062, training accuracy 0.94, validation loss 1.15533, validation accuracy 0.6232
+iteration 970, training loss 0.169976, training accuracy 0.94, validation loss 1.14664, validation accuracy 0.6248
+iteration 975, training loss 0.172799, training accuracy 0.94, validation loss 1.11558, validation accuracy 0.634
+iteration 980, training loss 0.229374, training accuracy 0.94, validation loss 1.10045, validation accuracy 0.6424
+iteration 985, training loss 0.208486, training accuracy 0.94, validation loss 1.07752, validation accuracy 0.6492
+iteration 990, training loss 0.25003, training accuracy 0.86, validation loss 1.06867, validation accuracy 0.6472
+iteration 995, training loss 0.17679, training accuracy 0.94, validation loss 1.10641, validation accuracy 0.6312
+Computing t-SNE embedding
+test loss 1.04562, test accuracy 0.65
+./train/run_2017-11-30_07-12-27
+Computing t-SNE embedding
+Computing t-SNE embedding
+iteration 0, training loss 2.30273, training accuracy 0.1, validation loss 2.30257, validation accuracy 0.1012
+iteration 5, training loss 2.30325, training accuracy 0.12, validation loss 2.30244, validation accuracy 0.1012
+iteration 10, training loss 2.30373, training accuracy 0.08, validation loss 2.30231, validation accuracy 0.1132
+iteration 15, training loss 2.30295, training accuracy 0.12, validation loss 2.30237, validation accuracy 0.1132
+iteration 20, training loss 2.30229, training accuracy 0.12, validation loss 2.3024, validation accuracy 0.1132
+iteration 25, training loss 2.30281, training accuracy 0.06, validation loss 2.30247, validation accuracy 0.1132
+iteration 30, training loss 2.3045, training accuracy 0.04, validation loss 2.3025, validation accuracy 0.1132
+iteration 35, training loss 2.30174, training accuracy 0.14, validation loss 2.30255, validation accuracy 0.1132
+iteration 40, training loss 2.30247, training accuracy 0.14, validation loss 2.30256, validation accuracy 0.1132
+iteration 45, training loss 2.30347, training accuracy 0.16, validation loss 2.30256, validation accuracy 0.1132
+iteration 50, training loss 2.30056, training accuracy 0.22, validation loss 2.30244, validation accuracy 0.1132
+iteration 55, training loss 2.3038, training accuracy 0.06, validation loss 2.30231, validation accuracy 0.1132
+iteration 60, training loss 2.30089, training accuracy 0.16, validation loss 2.3022, validation accuracy 0.1132
+iteration 65, training loss 2.30209, training accuracy 0.1, validation loss 2.30212, validation accuracy 0.1132
+iteration 70, training loss 2.30176, training accuracy 0.14, validation loss 2.30207, validation accuracy 0.1132
+iteration 75, training loss 2.30131, training accuracy 0.08, validation loss 2.30199, validation accuracy 0.1132
+iteration 80, training loss 2.30525, training accuracy 0.02, validation loss 2.30183, validation accuracy 0.1132
+iteration 85, training loss 2.30046, training accuracy 0.12, validation loss 2.30166, validation accuracy 0.1132
+iteration 90, training loss 2.3002, training accuracy 0.14, validation loss 2.30137, validation accuracy 0.1132
+iteration 95, training loss 2.30955, training accuracy 0.06, validation loss 2.30088, validation accuracy 0.1132
+iteration 100, training loss 2.29982, training accuracy 0.2, validation loss 2.30051, validation accuracy 0.1132
+iteration 105, training loss 2.2895, training accuracy 0.16, validation loss 2.29942, validation accuracy 0.1132
+iteration 110, training loss 2.30307, training accuracy 0.04, validation loss 2.29702, validation accuracy 0.1132
+iteration 115, training loss 2.27143, training accuracy 0.22, validation loss 2.29305, validation accuracy 0.1132
+iteration 120, training loss 2.25173, training accuracy 0.12, validation loss 2.28678, validation accuracy 0.1132
+iteration 125, training loss 2.26622, training accuracy 0.16, validation loss 2.27697, validation accuracy 0.1224
+iteration 130, training loss 2.26154, training accuracy 0.12, validation loss 2.2628, validation accuracy 0.1364
+iteration 135, training loss 2.24031, training accuracy 0.12, validation loss 2.24073, validation accuracy 0.1496
+iteration 140, training loss 2.12838, training accuracy 0.26, validation loss 2.20527, validation accuracy 0.1864
+iteration 145, training loss 2.05067, training accuracy 0.32, validation loss 2.15485, validation accuracy 0.216
+iteration 150, training loss 1.97141, training accuracy 0.56, validation loss 2.09067, validation accuracy 0.2764
+iteration 155, training loss 1.70665, training accuracy 0.62, validation loss 2.01646, validation accuracy 0.3172
+iteration 160, training loss 1.53229, training accuracy 0.56, validation loss 1.95274, validation accuracy 0.3056
+iteration 165, training loss 1.49426, training accuracy 0.6, validation loss 1.91857, validation accuracy 0.324
+iteration 170, training loss 1.42012, training accuracy 0.64, validation loss 1.85945, validation accuracy 0.3876
+iteration 175, training loss 1.50393, training accuracy 0.58, validation loss 1.82298, validation accuracy 0.39
+iteration 180, training loss 1.36456, training accuracy 0.54, validation loss 1.81713, validation accuracy 0.3712
+iteration 185, training loss 1.38535, training accuracy 0.56, validation loss 1.81695, validation accuracy 0.3616
+iteration 190, training loss 1.37885, training accuracy 0.58, validation loss 1.80983, validation accuracy 0.3544
+iteration 195, training loss 1.16281, training accuracy 0.66, validation loss 1.78938, validation accuracy 0.3684
+iteration 200, training loss 1.25032, training accuracy 0.56, validation loss 1.76756, validation accuracy 0.384
+iteration 205, training loss 1.28565, training accuracy 0.56, validation loss 1.73801, validation accuracy 0.3976
+iteration 210, training loss 1.17037, training accuracy 0.62, validation loss 1.70777, validation accuracy 0.4208
+iteration 215, training loss 0.983122, training accuracy 0.68, validation loss 1.67687, validation accuracy 0.4256
+iteration 220, training loss 1.15568, training accuracy 0.6, validation loss 1.68218, validation accuracy 0.4168
+iteration 225, training loss 0.867233, training accuracy 0.8, validation loss 1.70418, validation accuracy 0.4044
+iteration 230, training loss 1.02668, training accuracy 0.72, validation loss 1.68475, validation accuracy 0.4156
+iteration 235, training loss 1.21051, training accuracy 0.68, validation loss 1.67654, validation accuracy 0.4128
+iteration 240, training loss 1.13979, training accuracy 0.64, validation loss 1.66991, validation accuracy 0.414
+iteration 245, training loss 1.05603, training accuracy 0.68, validation loss 1.66434, validation accuracy 0.4108
+iteration 250, training loss 0.93678, training accuracy 0.76, validation loss 1.62526, validation accuracy 0.4432
+iteration 255, training loss 1.01832, training accuracy 0.74, validation loss 1.61349, validation accuracy 0.45
+iteration 260, training loss 0.971125, training accuracy 0.72, validation loss 1.61051, validation accuracy 0.448
+iteration 265, training loss 0.973738, training accuracy 0.76, validation loss 1.60744, validation accuracy 0.4448
+iteration 270, training loss 0.984179, training accuracy 0.72, validation loss 1.59298, validation accuracy 0.4496
+iteration 275, training loss 0.936391, training accuracy 0.74, validation loss 1.55678, validation accuracy 0.4764
+iteration 280, training loss 0.758896, training accuracy 0.76, validation loss 1.54266, validation accuracy 0.4844
+iteration 285, training loss 0.802006, training accuracy 0.78, validation loss 1.55917, validation accuracy 0.476
+iteration 290, training loss 0.857689, training accuracy 0.74, validation loss 1.59532, validation accuracy 0.442
+iteration 295, training loss 0.8597, training accuracy 0.68, validation loss 1.58499, validation accuracy 0.4568
+iteration 300, training loss 0.920933, training accuracy 0.72, validation loss 1.56756, validation accuracy 0.4532
+iteration 305, training loss 0.759187, training accuracy 0.84, validation loss 1.55358, validation accuracy 0.4576
+iteration 310, training loss 1.05126, training accuracy 0.66, validation loss 1.54138, validation accuracy 0.466
+iteration 315, training loss 0.655798, training accuracy 0.84, validation loss 1.53423, validation accuracy 0.4732
+iteration 320, training loss 0.741951, training accuracy 0.74, validation loss 1.52361, validation accuracy 0.4744
+iteration 325, training loss 0.909817, training accuracy 0.74, validation loss 1.50946, validation accuracy 0.4828
+iteration 330, training loss 0.688368, training accuracy 0.8, validation loss 1.47415, validation accuracy 0.51
+iteration 335, training loss 0.8438, training accuracy 0.76, validation loss 1.46428, validation accuracy 0.5276
+iteration 340, training loss 0.856982, training accuracy 0.8, validation loss 1.46583, validation accuracy 0.5136
+iteration 345, training loss 0.809304, training accuracy 0.76, validation loss 1.48386, validation accuracy 0.5032
+iteration 350, training loss 0.769985, training accuracy 0.76, validation loss 1.49287, validation accuracy 0.4956
+iteration 355, training loss 0.886699, training accuracy 0.72, validation loss 1.49641, validation accuracy 0.4988
+iteration 360, training loss 0.826078, training accuracy 0.74, validation loss 1.50662, validation accuracy 0.4884
+iteration 365, training loss 0.79448, training accuracy 0.74, validation loss 1.52687, validation accuracy 0.472
+iteration 370, training loss 0.807972, training accuracy 0.78, validation loss 1.50509, validation accuracy 0.4836
+iteration 375, training loss 0.737906, training accuracy 0.82, validation loss 1.48985, validation accuracy 0.5084
+iteration 380, training loss 0.699543, training accuracy 0.8, validation loss 1.4671, validation accuracy 0.52
+iteration 385, training loss 0.752564, training accuracy 0.84, validation loss 1.4583, validation accuracy 0.5104
+iteration 390, training loss 0.59672, training accuracy 0.88, validation loss 1.48156, validation accuracy 0.4972
+iteration 395, training loss 0.784985, training accuracy 0.8, validation loss 1.50694, validation accuracy 0.4872
+iteration 400, training loss 0.768847, training accuracy 0.76, validation loss 1.48841, validation accuracy 0.4976
+iteration 405, training loss 0.637072, training accuracy 0.82, validation loss 1.45735, validation accuracy 0.5116
+iteration 410, training loss 0.701414, training accuracy 0.86, validation loss 1.44028, validation accuracy 0.5212
+iteration 415, training loss 0.839844, training accuracy 0.84, validation loss 1.43835, validation accuracy 0.5248
+iteration 420, training loss 0.631348, training accuracy 0.82, validation loss 1.44503, validation accuracy 0.5176
+iteration 425, training loss 0.676629, training accuracy 0.78, validation loss 1.44308, validation accuracy 0.51
+iteration 430, training loss 0.714142, training accuracy 0.8, validation loss 1.43531, validation accuracy 0.518
+iteration 435, training loss 0.879458, training accuracy 0.78, validation loss 1.43688, validation accuracy 0.5252
+iteration 440, training loss 0.716392, training accuracy 0.84, validation loss 1.43128, validation accuracy 0.5336
+iteration 445, training loss 0.584438, training accuracy 0.88, validation loss 1.43806, validation accuracy 0.5248
+iteration 450, training loss 0.864785, training accuracy 0.74, validation loss 1.44585, validation accuracy 0.52
+iteration 455, training loss 0.79699, training accuracy 0.84, validation loss 1.42826, validation accuracy 0.5196
+iteration 460, training loss 0.499885, training accuracy 0.94, validation loss 1.43623, validation accuracy 0.5048
+iteration 465, training loss 0.704255, training accuracy 0.86, validation loss 1.40473, validation accuracy 0.528
+iteration 470, training loss 0.658894, training accuracy 0.84, validation loss 1.38032, validation accuracy 0.5464
+iteration 475, training loss 0.6106, training accuracy 0.8, validation loss 1.3862, validation accuracy 0.5348
+iteration 480, training loss 0.751381, training accuracy 0.82, validation loss 1.40964, validation accuracy 0.514
+iteration 485, training loss 0.789896, training accuracy 0.78, validation loss 1.42415, validation accuracy 0.5064
+iteration 490, training loss 0.751288, training accuracy 0.82, validation loss 1.42158, validation accuracy 0.5036
+iteration 495, training loss 0.619116, training accuracy 0.78, validation loss 1.42722, validation accuracy 0.51
+iteration 500, training loss 0.645483, training accuracy 0.84, validation loss 1.42407, validation accuracy 0.516
+iteration 505, training loss 0.586621, training accuracy 0.82, validation loss 1.41528, validation accuracy 0.5188
+iteration 510, training loss 0.588039, training accuracy 0.84, validation loss 1.39608, validation accuracy 0.53
+iteration 515, training loss 0.517334, training accuracy 0.9, validation loss 1.3669, validation accuracy 0.54
+iteration 520, training loss 0.586153, training accuracy 0.86, validation loss 1.36464, validation accuracy 0.5404
+iteration 525, training loss 0.49531, training accuracy 0.88, validation loss 1.36548, validation accuracy 0.5472
+iteration 530, training loss 0.58113, training accuracy 0.86, validation loss 1.37663, validation accuracy 0.5408
+iteration 535, training loss 0.63467, training accuracy 0.86, validation loss 1.3837, validation accuracy 0.534
+iteration 540, training loss 0.547452, training accuracy 0.82, validation loss 1.36145, validation accuracy 0.5464
+iteration 545, training loss 0.504242, training accuracy 0.88, validation loss 1.35349, validation accuracy 0.5456
+iteration 550, training loss 0.650537, training accuracy 0.8, validation loss 1.39061, validation accuracy 0.5336
+iteration 555, training loss 0.409945, training accuracy 0.9, validation loss 1.39129, validation accuracy 0.5328
+iteration 560, training loss 0.424232, training accuracy 0.88, validation loss 1.36214, validation accuracy 0.5424
+iteration 565, training loss 0.608838, training accuracy 0.84, validation loss 1.36806, validation accuracy 0.5328
+iteration 570, training loss 0.472171, training accuracy 0.88, validation loss 1.35791, validation accuracy 0.5476
+iteration 575, training loss 0.556773, training accuracy 0.86, validation loss 1.3438, validation accuracy 0.5512
+iteration 580, training loss 0.426639, training accuracy 0.9, validation loss 1.33864, validation accuracy 0.5512
+iteration 585, training loss 0.557939, training accuracy 0.84, validation loss 1.35051, validation accuracy 0.5468
+iteration 590, training loss 0.573565, training accuracy 0.86, validation loss 1.36236, validation accuracy 0.5532
+iteration 595, training loss 0.594476, training accuracy 0.84, validation loss 1.38576, validation accuracy 0.5392
+iteration 600, training loss 0.570317, training accuracy 0.84, validation loss 1.42901, validation accuracy 0.5164
+iteration 605, training loss 0.612467, training accuracy 0.8, validation loss 1.40052, validation accuracy 0.5272
+iteration 610, training loss 0.652838, training accuracy 0.78, validation loss 1.35375, validation accuracy 0.5524
+iteration 615, training loss 0.610406, training accuracy 0.84, validation loss 1.33611, validation accuracy 0.546
+iteration 620, training loss 0.504116, training accuracy 0.8, validation loss 1.31991, validation accuracy 0.5504
+iteration 625, training loss 0.405912, training accuracy 0.9, validation loss 1.31061, validation accuracy 0.562
+iteration 630, training loss 0.424418, training accuracy 0.88, validation loss 1.3144, validation accuracy 0.5636
+iteration 635, training loss 0.365998, training accuracy 0.92, validation loss 1.31501, validation accuracy 0.5616
+iteration 640, training loss 0.404293, training accuracy 0.88, validation loss 1.33148, validation accuracy 0.5524
+iteration 645, training loss 0.636455, training accuracy 0.82, validation loss 1.32497, validation accuracy 0.5556
+iteration 650, training loss 0.397331, training accuracy 0.92, validation loss 1.31719, validation accuracy 0.5496
+iteration 655, training loss 0.485654, training accuracy 0.82, validation loss 1.32891, validation accuracy 0.5384
+iteration 660, training loss 0.383938, training accuracy 0.88, validation loss 1.33431, validation accuracy 0.5416
+iteration 665, training loss 0.446575, training accuracy 0.84, validation loss 1.30478, validation accuracy 0.5588
+iteration 670, training loss 0.563463, training accuracy 0.86, validation loss 1.27677, validation accuracy 0.5708
+iteration 675, training loss 0.351926, training accuracy 0.96, validation loss 1.27859, validation accuracy 0.572
+iteration 680, training loss 0.471607, training accuracy 0.88, validation loss 1.2864, validation accuracy 0.5716
+iteration 685, training loss 0.410238, training accuracy 0.92, validation loss 1.31445, validation accuracy 0.5584
+iteration 690, training loss 0.367257, training accuracy 0.98, validation loss 1.34447, validation accuracy 0.5484
+iteration 695, training loss 0.441137, training accuracy 0.9, validation loss 1.33373, validation accuracy 0.5512
+iteration 700, training loss 0.380591, training accuracy 0.94, validation loss 1.32364, validation accuracy 0.552
+iteration 705, training loss 0.535478, training accuracy 0.86, validation loss 1.31929, validation accuracy 0.5504
+iteration 710, training loss 0.414431, training accuracy 0.92, validation loss 1.32544, validation accuracy 0.538
+iteration 715, training loss 0.618811, training accuracy 0.8, validation loss 1.31028, validation accuracy 0.5484
+iteration 720, training loss 0.564265, training accuracy 0.84, validation loss 1.28685, validation accuracy 0.5664
+iteration 725, training loss 0.466611, training accuracy 0.88, validation loss 1.28486, validation accuracy 0.5768
+iteration 730, training loss 0.701951, training accuracy 0.75, validation loss 1.28211, validation accuracy 0.5836
+iteration 735, training loss 0.543488, training accuracy 0.8, validation loss 1.30706, validation accuracy 0.5644
+iteration 740, training loss 0.634254, training accuracy 0.78, validation loss 1.33459, validation accuracy 0.5484
+iteration 745, training loss 0.441815, training accuracy 0.86, validation loss 1.32768, validation accuracy 0.5456
+iteration 750, training loss 0.324649, training accuracy 0.94, validation loss 1.31417, validation accuracy 0.5484
+iteration 755, training loss 0.424212, training accuracy 0.9, validation loss 1.28393, validation accuracy 0.5604
+iteration 760, training loss 0.390042, training accuracy 0.86, validation loss 1.26435, validation accuracy 0.5736
+iteration 765, training loss 0.468188, training accuracy 0.88, validation loss 1.25952, validation accuracy 0.578
+iteration 770, training loss 0.324959, training accuracy 0.92, validation loss 1.22932, validation accuracy 0.5952
+iteration 775, training loss 0.59221, training accuracy 0.82, validation loss 1.21835, validation accuracy 0.5984
+iteration 780, training loss 0.360315, training accuracy 0.88, validation loss 1.22198, validation accuracy 0.592
+iteration 785, training loss 0.315354, training accuracy 0.92, validation loss 1.22216, validation accuracy 0.5972
+iteration 790, training loss 0.353685, training accuracy 0.92, validation loss 1.23498, validation accuracy 0.5996
+iteration 795, training loss 0.468288, training accuracy 0.82, validation loss 1.26774, validation accuracy 0.5808
+iteration 800, training loss 0.499704, training accuracy 0.96, validation loss 1.28172, validation accuracy 0.5712
+iteration 805, training loss 0.312852, training accuracy 0.98, validation loss 1.2884, validation accuracy 0.5644
+iteration 810, training loss 0.470076, training accuracy 0.88, validation loss 1.29369, validation accuracy 0.5664
+iteration 815, training loss 0.452467, training accuracy 0.9, validation loss 1.29722, validation accuracy 0.5508
+iteration 820, training loss 0.280178, training accuracy 0.94, validation loss 1.27036, validation accuracy 0.56
+iteration 825, training loss 0.429873, training accuracy 0.86, validation loss 1.23187, validation accuracy 0.592
+iteration 830, training loss 0.441632, training accuracy 0.9, validation loss 1.2215, validation accuracy 0.6004
+iteration 835, training loss 0.642759, training accuracy 0.8, validation loss 1.22648, validation accuracy 0.5928
+iteration 840, training loss 0.355844, training accuracy 0.88, validation loss 1.23127, validation accuracy 0.5964
+iteration 845, training loss 0.421932, training accuracy 0.86, validation loss 1.22457, validation accuracy 0.6008
+iteration 850, training loss 0.369037, training accuracy 0.92, validation loss 1.22641, validation accuracy 0.5916
+iteration 855, training loss 0.429086, training accuracy 0.88, validation loss 1.23911, validation accuracy 0.5816
+iteration 860, training loss 0.309757, training accuracy 0.94, validation loss 1.2551, validation accuracy 0.5788
+iteration 865, training loss 0.455718, training accuracy 0.9, validation loss 1.28276, validation accuracy 0.5676
+iteration 870, training loss 0.416315, training accuracy 0.86, validation loss 1.27566, validation accuracy 0.572
+iteration 875, training loss 0.507635, training accuracy 0.84, validation loss 1.25604, validation accuracy 0.5896
+iteration 880, training loss 0.286206, training accuracy 0.94, validation loss 1.25004, validation accuracy 0.5888
+iteration 885, training loss 0.381464, training accuracy 0.92, validation loss 1.23884, validation accuracy 0.5844
+iteration 890, training loss 0.263408, training accuracy 0.98, validation loss 1.23228, validation accuracy 0.5924
+iteration 895, training loss 0.400562, training accuracy 0.9, validation loss 1.22463, validation accuracy 0.6052
+iteration 900, training loss 0.363093, training accuracy 0.9, validation loss 1.23882, validation accuracy 0.5884
+iteration 905, training loss 0.389178, training accuracy 0.9, validation loss 1.25861, validation accuracy 0.5752
+iteration 910, training loss 0.314419, training accuracy 0.92, validation loss 1.28392, validation accuracy 0.5632
+iteration 915, training loss 0.464849, training accuracy 0.92, validation loss 1.26455, validation accuracy 0.5688
+iteration 920, training loss 0.508905, training accuracy 0.88, validation loss 1.24892, validation accuracy 0.5752
+iteration 925, training loss 0.312995, training accuracy 0.92, validation loss 1.24351, validation accuracy 0.5824
+iteration 930, training loss 0.408049, training accuracy 0.92, validation loss 1.24174, validation accuracy 0.5836
+iteration 935, training loss 0.332839, training accuracy 0.92, validation loss 1.24974, validation accuracy 0.5808
+iteration 940, training loss 0.274072, training accuracy 0.94, validation loss 1.25717, validation accuracy 0.5772
+iteration 945, training loss 0.320272, training accuracy 0.92, validation loss 1.27981, validation accuracy 0.5652
+iteration 950, training loss 0.383617, training accuracy 0.88, validation loss 1.26944, validation accuracy 0.5712
+iteration 955, training loss 0.337166, training accuracy 0.94, validation loss 1.24178, validation accuracy 0.576
+iteration 960, training loss 0.403638, training accuracy 0.86, validation loss 1.22532, validation accuracy 0.5888
+iteration 965, training loss 0.318549, training accuracy 0.98, validation loss 1.22646, validation accuracy 0.6016
+iteration 970, training loss 0.332847, training accuracy 0.92, validation loss 1.25127, validation accuracy 0.5952
+iteration 975, training loss 0.260839, training accuracy 0.94, validation loss 1.23323, validation accuracy 0.6008
+iteration 980, training loss 0.351527, training accuracy 0.88, validation loss 1.22894, validation accuracy 0.59
+iteration 985, training loss 0.406519, training accuracy 0.9, validation loss 1.22459, validation accuracy 0.5852
+iteration 990, training loss 0.44447, training accuracy 0.88, validation loss 1.19936, validation accuracy 0.596
+iteration 995, training loss 0.502235, training accuracy 0.92, validation loss 1.20951, validation accuracy 0.606
+Computing t-SNE embedding
+test loss 1.21621, test accuracy 0.6008
+./train/run_2017-11-30_07-13-51
+Computing t-SNE embedding
+Computing t-SNE embedding
+iteration 0, training loss 2.30244, training accuracy 0.22, validation loss 2.30256, validation accuracy 0.1132
+iteration 5, training loss 2.30361, training accuracy 0.1, validation loss 2.30229, validation accuracy 0.1132
+iteration 10, training loss 2.30261, training accuracy 0.06, validation loss 2.30222, validation accuracy 0.1132
+iteration 15, training loss 2.29871, training accuracy 0.22, validation loss 2.30205, validation accuracy 0.1132
+iteration 20, training loss 2.30054, training accuracy 0.1, validation loss 2.30187, validation accuracy 0.1132
+iteration 25, training loss 2.29863, training accuracy 0.12, validation loss 2.30162, validation accuracy 0.1132
+iteration 30, training loss 2.30359, training accuracy 0.1, validation loss 2.30131, validation accuracy 0.1132
+iteration 35, training loss 2.3003, training accuracy 0.12, validation loss 2.30116, validation accuracy 0.1132
+iteration 40, training loss 2.29575, training accuracy 0.18, validation loss 2.30116, validation accuracy 0.1132
+iteration 45, training loss 2.29776, training accuracy 0.14, validation loss 2.30092, validation accuracy 0.1132
+iteration 50, training loss 2.30721, training accuracy 0.02, validation loss 2.30065, validation accuracy 0.1132
+iteration 55, training loss 2.30341, training accuracy 0.04, validation loss 2.30064, validation accuracy 0.1132
+iteration 60, training loss 2.28865, training accuracy 0.18, validation loss 2.30066, validation accuracy 0.1132
+iteration 65, training loss 2.29601, training accuracy 0.16, validation loss 2.30019, validation accuracy 0.1132
+iteration 70, training loss 2.31336, training accuracy 0.08, validation loss 2.29979, validation accuracy 0.1132
+iteration 75, training loss 2.30792, training accuracy 0.08, validation loss 2.29959, validation accuracy 0.1132
+iteration 80, training loss 2.30412, training accuracy 0.08, validation loss 2.2994, validation accuracy 0.1132
+iteration 85, training loss 2.29671, training accuracy 0.12, validation loss 2.29892, validation accuracy 0.1132
+iteration 90, training loss 2.28998, training accuracy 0.18, validation loss 2.29846, validation accuracy 0.1132
+iteration 95, training loss 2.29126, training accuracy 0.16, validation loss 2.29758, validation accuracy 0.1132
+iteration 100, training loss 2.30224, training accuracy 0.12, validation loss 2.29594, validation accuracy 0.1132
+iteration 105, training loss 2.32472, training accuracy 0.04, validation loss 2.2942, validation accuracy 0.1132
+iteration 110, training loss 2.28622, training accuracy 0.1, validation loss 2.29246, validation accuracy 0.1132
+iteration 115, training loss 2.29163, training accuracy 0.1, validation loss 2.29369, validation accuracy 0.1132
+iteration 120, training loss 2.27489, training accuracy 0.06, validation loss 2.28881, validation accuracy 0.1132
+iteration 125, training loss 2.22574, training accuracy 0.12, validation loss 2.2834, validation accuracy 0.1132
+iteration 130, training loss 2.24679, training accuracy 0.12, validation loss 2.28441, validation accuracy 0.1236
+iteration 135, training loss 2.15374, training accuracy 0.3, validation loss 2.28512, validation accuracy 0.1932
+iteration 140, training loss 2.1935, training accuracy 0.28, validation loss 2.28288, validation accuracy 0.1384
+iteration 145, training loss 2.13355, training accuracy 0.18, validation loss 2.26342, validation accuracy 0.13
+iteration 150, training loss 2.13227, training accuracy 0.18, validation loss 2.24512, validation accuracy 0.1416
+iteration 155, training loss 2.01256, training accuracy 0.32, validation loss 2.2322, validation accuracy 0.1612
+iteration 160, training loss 2.01664, training accuracy 0.28, validation loss 2.1951, validation accuracy 0.188
+iteration 165, training loss 1.81488, training accuracy 0.48, validation loss 2.1515, validation accuracy 0.2484
+iteration 170, training loss 1.66491, training accuracy 0.62, validation loss 2.1053, validation accuracy 0.2432
+iteration 175, training loss 1.62803, training accuracy 0.56, validation loss 2.07389, validation accuracy 0.258
+iteration 180, training loss 1.63653, training accuracy 0.48, validation loss 2.13379, validation accuracy 0.2532
+iteration 185, training loss 1.42508, training accuracy 0.56, validation loss 2.10079, validation accuracy 0.2948
+iteration 190, training loss 1.6715, training accuracy 0.42, validation loss 2.0898, validation accuracy 0.29
+iteration 195, training loss 1.37869, training accuracy 0.56, validation loss 2.02467, validation accuracy 0.2936
+iteration 200, training loss 1.2732, training accuracy 0.56, validation loss 2.19261, validation accuracy 0.262
+iteration 205, training loss 1.49996, training accuracy 0.56, validation loss 2.20656, validation accuracy 0.2744
+iteration 210, training loss 1.14809, training accuracy 0.62, validation loss 2.08229, validation accuracy 0.2928
+iteration 215, training loss 1.18497, training accuracy 0.62, validation loss 1.98051, validation accuracy 0.3176
+iteration 220, training loss 1.29713, training accuracy 0.58, validation loss 2.07358, validation accuracy 0.298
+iteration 225, training loss 1.12439, training accuracy 0.68, validation loss 2.14266, validation accuracy 0.2976
+iteration 230, training loss 1.09026, training accuracy 0.74, validation loss 2.17519, validation accuracy 0.2996
+iteration 235, training loss 1.30842, training accuracy 0.58, validation loss 2.17755, validation accuracy 0.3156
+iteration 240, training loss 1.18292, training accuracy 0.6, validation loss 2.18253, validation accuracy 0.2984
+iteration 245, training loss 1.01658, training accuracy 0.68, validation loss 2.18911, validation accuracy 0.3088
+iteration 250, training loss 1.17989, training accuracy 0.62, validation loss 2.22856, validation accuracy 0.322
+iteration 255, training loss 1.06671, training accuracy 0.66, validation loss 2.12868, validation accuracy 0.3336
+iteration 260, training loss 1.08125, training accuracy 0.7, validation loss 2.17134, validation accuracy 0.3304
+iteration 265, training loss 1.17473, training accuracy 0.72, validation loss 2.23222, validation accuracy 0.32
+iteration 270, training loss 0.964262, training accuracy 0.68, validation loss 2.19271, validation accuracy 0.3096
+iteration 275, training loss 0.957222, training accuracy 0.7, validation loss 2.18055, validation accuracy 0.3104
+iteration 280, training loss 1.15799, training accuracy 0.52, validation loss 2.13688, validation accuracy 0.3372
+iteration 285, training loss 1.01376, training accuracy 0.7, validation loss 2.16934, validation accuracy 0.3356
+iteration 290, training loss 0.968264, training accuracy 0.7, validation loss 2.2756, validation accuracy 0.32
+iteration 295, training loss 1.20117, training accuracy 0.68, validation loss 2.13891, validation accuracy 0.334
+iteration 300, training loss 1.04227, training accuracy 0.56, validation loss 1.971, validation accuracy 0.3556
+iteration 305, training loss 1.08277, training accuracy 0.6, validation loss 2.08392, validation accuracy 0.3496
+iteration 310, training loss 0.967546, training accuracy 0.66, validation loss 2.27922, validation accuracy 0.3204
+iteration 315, training loss 0.992127, training accuracy 0.72, validation loss 2.39079, validation accuracy 0.3136
+iteration 320, training loss 1.07649, training accuracy 0.62, validation loss 2.21723, validation accuracy 0.3336
+iteration 325, training loss 0.998344, training accuracy 0.62, validation loss 2.16249, validation accuracy 0.3412
+iteration 330, training loss 0.77616, training accuracy 0.72, validation loss 2.22811, validation accuracy 0.3424
+iteration 335, training loss 0.759634, training accuracy 0.76, validation loss 2.23261, validation accuracy 0.3376
+iteration 340, training loss 0.953756, training accuracy 0.7, validation loss 2.21322, validation accuracy 0.3236
+iteration 345, training loss 1.01977, training accuracy 0.72, validation loss 2.15893, validation accuracy 0.3332
+iteration 350, training loss 1.08706, training accuracy 0.56, validation loss 2.13691, validation accuracy 0.3524
+iteration 355, training loss 0.885855, training accuracy 0.62, validation loss 2.18172, validation accuracy 0.3492
+iteration 360, training loss 0.724767, training accuracy 0.8, validation loss 2.19074, validation accuracy 0.356
+iteration 365, training loss 0.661195, training accuracy 0.82, validation loss 2.28034, validation accuracy 0.3432
+iteration 370, training loss 0.732569, training accuracy 0.8, validation loss 2.23899, validation accuracy 0.3412
+iteration 375, training loss 0.78664, training accuracy 0.8, validation loss 2.13978, validation accuracy 0.358
+iteration 380, training loss 1.06896, training accuracy 0.6, validation loss 2.14046, validation accuracy 0.3692
+iteration 385, training loss 0.861589, training accuracy 0.7, validation loss 2.25742, validation accuracy 0.3484
+iteration 390, training loss 1.01148, training accuracy 0.64, validation loss 2.37827, validation accuracy 0.3368
+iteration 395, training loss 0.729954, training accuracy 0.74, validation loss 2.34599, validation accuracy 0.3368
+iteration 400, training loss 0.797812, training accuracy 0.7, validation loss 2.3206, validation accuracy 0.3464
+iteration 405, training loss 0.661805, training accuracy 0.8, validation loss 2.22501, validation accuracy 0.3596
+iteration 410, training loss 0.929058, training accuracy 0.7, validation loss 2.15248, validation accuracy 0.3692
+iteration 415, training loss 0.752609, training accuracy 0.78, validation loss 2.24048, validation accuracy 0.3596
+iteration 420, training loss 0.739851, training accuracy 0.8, validation loss 2.43759, validation accuracy 0.3436
+iteration 425, training loss 0.79845, training accuracy 0.78, validation loss 2.33402, validation accuracy 0.3524
+iteration 430, training loss 0.823628, training accuracy 0.68, validation loss 2.29028, validation accuracy 0.3516
+iteration 435, training loss 0.866512, training accuracy 0.68, validation loss 2.13008, validation accuracy 0.3648
+iteration 440, training loss 0.718332, training accuracy 0.74, validation loss 2.06847, validation accuracy 0.376
+iteration 445, training loss 0.770935, training accuracy 0.8, validation loss 2.18766, validation accuracy 0.3592
+iteration 450, training loss 0.682287, training accuracy 0.82, validation loss 2.35824, validation accuracy 0.3468
+iteration 455, training loss 0.572289, training accuracy 0.82, validation loss 2.35015, validation accuracy 0.35
+iteration 460, training loss 0.817062, training accuracy 0.76, validation loss 2.28751, validation accuracy 0.354
+iteration 465, training loss 0.675461, training accuracy 0.86, validation loss 2.09099, validation accuracy 0.3836
+iteration 470, training loss 0.781105, training accuracy 0.72, validation loss 2.01106, validation accuracy 0.3916
+iteration 475, training loss 0.848733, training accuracy 0.72, validation loss 2.10152, validation accuracy 0.386
+iteration 480, training loss 0.698353, training accuracy 0.78, validation loss 2.16048, validation accuracy 0.3748
+iteration 485, training loss 0.67106, training accuracy 0.74, validation loss 2.1564, validation accuracy 0.3708
+iteration 490, training loss 0.651979, training accuracy 0.78, validation loss 2.20701, validation accuracy 0.3616
+iteration 495, training loss 0.580325, training accuracy 0.8, validation loss 2.30482, validation accuracy 0.354
+iteration 500, training loss 0.738185, training accuracy 0.8, validation loss 2.29725, validation accuracy 0.364
+iteration 505, training loss 0.963722, training accuracy 0.64, validation loss 2.29643, validation accuracy 0.3728
+iteration 510, training loss 0.877629, training accuracy 0.7, validation loss 2.28296, validation accuracy 0.3772
+iteration 515, training loss 0.973362, training accuracy 0.68, validation loss 2.3037, validation accuracy 0.3608
+iteration 520, training loss 0.898633, training accuracy 0.64, validation loss 2.28753, validation accuracy 0.3692
+iteration 525, training loss 0.782588, training accuracy 0.72, validation loss 2.15404, validation accuracy 0.3768
+iteration 530, training loss 0.879113, training accuracy 0.66, validation loss 2.19953, validation accuracy 0.364
+iteration 535, training loss 0.869621, training accuracy 0.68, validation loss 2.2883, validation accuracy 0.3516
+iteration 540, training loss 0.932678, training accuracy 0.74, validation loss 2.28418, validation accuracy 0.3544
+iteration 545, training loss 0.52491, training accuracy 0.86, validation loss 2.14364, validation accuracy 0.3736
+iteration 550, training loss 0.549993, training accuracy 0.86, validation loss 2.1359, validation accuracy 0.3848
+iteration 555, training loss 0.723044, training accuracy 0.76, validation loss 2.27158, validation accuracy 0.3716
+iteration 560, training loss 0.922761, training accuracy 0.7, validation loss 2.35694, validation accuracy 0.3596
+iteration 565, training loss 0.678271, training accuracy 0.78, validation loss 2.35666, validation accuracy 0.3592
+iteration 570, training loss 0.89308, training accuracy 0.72, validation loss 2.33223, validation accuracy 0.3656
+iteration 575, training loss 0.867911, training accuracy 0.78, validation loss 2.19495, validation accuracy 0.3752
+iteration 580, training loss 0.652876, training accuracy 0.76, validation loss 2.13293, validation accuracy 0.374
+iteration 585, training loss 0.636085, training accuracy 0.75, validation loss 2.21698, validation accuracy 0.3696
+iteration 590, training loss 0.779183, training accuracy 0.74, validation loss 2.38096, validation accuracy 0.358
+iteration 595, training loss 0.505685, training accuracy 0.88, validation loss 2.28712, validation accuracy 0.362
+iteration 600, training loss 0.650325, training accuracy 0.86, validation loss 2.15043, validation accuracy 0.374
+iteration 605, training loss 0.791249, training accuracy 0.72, validation loss 2.09667, validation accuracy 0.3888
+iteration 610, training loss 0.923898, training accuracy 0.76, validation loss 2.08917, validation accuracy 0.39
+iteration 615, training loss 0.589996, training accuracy 0.76, validation loss 2.08549, validation accuracy 0.3888
+iteration 620, training loss 0.834082, training accuracy 0.72, validation loss 2.16418, validation accuracy 0.3772
+iteration 625, training loss 0.705322, training accuracy 0.76, validation loss 2.21321, validation accuracy 0.3724
+iteration 630, training loss 0.761527, training accuracy 0.76, validation loss 2.21285, validation accuracy 0.3728
+iteration 635, training loss 0.511841, training accuracy 0.86, validation loss 2.19472, validation accuracy 0.3744
+iteration 640, training loss 0.671361, training accuracy 0.86, validation loss 2.1545, validation accuracy 0.3772
+iteration 645, training loss 0.732559, training accuracy 0.78, validation loss 2.08176, validation accuracy 0.3892
+iteration 650, training loss 0.782309, training accuracy 0.7, validation loss 2.07671, validation accuracy 0.4012
+iteration 655, training loss 0.761712, training accuracy 0.82, validation loss 2.1475, validation accuracy 0.3964
+iteration 660, training loss 0.675295, training accuracy 0.72, validation loss 2.26579, validation accuracy 0.3808
+iteration 665, training loss 0.583612, training accuracy 0.82, validation loss 2.34669, validation accuracy 0.3684
+iteration 670, training loss 0.550983, training accuracy 0.8, validation loss 2.30588, validation accuracy 0.3692
+iteration 675, training loss 0.776517, training accuracy 0.72, validation loss 2.21501, validation accuracy 0.3776
+iteration 680, training loss 0.566059, training accuracy 0.84, validation loss 2.10072, validation accuracy 0.392
+iteration 685, training loss 0.669159, training accuracy 0.76, validation loss 2.09908, validation accuracy 0.3988
+iteration 690, training loss 0.53767, training accuracy 0.86, validation loss 2.08342, validation accuracy 0.4008
+iteration 695, training loss 0.739744, training accuracy 0.82, validation loss 2.07437, validation accuracy 0.3984
+iteration 700, training loss 0.463315, training accuracy 0.9, validation loss 2.08979, validation accuracy 0.398
+iteration 705, training loss 0.618186, training accuracy 0.78, validation loss 2.15705, validation accuracy 0.39
+iteration 710, training loss 0.465129, training accuracy 0.82, validation loss 2.24206, validation accuracy 0.3832
+iteration 715, training loss 0.625994, training accuracy 0.8, validation loss 2.23766, validation accuracy 0.3848
+iteration 720, training loss 0.457778, training accuracy 0.9, validation loss 2.18962, validation accuracy 0.392
+iteration 725, training loss 0.843438, training accuracy 0.76, validation loss 2.08549, validation accuracy 0.3996
+iteration 730, training loss 0.415041, training accuracy 0.82, validation loss 1.97811, validation accuracy 0.4108
+iteration 735, training loss 0.589536, training accuracy 0.78, validation loss 2.01764, validation accuracy 0.41
+iteration 740, training loss 0.52602, training accuracy 0.8, validation loss 2.1424, validation accuracy 0.3928
+iteration 745, training loss 0.442357, training accuracy 0.86, validation loss 2.20979, validation accuracy 0.3808
+iteration 750, training loss 0.565452, training accuracy 0.82, validation loss 2.08621, validation accuracy 0.3924
+iteration 755, training loss 0.657348, training accuracy 0.78, validation loss 1.96832, validation accuracy 0.4096
+iteration 760, training loss 0.544389, training accuracy 0.82, validation loss 1.90427, validation accuracy 0.4196
+iteration 765, training loss 0.591223, training accuracy 0.84, validation loss 1.96912, validation accuracy 0.4088
+iteration 770, training loss 0.443463, training accuracy 0.92, validation loss 2.14749, validation accuracy 0.3864
+iteration 775, training loss 0.679879, training accuracy 0.82, validation loss 2.22147, validation accuracy 0.3848
+iteration 780, training loss 0.472724, training accuracy 0.88, validation loss 2.26143, validation accuracy 0.3736
+iteration 785, training loss 0.602884, training accuracy 0.8, validation loss 2.12623, validation accuracy 0.3944
+iteration 790, training loss 0.585186, training accuracy 0.82, validation loss 2.02477, validation accuracy 0.4112
+iteration 795, training loss 0.702455, training accuracy 0.8, validation loss 1.99899, validation accuracy 0.4192
+iteration 800, training loss 0.621837, training accuracy 0.9, validation loss 2.01253, validation accuracy 0.4144
+iteration 805, training loss 0.716007, training accuracy 0.72, validation loss 2.08955, validation accuracy 0.4036
+iteration 810, training loss 0.425422, training accuracy 0.92, validation loss 2.09281, validation accuracy 0.412
+iteration 815, training loss 0.758456, training accuracy 0.76, validation loss 2.06451, validation accuracy 0.4208
+iteration 820, training loss 0.46597, training accuracy 0.88, validation loss 2.05816, validation accuracy 0.4136
+iteration 825, training loss 0.564403, training accuracy 0.86, validation loss 2.10102, validation accuracy 0.404
+iteration 830, training loss 0.639616, training accuracy 0.86, validation loss 2.09587, validation accuracy 0.4088
+iteration 835, training loss 0.623888, training accuracy 0.82, validation loss 2.02667, validation accuracy 0.4224
+iteration 840, training loss 0.412983, training accuracy 0.84, validation loss 1.92585, validation accuracy 0.4348
+iteration 845, training loss 0.547698, training accuracy 0.9, validation loss 1.88642, validation accuracy 0.4376
+iteration 850, training loss 0.475765, training accuracy 0.9, validation loss 1.86593, validation accuracy 0.4324
+iteration 855, training loss 0.453645, training accuracy 0.82, validation loss 1.89171, validation accuracy 0.4292
+iteration 860, training loss 0.402842, training accuracy 0.86, validation loss 2.0305, validation accuracy 0.4148
+iteration 865, training loss 0.529895, training accuracy 0.86, validation loss 2.20213, validation accuracy 0.3928
+iteration 870, training loss 0.500827, training accuracy 0.84, validation loss 2.10088, validation accuracy 0.4084
+iteration 875, training loss 0.690577, training accuracy 0.84, validation loss 1.98661, validation accuracy 0.4276
+iteration 880, training loss 0.456251, training accuracy 0.82, validation loss 1.89199, validation accuracy 0.4388
+iteration 885, training loss 0.530506, training accuracy 0.84, validation loss 1.92813, validation accuracy 0.4344
+iteration 890, training loss 0.43433, training accuracy 0.86, validation loss 1.9716, validation accuracy 0.4336
+iteration 895, training loss 0.45096, training accuracy 0.88, validation loss 2.05545, validation accuracy 0.426
+iteration 900, training loss 0.684474, training accuracy 0.82, validation loss 2.14289, validation accuracy 0.414
+iteration 905, training loss 0.372415, training accuracy 0.9, validation loss 2.08428, validation accuracy 0.4136
+iteration 910, training loss 0.690416, training accuracy 0.92, validation loss 1.94133, validation accuracy 0.4276
+iteration 915, training loss 0.652192, training accuracy 0.82, validation loss 1.89479, validation accuracy 0.434
+iteration 920, training loss 0.779344, training accuracy 0.78, validation loss 1.88924, validation accuracy 0.4392
+iteration 925, training loss 0.391225, training accuracy 0.86, validation loss 1.89029, validation accuracy 0.44
+iteration 930, training loss 0.403931, training accuracy 0.86, validation loss 1.96835, validation accuracy 0.4236
+iteration 935, training loss 0.394189, training accuracy 0.86, validation loss 2.02689, validation accuracy 0.4136
+iteration 940, training loss 0.326061, training accuracy 0.9, validation loss 1.97719, validation accuracy 0.426
+iteration 945, training loss 0.666928, training accuracy 0.84, validation loss 1.89106, validation accuracy 0.446
+iteration 950, training loss 0.335098, training accuracy 0.9, validation loss 1.87742, validation accuracy 0.454
+iteration 955, training loss 0.480886, training accuracy 0.84, validation loss 1.95022, validation accuracy 0.4444
+iteration 960, training loss 0.371134, training accuracy 0.84, validation loss 2.06488, validation accuracy 0.4276
+iteration 965, training loss 0.543593, training accuracy 0.82, validation loss 2.03783, validation accuracy 0.4292
+iteration 970, training loss 0.548091, training accuracy 0.82, validation loss 1.95069, validation accuracy 0.44
+iteration 975, training loss 0.468026, training accuracy 0.88, validation loss 1.98747, validation accuracy 0.436
+iteration 980, training loss 0.508478, training accuracy 0.84, validation loss 2.03461, validation accuracy 0.4252
+iteration 985, training loss 0.39389, training accuracy 0.84, validation loss 2.03734, validation accuracy 0.4184
+iteration 990, training loss 0.684405, training accuracy 0.86, validation loss 1.95548, validation accuracy 0.4236
+iteration 995, training loss 0.413482, training accuracy 0.88, validation loss 1.96823, validation accuracy 0.432
+iteration 1000, training loss 0.360012, training accuracy 0.86, validation loss 1.99615, validation accuracy 0.4288
+iteration 1005, training loss 0.387498, training accuracy 0.9, validation loss 1.95826, validation accuracy 0.4376
+iteration 1010, training loss 0.359806, training accuracy 0.86, validation loss 1.88002, validation accuracy 0.4544
+iteration 1015, training loss 0.411728, training accuracy 0.86, validation loss 1.83825, validation accuracy 0.4624
+iteration 1020, training loss 0.718918, training accuracy 0.8, validation loss 1.81015, validation accuracy 0.4744
+iteration 1025, training loss 0.451246, training accuracy 0.88, validation loss 1.8135, validation accuracy 0.4704
+iteration 1030, training loss 0.502048, training accuracy 0.78, validation loss 1.88937, validation accuracy 0.4576
+iteration 1035, training loss 0.488323, training accuracy 0.8, validation loss 1.93959, validation accuracy 0.446
+iteration 1040, training loss 0.542716, training accuracy 0.8, validation loss 1.92261, validation accuracy 0.4456
+iteration 1045, training loss 0.399079, training accuracy 0.86, validation loss 1.87524, validation accuracy 0.4548
+iteration 1050, training loss 0.440752, training accuracy 0.88, validation loss 1.888, validation accuracy 0.4476
+iteration 1055, training loss 0.425521, training accuracy 0.86, validation loss 1.96626, validation accuracy 0.4388
+iteration 1060, training loss 0.579299, training accuracy 0.82, validation loss 1.9782, validation accuracy 0.4352
+iteration 1065, training loss 0.427618, training accuracy 0.86, validation loss 1.9665, validation accuracy 0.4332
+iteration 1070, training loss 0.543203, training accuracy 0.8, validation loss 1.89187, validation accuracy 0.4452
+iteration 1075, training loss 0.28029, training accuracy 0.96, validation loss 1.82749, validation accuracy 0.4472
+iteration 1080, training loss 0.418633, training accuracy 0.9, validation loss 1.7773, validation accuracy 0.456
+iteration 1085, training loss 0.41536, training accuracy 0.88, validation loss 1.76593, validation accuracy 0.4608
+iteration 1090, training loss 0.468916, training accuracy 0.8, validation loss 1.79767, validation accuracy 0.4644
+iteration 1095, training loss 0.492408, training accuracy 0.9, validation loss 1.80976, validation accuracy 0.4644
+iteration 1100, training loss 0.455563, training accuracy 0.9, validation loss 1.80002, validation accuracy 0.4628
+iteration 1105, training loss 0.399704, training accuracy 0.84, validation loss 1.83243, validation accuracy 0.4592
+iteration 1110, training loss 0.489141, training accuracy 0.84, validation loss 1.81367, validation accuracy 0.4656
+iteration 1115, training loss 0.383158, training accuracy 0.88, validation loss 1.83141, validation accuracy 0.4628
+iteration 1120, training loss 0.477608, training accuracy 0.82, validation loss 1.89031, validation accuracy 0.4496
+iteration 1125, training loss 0.288052, training accuracy 0.92, validation loss 1.91834, validation accuracy 0.4456
+iteration 1130, training loss 0.355491, training accuracy 0.88, validation loss 1.8798, validation accuracy 0.4552
+iteration 1135, training loss 0.258151, training accuracy 0.96, validation loss 1.90609, validation accuracy 0.4532
+iteration 1140, training loss 0.335476, training accuracy 0.92, validation loss 1.90962, validation accuracy 0.4488
+iteration 1145, training loss 0.413431, training accuracy 0.9, validation loss 1.86916, validation accuracy 0.4604
+iteration 1150, training loss 0.301461, training accuracy 0.9, validation loss 1.80353, validation accuracy 0.4716
+iteration 1155, training loss 0.521647, training accuracy 0.84, validation loss 1.70129, validation accuracy 0.4928
+iteration 1160, training loss 0.352573, training accuracy 0.88, validation loss 1.79195, validation accuracy 0.4688
+iteration 1165, training loss 0.555583, training accuracy 0.82, validation loss 1.92164, validation accuracy 0.4444
+iteration 1170, training loss 0.379036, training accuracy 0.9, validation loss 1.96465, validation accuracy 0.4448
+iteration 1175, training loss 0.476496, training accuracy 0.86, validation loss 1.82432, validation accuracy 0.468
+iteration 1180, training loss 0.635034, training accuracy 0.8, validation loss 1.75125, validation accuracy 0.4732
+iteration 1185, training loss 0.360075, training accuracy 0.94, validation loss 1.72766, validation accuracy 0.4828
+iteration 1190, training loss 0.411511, training accuracy 0.88, validation loss 1.71988, validation accuracy 0.4832
+iteration 1195, training loss 0.417063, training accuracy 0.88, validation loss 1.73023, validation accuracy 0.4796
+iteration 1200, training loss 0.563396, training accuracy 0.84, validation loss 1.7609, validation accuracy 0.4732
+iteration 1205, training loss 0.338795, training accuracy 0.9, validation loss 1.71503, validation accuracy 0.484
+iteration 1210, training loss 0.446561, training accuracy 0.86, validation loss 1.7293, validation accuracy 0.4776
+iteration 1215, training loss 0.270538, training accuracy 0.94, validation loss 1.73885, validation accuracy 0.476
+iteration 1220, training loss 0.376244, training accuracy 0.84, validation loss 1.73602, validation accuracy 0.476
+iteration 1225, training loss 0.583436, training accuracy 0.9, validation loss 1.76681, validation accuracy 0.4736
+iteration 1230, training loss 0.195897, training accuracy 0.92, validation loss 1.78335, validation accuracy 0.4716
+iteration 1235, training loss 0.424535, training accuracy 0.94, validation loss 1.74918, validation accuracy 0.48
+iteration 1240, training loss 0.338323, training accuracy 0.92, validation loss 1.72654, validation accuracy 0.4828
+iteration 1245, training loss 0.226274, training accuracy 0.9, validation loss 1.70527, validation accuracy 0.4872
+iteration 1250, training loss 0.332015, training accuracy 0.9, validation loss 1.75391, validation accuracy 0.4788
+iteration 1255, training loss 0.291558, training accuracy 0.92, validation loss 1.78748, validation accuracy 0.4756
+iteration 1260, training loss 0.342731, training accuracy 0.88, validation loss 1.77552, validation accuracy 0.4824
+iteration 1265, training loss 0.24713, training accuracy 0.94, validation loss 1.73716, validation accuracy 0.4912
+iteration 1270, training loss 0.182789, training accuracy 0.96, validation loss 1.7856, validation accuracy 0.4804
+iteration 1275, training loss 0.323749, training accuracy 0.86, validation loss 1.78889, validation accuracy 0.4784
+iteration 1280, training loss 0.341456, training accuracy 0.9, validation loss 1.8608, validation accuracy 0.4656
+iteration 1285, training loss 0.367151, training accuracy 0.86, validation loss 1.90323, validation accuracy 0.4584
+iteration 1290, training loss 0.31408, training accuracy 0.92, validation loss 1.89383, validation accuracy 0.452
+iteration 1295, training loss 0.225304, training accuracy 0.96, validation loss 1.81576, validation accuracy 0.4592
+iteration 1300, training loss 0.446705, training accuracy 0.82, validation loss 1.79753, validation accuracy 0.4708
+iteration 1305, training loss 0.264643, training accuracy 0.94, validation loss 1.75361, validation accuracy 0.4804
+iteration 1310, training loss 0.282933, training accuracy 0.94, validation loss 1.66954, validation accuracy 0.4984
+iteration 1315, training loss 0.404839, training accuracy 0.88, validation loss 1.67036, validation accuracy 0.5024
+iteration 1320, training loss 0.315372, training accuracy 0.88, validation loss 1.70606, validation accuracy 0.498
+iteration 1325, training loss 0.315788, training accuracy 0.88, validation loss 1.73338, validation accuracy 0.4892
+iteration 1330, training loss 0.427029, training accuracy 0.84, validation loss 1.73499, validation accuracy 0.4964
+iteration 1335, training loss 0.428767, training accuracy 0.88, validation loss 1.738, validation accuracy 0.4864
+iteration 1340, training loss 0.372063, training accuracy 0.86, validation loss 1.77996, validation accuracy 0.472
+iteration 1345, training loss 0.284454, training accuracy 0.96, validation loss 1.8176, validation accuracy 0.4716
+iteration 1350, training loss 0.215787, training accuracy 0.96, validation loss 1.84424, validation accuracy 0.468
+iteration 1355, training loss 0.346433, training accuracy 0.88, validation loss 1.82046, validation accuracy 0.4676
+iteration 1360, training loss 0.223311, training accuracy 0.96, validation loss 1.75852, validation accuracy 0.4764
+iteration 1365, training loss 0.387745, training accuracy 0.92, validation loss 1.69125, validation accuracy 0.4832
+iteration 1370, training loss 0.271149, training accuracy 0.94, validation loss 1.69416, validation accuracy 0.4908
+iteration 1375, training loss 0.298393, training accuracy 0.9, validation loss 1.72614, validation accuracy 0.4836
+iteration 1380, training loss 0.26984, training accuracy 0.94, validation loss 1.64761, validation accuracy 0.4996
+iteration 1385, training loss 0.299867, training accuracy 0.92, validation loss 1.61967, validation accuracy 0.5056
+iteration 1390, training loss 0.360337, training accuracy 0.9, validation loss 1.69646, validation accuracy 0.4888
+iteration 1395, training loss 0.160922, training accuracy 0.96, validation loss 1.77753, validation accuracy 0.4732
+iteration 1400, training loss 0.225479, training accuracy 0.96, validation loss 1.8134, validation accuracy 0.4688
+iteration 1405, training loss 0.359348, training accuracy 0.88, validation loss 1.76587, validation accuracy 0.4816
+iteration 1410, training loss 0.270948, training accuracy 0.96, validation loss 1.65282, validation accuracy 0.5004
+iteration 1415, training loss 0.463314, training accuracy 0.86, validation loss 1.61334, validation accuracy 0.5112
+iteration 1420, training loss 0.412527, training accuracy 0.82, validation loss 1.68132, validation accuracy 0.4892
+iteration 1425, training loss 0.430258, training accuracy 0.84, validation loss 1.78711, validation accuracy 0.466
+iteration 1430, training loss 0.478562, training accuracy 0.86, validation loss 1.78222, validation accuracy 0.4664
+iteration 1435, training loss 0.226117, training accuracy 0.94, validation loss 1.70812, validation accuracy 0.486
+iteration 1440, training loss 0.0925368, training accuracy 1, validation loss 1.6297, validation accuracy 0.504
+iteration 1445, training loss 0.349498, training accuracy 0.86, validation loss 1.64246, validation accuracy 0.4928
+iteration 1450, training loss 0.338021, training accuracy 0.86, validation loss 1.68177, validation accuracy 0.4864
+iteration 1455, training loss 0.333632, training accuracy 0.92, validation loss 1.66284, validation accuracy 0.4908
+iteration 1460, training loss 0.503127, training accuracy 0.84, validation loss 1.62118, validation accuracy 0.5036
+iteration 1465, training loss 0.362462, training accuracy 0.88, validation loss 1.6309, validation accuracy 0.502
+iteration 1470, training loss 0.277499, training accuracy 0.92, validation loss 1.67242, validation accuracy 0.4928
+iteration 1475, training loss 0.413835, training accuracy 0.84, validation loss 1.71127, validation accuracy 0.4832
+iteration 1480, training loss 0.369153, training accuracy 0.9, validation loss 1.70594, validation accuracy 0.4888
+iteration 1485, training loss 0.38735, training accuracy 0.88, validation loss 1.69189, validation accuracy 0.498
+iteration 1490, training loss 0.196165, training accuracy 0.96, validation loss 1.72017, validation accuracy 0.4912
+iteration 1495, training loss 0.441154, training accuracy 0.88, validation loss 1.76135, validation accuracy 0.4848
+iteration 1500, training loss 0.231599, training accuracy 0.92, validation loss 1.78259, validation accuracy 0.4848
+iteration 1505, training loss 0.179964, training accuracy 0.98, validation loss 1.7707, validation accuracy 0.4868
+iteration 1510, training loss 0.226545, training accuracy 0.9, validation loss 1.78439, validation accuracy 0.4828
+iteration 1515, training loss 0.174569, training accuracy 0.96, validation loss 1.70173, validation accuracy 0.4948
+iteration 1520, training loss 0.563911, training accuracy 0.82, validation loss 1.66144, validation accuracy 0.5012
+iteration 1525, training loss 0.267567, training accuracy 0.94, validation loss 1.6555, validation accuracy 0.5036
+iteration 1530, training loss 0.159886, training accuracy 0.96, validation loss 1.66203, validation accuracy 0.5028
+iteration 1535, training loss 0.378204, training accuracy 0.88, validation loss 1.72002, validation accuracy 0.494
+iteration 1540, training loss 0.267776, training accuracy 0.94, validation loss 1.75286, validation accuracy 0.492
+iteration 1545, training loss 0.272363, training accuracy 0.92, validation loss 1.76026, validation accuracy 0.4932
+iteration 1550, training loss 0.239326, training accuracy 0.94, validation loss 1.72873, validation accuracy 0.4968
+iteration 1555, training loss 0.363958, training accuracy 0.88, validation loss 1.76198, validation accuracy 0.4888
+iteration 1560, training loss 0.453566, training accuracy 0.82, validation loss 1.74029, validation accuracy 0.494
+iteration 1565, training loss 0.235656, training accuracy 0.9, validation loss 1.72423, validation accuracy 0.4904
+iteration 1570, training loss 0.231673, training accuracy 0.94, validation loss 1.7296, validation accuracy 0.486
+iteration 1575, training loss 0.286459, training accuracy 0.92, validation loss 1.6322, validation accuracy 0.5044
+iteration 1580, training loss 0.374229, training accuracy 0.88, validation loss 1.52252, validation accuracy 0.5264
+iteration 1585, training loss 0.33458, training accuracy 0.92, validation loss 1.55441, validation accuracy 0.5188
+iteration 1590, training loss 0.288904, training accuracy 0.94, validation loss 1.66319, validation accuracy 0.4924
+iteration 1595, training loss 0.316148, training accuracy 0.92, validation loss 1.69256, validation accuracy 0.4844
+iteration 1600, training loss 0.287864, training accuracy 0.96, validation loss 1.5586, validation accuracy 0.5196
+iteration 1605, training loss 0.228491, training accuracy 0.96, validation loss 1.49402, validation accuracy 0.5308
+iteration 1610, training loss 0.650715, training accuracy 0.78, validation loss 1.51603, validation accuracy 0.526
+iteration 1615, training loss 0.497124, training accuracy 0.88, validation loss 1.58442, validation accuracy 0.5112
+iteration 1620, training loss 0.352626, training accuracy 0.92, validation loss 1.66675, validation accuracy 0.4956
+iteration 1625, training loss 0.456861, training accuracy 0.88, validation loss 1.7638, validation accuracy 0.4844
+iteration 1630, training loss 0.297548, training accuracy 0.92, validation loss 1.7536, validation accuracy 0.4868
+iteration 1635, training loss 0.351977, training accuracy 0.88, validation loss 1.70492, validation accuracy 0.4948
+iteration 1640, training loss 0.253485, training accuracy 0.92, validation loss 1.70127, validation accuracy 0.498
+iteration 1645, training loss 0.219714, training accuracy 0.92, validation loss 1.64757, validation accuracy 0.5056
+iteration 1650, training loss 0.27526, training accuracy 0.92, validation loss 1.61826, validation accuracy 0.5108
+iteration 1655, training loss 0.261554, training accuracy 0.94, validation loss 1.62276, validation accuracy 0.5068
+iteration 1660, training loss 0.356083, training accuracy 0.88, validation loss 1.65311, validation accuracy 0.5008
+iteration 1665, training loss 0.227624, training accuracy 0.94, validation loss 1.61505, validation accuracy 0.5072
+iteration 1670, training loss 0.409579, training accuracy 0.86, validation loss 1.63412, validation accuracy 0.5016
+iteration 1675, training loss 0.348218, training accuracy 0.86, validation loss 1.64879, validation accuracy 0.4944
+iteration 1680, training loss 0.295342, training accuracy 0.88, validation loss 1.6193, validation accuracy 0.4968
+iteration 1685, training loss 0.198949, training accuracy 0.92, validation loss 1.52231, validation accuracy 0.5188
+iteration 1690, training loss 0.26751, training accuracy 0.92, validation loss 1.50263, validation accuracy 0.5276
+iteration 1695, training loss 0.235821, training accuracy 0.9, validation loss 1.4927, validation accuracy 0.5324
+iteration 1700, training loss 0.338033, training accuracy 0.88, validation loss 1.49126, validation accuracy 0.5324
+iteration 1705, training loss 0.373124, training accuracy 0.88, validation loss 1.50161, validation accuracy 0.5264
+iteration 1710, training loss 0.170306, training accuracy 0.96, validation loss 1.57269, validation accuracy 0.514
+iteration 1715, training loss 0.22144, training accuracy 0.92, validation loss 1.64033, validation accuracy 0.5
+iteration 1720, training loss 0.426277, training accuracy 0.86, validation loss 1.63968, validation accuracy 0.502
+iteration 1725, training loss 0.2829, training accuracy 0.92, validation loss 1.63012, validation accuracy 0.5136
+iteration 1730, training loss 0.320607, training accuracy 0.88, validation loss 1.60076, validation accuracy 0.5208
+iteration 1735, training loss 0.36335, training accuracy 0.88, validation loss 1.57064, validation accuracy 0.5228
+iteration 1740, training loss 0.321069, training accuracy 0.88, validation loss 1.56049, validation accuracy 0.5184
+iteration 1745, training loss 0.207858, training accuracy 0.96, validation loss 1.58348, validation accuracy 0.5116
+iteration 1750, training loss 0.127778, training accuracy 0.98, validation loss 1.57485, validation accuracy 0.5148
+iteration 1755, training loss 0.333505, training accuracy 0.88, validation loss 1.54324, validation accuracy 0.5184
+iteration 1760, training loss 0.275583, training accuracy 0.92, validation loss 1.50326, validation accuracy 0.526
+iteration 1765, training loss 0.348049, training accuracy 0.96, validation loss 1.47882, validation accuracy 0.5276
+iteration 1770, training loss 0.201292, training accuracy 0.96, validation loss 1.50895, validation accuracy 0.5232
+iteration 1775, training loss 0.163412, training accuracy 0.96, validation loss 1.57967, validation accuracy 0.5152
+iteration 1780, training loss 0.239117, training accuracy 0.92, validation loss 1.61673, validation accuracy 0.5144
+iteration 1785, training loss 0.401634, training accuracy 0.86, validation loss 1.64716, validation accuracy 0.5188
+iteration 1790, training loss 0.236523, training accuracy 0.88, validation loss 1.65785, validation accuracy 0.5176
+iteration 1795, training loss 0.314288, training accuracy 0.92, validation loss 1.67842, validation accuracy 0.5036
+iteration 1800, training loss 0.287723, training accuracy 0.92, validation loss 1.68786, validation accuracy 0.5004
+iteration 1805, training loss 0.205568, training accuracy 0.94, validation loss 1.6765, validation accuracy 0.5068
+iteration 1810, training loss 0.200835, training accuracy 0.94, validation loss 1.62931, validation accuracy 0.5136
+iteration 1815, training loss 0.531337, training accuracy 0.86, validation loss 1.57969, validation accuracy 0.5208
+iteration 1820, training loss 0.158241, training accuracy 0.94, validation loss 1.55822, validation accuracy 0.5256
+iteration 1825, training loss 0.206766, training accuracy 0.92, validation loss 1.58341, validation accuracy 0.5204
+iteration 1830, training loss 0.126512, training accuracy 0.96, validation loss 1.55649, validation accuracy 0.5216
+iteration 1835, training loss 0.513422, training accuracy 0.9, validation loss 1.54209, validation accuracy 0.5296
+iteration 1840, training loss 0.261274, training accuracy 0.92, validation loss 1.57081, validation accuracy 0.5228
+iteration 1845, training loss 0.271226, training accuracy 0.94, validation loss 1.60421, validation accuracy 0.5168
+iteration 1850, training loss 0.232799, training accuracy 0.94, validation loss 1.60289, validation accuracy 0.5116
+iteration 1855, training loss 0.167982, training accuracy 0.96, validation loss 1.56413, validation accuracy 0.5208
+iteration 1860, training loss 0.203448, training accuracy 0.92, validation loss 1.55106, validation accuracy 0.5256
+iteration 1865, training loss 0.217837, training accuracy 0.94, validation loss 1.53135, validation accuracy 0.5316
+iteration 1870, training loss 0.287424, training accuracy 0.86, validation loss 1.52112, validation accuracy 0.5388
+iteration 1875, training loss 0.287166, training accuracy 0.92, validation loss 1.51222, validation accuracy 0.5376
+iteration 1880, training loss 0.255316, training accuracy 0.92, validation loss 1.50871, validation accuracy 0.536
+iteration 1885, training loss 0.277761, training accuracy 0.92, validation loss 1.52194, validation accuracy 0.5336
+iteration 1890, training loss 0.198858, training accuracy 0.94, validation loss 1.54726, validation accuracy 0.5216
+iteration 1895, training loss 0.321882, training accuracy 0.92, validation loss 1.57081, validation accuracy 0.5156
+iteration 1900, training loss 0.115636, training accuracy 0.98, validation loss 1.56808, validation accuracy 0.5168
+iteration 1905, training loss 0.172735, training accuracy 0.96, validation loss 1.57331, validation accuracy 0.5196
+iteration 1910, training loss 0.278897, training accuracy 0.9, validation loss 1.58031, validation accuracy 0.5216
+iteration 1915, training loss 0.211863, training accuracy 0.92, validation loss 1.53714, validation accuracy 0.5292
+iteration 1920, training loss 0.243422, training accuracy 0.92, validation loss 1.59158, validation accuracy 0.5144
+iteration 1925, training loss 0.125689, training accuracy 0.98, validation loss 1.61141, validation accuracy 0.512
+iteration 1930, training loss 0.199204, training accuracy 0.94, validation loss 1.59699, validation accuracy 0.5136
+iteration 1935, training loss 0.320447, training accuracy 0.88, validation loss 1.60864, validation accuracy 0.5136
+iteration 1940, training loss 0.206014, training accuracy 0.94, validation loss 1.5509, validation accuracy 0.5252
+iteration 1945, training loss 0.383385, training accuracy 0.88, validation loss 1.54061, validation accuracy 0.534
+iteration 1950, training loss 0.23954, training accuracy 0.92, validation loss 1.52363, validation accuracy 0.5308
+iteration 1955, training loss 0.301156, training accuracy 0.9, validation loss 1.54521, validation accuracy 0.5348
+iteration 1960, training loss 0.246554, training accuracy 0.92, validation loss 1.52444, validation accuracy 0.5376
+iteration 1965, training loss 0.234896, training accuracy 0.9, validation loss 1.48008, validation accuracy 0.5424
+iteration 1970, training loss 0.381229, training accuracy 0.88, validation loss 1.4832, validation accuracy 0.5384
+iteration 1975, training loss 0.368555, training accuracy 0.84, validation loss 1.51357, validation accuracy 0.5268
+iteration 1980, training loss 0.200302, training accuracy 0.92, validation loss 1.51426, validation accuracy 0.5228
+iteration 1985, training loss 0.302995, training accuracy 0.92, validation loss 1.51592, validation accuracy 0.524
+iteration 1990, training loss 0.114349, training accuracy 1, validation loss 1.49828, validation accuracy 0.5264
+iteration 1995, training loss 0.145268, training accuracy 0.96, validation loss 1.5249, validation accuracy 0.5252
+Computing t-SNE embedding
+test loss 1.48001, test accuracy 0.5328

@@ -55,7 +55,7 @@ class TwoStageConcatenatedEmbeddingClassifier:
 
     def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0, embed_iterations=100, embed_batch_size=16,
               embed_visualize=False,
-              embed_visualize_size=100):
+              embed_visualize_size=100, only_originals=False):
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
         embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
         class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
@@ -68,6 +68,7 @@ class TwoStageConcatenatedEmbeddingClassifier:
             sess.run(tf.global_variables_initializer())
 
             run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+            print(run_name)
 
             # Visualize:
             vis_batch_x, vis_batch_y_ = data_generator.get_embedding_visualization_data()
@@ -92,7 +93,7 @@ class TwoStageConcatenatedEmbeddingClassifier:
 
             # Stage 2: Classification
             for i in range(iterations):
-                batch_x, batch_y_ = data_generator.train(batch_size)
+                batch_x, batch_y_ = data_generator.train(batch_size, only_originals=only_originals)
 
                 if i % log_freq == 0:
                     loss, acc = sess.run([self.class_loss, self.accuracy],

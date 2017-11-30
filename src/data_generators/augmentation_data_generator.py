@@ -163,6 +163,7 @@ class AugmentationDataGenerator(AbstractGenerator):
                                   weights=weights)
 
     def validation(self, batch_size=None):
+        batch_size = len(self.valid_images) if batch_size is None else min(len(self.valid_images), batch_size)
         if self.is_epochal:
             raise BaseException("not implemented")
         else:
@@ -170,6 +171,7 @@ class AugmentationDataGenerator(AbstractGenerator):
             return self.valid_images[idxs], self.valid_image_classes[idxs]
 
     def test(self, batch_size=None, augment=True):
+        batch_size = len(self.test_images) if batch_size is None else min(len(self.test_images), batch_size)
         if self.is_epochal:
             raise BaseException("not implemented")
         else:

@@ -5,6 +5,12 @@ from sklearn import decomposition
 
 
 def pca_visualize(x, embed, y_):
+    if (x.shape[3] == 1):
+        x = x[:,:,:,0]
+    embed = embed.reshape(embed.shape[0], -1)
+    y_ = np.argmax(y_, axis=1)
+    print (x.shape, embed.shape, y_.shape)
+    
     pca = decomposition.PCA(n_components=2)
     embed = pca.fit_transform(embed)
 
@@ -39,7 +45,7 @@ def pca_visualize(x, embed, y_):
 
 
 def tsne_visualize(x, embed, y_):
-	print("Computing t-SNE embedding")
+    print("Computing t-SNE embedding")
     tsne = manifold.TSNE(n_components=2, init='pca', random_state=0)
     t0 = time()
     X_tsne = tsne.fit_transform(embed)
@@ -47,8 +53,11 @@ def tsne_visualize(x, embed, y_):
     plt.show()
 
 def plot_tsne_embedding(x, embed, y_, title):
-	y_ = np.argmax(y_, axis=1)
-	x_min, x_max = np.min(embed, 0), np.max(embed, 0)
+    if (x.shape[3] == 1):
+        x = x[:,:,:,0]
+    embed = embed.reshape(embed.shape[0], -1)
+    y_ = np.argmax(y_, axis=1)
+    x_min, x_max = np.min(embed, 0), np.max(embed, 0)
     embed = (embed - x_min) / (x_max - x_min)
     ax_dist_sq = np.sum((x_max-x_min)**2)
 

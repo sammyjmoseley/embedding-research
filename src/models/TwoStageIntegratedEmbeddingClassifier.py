@@ -77,7 +77,7 @@ class TwoStageIntegratedEmbeddingClassifier:
             sess.run(tf.global_variables_initializer())
 
             merged = tf.summary.merge_all("embedding")
-            train_writer = tf.summary.FileWriter('./train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H:%M:%S')), sess.graph)
+            train_writer = tf.summary.FileWriter('./train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S')), sess.graph)
             # Stage 1: Embedding
             for i in range(embed_iterations):
                 triplet_batch = data_generator.triplet_train(embed_batch_size)

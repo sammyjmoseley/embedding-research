@@ -88,7 +88,7 @@ class TwoStageIntegratedEmbeddingClassifier:
             train_writer = tf.summary.FileWriter(run_name, sess.graph)
 
             # Visualize:
-            vis_batch_x, vis_batch_y_ = data_generator.test(batch_size=embed_visualize_size)
+            vis_batch_x, vis_batch_y_ = data_generator.get_embedding_visualization_data()
             if embed_visualize:
                 vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/init")

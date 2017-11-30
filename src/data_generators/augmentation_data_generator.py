@@ -24,7 +24,7 @@ def __rotator(old_img, rot_ang):
     data = np.float64(data) / 255.0
     return data, np.array([rot_ang])
 
-default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 5)]
+default_augmentations = [(lambda ang: lambda x: __rotator(x, ang))(i) for i in range(-30, 30, 5)]
 
 
 class AugmentationDataGenerator(AbstractGenerator):
@@ -112,6 +112,7 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.train_images = images[:train_idx]
         self.train_image_augs = augs[:train_idx]
         self.train_image_classes = labels[:train_idx]
+        self.train_image_ids = img_ids[:train_idx]
 
         self.valid_images = images[train_idx:valid_idx]
         self.valid_image_augs = augs[train_idx:valid_idx]
@@ -126,55 +127,77 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.full_labels = labels
         self.full_img_ids = img_ids
 
+        self.train_epochal = 0
+
     def __next_image(self):
         raise BaseException("not implemented")
 
     def train(self, batch_size):
         if self.is_epochal:
-            raise BaseException("not implemented")
+            if self.train_epochal >= len(self.train_images):
+                return None
+            batch_size = min(batch_size, len(self.train_images)-self.train_epochal)
+            idxs = range(np.sum(self.train_epochal), len(self.train_images))[:batch_size]
+            self.train_epochal += batch_size
+            return self.train_images[idxs], self.train_image_classes[idxs]
         else:
             idxs = random.sample(range(0, len(self.train_images)), batch_size)
             return self.train_images[idxs], self.train_image_classes[idxs]
 
     def triplet_train(self, batch_size):
         if self.is_epochal:
-            raise BaseException("not implemented")
+            if self.train_epochal >= len(self.train_images):
+                return None
+            batch_size = min(batch_size, len(self.train_images)-self.train_epochal)
+            idxs = range(np.sum(self.train_epochal), len(self.train_images))[:batch_size]
+            self.train_epochal += batch_size
+
         else:
             idxs = random.sample(range(0, len(self.train_images)), batch_size)
-            ref_imgs = self.train_images[idxs]
-            ref_augs = self.train_image_augs[idxs]
-            ref_classes = self.train_image_classes[idxs]
 
-            def tripleter(classes, eq):
-                func = lambda clazz: eq(np.argmax(self.train_image_classes, axis=1),
-                                        np.argmax(clazz))
-                choices = np.array(list(map(func, classes)))
-                idxs_arr = np.array(list(range(0, len(self.train_images))))
-                idxs_new = map(lambda x: np.random.choice(idxs_arr[x]), choices)
-                idxs_new = np.array(list(idxs_new))
-                pics = self.train_images[idxs_new]
-                augs = self.train_image_augs[idxs_new]
-                labels = self.train_image_classes[idxs_new]
-                return pics, augs, labels
+        ref_imgs = self.train_images[idxs]
+        ref_augs = self.train_image_augs[idxs]
+        ref_classes = self.train_image_classes[idxs]
+        ref_img_ids = self.train_image_ids[idxs]
 
-            pos_imgs, pos_augs, pos_classes = tripleter(ref_classes, lambda x, y: x == y)
-            neg_imgs, neg_augs, neg_classes = tripleter(ref_classes, lambda x, y: x != y)
+        func_clazzes = lambda eq: \
+            lambda clazz: eq(np.argmax(self.train_image_classes, axis=1), np.argmax(clazz))
 
-            weights = ref_augs - neg_augs
-            weights = np.linalg.norm(weights, axis=1)
+        func_ids = lambda eq: \
+            lambda id: eq(self.train_image_ids, np.argmax(id))
 
-            return TripletDataset(r=ref_imgs,
-                                  p=pos_imgs,
-                                  n=neg_imgs,
-                                  r_class=ref_classes,
-                                  p_class=pos_classes,
-                                  n_class=neg_classes,
-                                  weights=weights)
+        def tripleter(classes, func):
+
+            choices = np.array(list(map(func, classes)))
+            idxs_arr = np.array(list(range(0, len(self.train_images))))
+            idxs_new = map(lambda x: np.random.choice(idxs_arr[x]), choices)
+            idxs_new = np.array(list(idxs_new))
+            pics = self.train_images[idxs_new]
+            augs = self.train_image_augs[idxs_new]
+            labels = self.train_image_classes[idxs_new]
+            return pics, augs, labels
+
+        eq = lambda x, y: x == y
+        neq = lambda x, y: x != y
+        pos_imgs, pos_augs, pos_classes = tripleter(ref_img_ids, func_ids(eq))
+        neg_imgs, neg_augs, neg_classes = tripleter(ref_classes, func_clazzes(neq))
+
+        weights = ref_augs - neg_augs
+        weights = np.linalg.norm(weights, axis=1)
+
+        return TripletDataset(r=ref_imgs,
+                              p=pos_imgs,
+                              n=neg_imgs,
+                              r_class=ref_classes,
+                              p_class=pos_classes,
+                              n_class=neg_classes,
+                              weights=weights)
 
     def validation(self, batch_size=None):
         batch_size = len(self.valid_images) if batch_size is None else min(len(self.valid_images), batch_size)
         if self.is_epochal:
-            raise BaseException("not implemented")
+            idxs = range(0, len(self.valid_images))[:batch_size]
+            return self.valid_images[idxs], self.valid_image_classes[idxs]
         else:
             idxs = random.sample(range(0, len(self.valid_images)), batch_size)
             return self.valid_images[idxs], self.valid_image_classes[idxs]
@@ -182,14 +205,15 @@ class AugmentationDataGenerator(AbstractGenerator):
     def test(self, batch_size=None, augment=True):
         batch_size = len(self.test_images) if batch_size is None else min(len(self.test_images), batch_size)
         if self.is_epochal:
-            raise BaseException("not implemented")
+            idxs = range(0, len(self.test_images))[:batch_size]
+            return self.test_images[idxs], self.test_image_classes[idxs]
         else:
             idxs = random.sample(range(0, len(self.test_images)), batch_size)
             return self.test_images[idxs], self.test_image_classes[idxs]
 
     def reset(self):
         if self.is_epochal:
-            raise BaseException("not implemented")
+            self.train_epochal = 0
         else:
             pass
 
@@ -212,16 +236,26 @@ class AugmentationDataGenerator(AbstractGenerator):
 
 file_location = "rotated_dataset.gz"
 augmentation_clazz = AugmentationDataGenerator
-def load_augmentation_data_generator():
-    if os.path.exists(file_location):
+
+"""
+is_epochal None indicates used saved preference, boolean value overrides saved value
+"""
+
+def load_augmentation_data_generator(is_epochal=None):
+    if os.path.exists(file_location) and False:
         f = gzip.open(file_location, "rb")
         unpickler = pickle.Unpickler(f)
         unpickler.find_class("data_generators.augmentation_data_generator", "AugmentationDataGenerator")
         ret = unpickler.load()
         f.close()
+        if is_epochal is not None:
+            ret.is_epochal = is_epochal
         return ret
     else:
-        rotation_augmentation = AugmentationDataGenerator()
+        if is_epochal is not None:
+            rotation_augmentation = AugmentationDataGenerator(is_epochal=is_epochal)
+        else:
+            rotation_augmentation = AugmentationDataGenerator()
         f = gzip.open(file_location, "wb")
         pickle.dump(rotation_augmentation, f)
         f.close()

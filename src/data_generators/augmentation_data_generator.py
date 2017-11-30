@@ -242,7 +242,7 @@ is_epochal None indicates used saved preference, boolean value overrides saved v
 """
 
 def load_augmentation_data_generator(is_epochal=None):
-    if os.path.exists(file_location) and False:
+    if os.path.exists(file_location):
         f = gzip.open(file_location, "rb")
         unpickler = pickle.Unpickler(f)
         unpickler.find_class("data_generators.augmentation_data_generator", "AugmentationDataGenerator")

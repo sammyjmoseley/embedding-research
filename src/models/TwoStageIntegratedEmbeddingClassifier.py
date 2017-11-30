@@ -20,7 +20,7 @@ class TwoStageIntegratedEmbeddingClassifier:
     def __init__(self, freeze_embed=True, track_embedding_loss=True):
         self.freeze_embed = freeze_embed
         self.track_embedding_loss = track_embedding_loss
-        self.image_size = 32
+        self.image_size = 28
         self.num_channels = 1
         self.num_labels = 10
 
@@ -53,11 +53,11 @@ class TwoStageIntegratedEmbeddingClassifier:
             collections = ["embedding"]
             if self.track_embedding_loss:
                 collections.append("classification")
-            tf.summary.scalar('embed_loss', self.embed_loss, collections=["embedding"])
+            tf.summary.scalar('embed_loss', self.embed_loss, collections=collections)
 
         with tf.variable_scope('classifier'):
             c = Classifier.Classifier()
-            self.y, self.accuracy = c.construct(self.o, self.y_, self.keep_prob)
+            self.y, self.accuracy, self.before_softmax = c.construct(self.o, self.y_, self.keep_prob)
             tf.summary.scalar('class_acc', self.accuracy, collections=["classification"])
 
         with tf.variable_scope('class_loss'):
@@ -125,12 +125,11 @@ class TwoStageIntegratedEmbeddingClassifier:
 
                     feed_dict = {self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0}
                     if self.track_embedding_loss:
-                        # draw triplet
-                        # manipulate feed_dict accordingly
-                        pass
+                        triplet_batch = data_generator.triplet_train(batch_size)
+                        feed_dict = {self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: 1.0}
 
                     summary, loss, acc = sess.run([merged, self.class_loss, self.accuracy], feed_dict=feed_dict)
-                    train_writer.add_summary(summary, i)
+                    train_writer.add_summary(summary, i+embed_iterations)
                     v_batch_x, v_batch_y_ = data_generator.validation()
                     v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
                         feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
@@ -150,9 +149,19 @@ class TwoStageIntegratedEmbeddingClassifier:
             train_writer.flush()
             train_writer.close()
 
-            saver.save(sess, run_name+"model")
-            return run_name+"model"
+            self.run_name = run_name
+            self.model_path = saver.save(sess, run_name+"/model")
 
     def predict(self, data):
-        # TODO
+        with tf.Session() as sess:
+            sess.run(tf.global_variables_initializer())
+            data = sess.run(data)
+            new_saver = tf.train.import_meta_graph(self.model_path+".meta")
+            new_saver.restore(sess, tf.train.latest_checkpoint(self.run_name))
+            all_vars = tf.get_collection('vars')
+            for v in all_vars:
+                v_ = sess.run(v)
+                print(v_)
+            output = sess.run(self.before_softmax, feed_dict={self.x: data, self.keep_prob: 1.0})
+            return tf.convert_to_tensor(output)
 

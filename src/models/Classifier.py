@@ -29,9 +29,10 @@ class Classifier:
 			x = tf.nn.dropout(x, keep_prob=keep_prob)
 			w = weight_variable([dim, out])
 			b = bias_variable([out])
-			self.y = tf.nn.softmax(tf.matmul(x, w) + b)
+			self.before_softmax = tf.matmul(x, w) + b
+			self.y = tf.nn.softmax(self.before_softmax)
 		
 		correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(y_, 1))
 		self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 		
-		return self.y, self.accuracy
+		return self.y, self.accuracy, self.before_softmax

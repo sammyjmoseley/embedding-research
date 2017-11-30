@@ -48,7 +48,13 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.train_image_classes = []
         self.valid_image_classes = []
         self.test_image_classes = []
-        self.is_epochal = False
+
+        self.full_images = []
+        self.full_augs = []
+        self.full_labels = []
+        self.full_img_ids = []
+
+        self.is_epochal = is_epochal
 
         if train_ratio + valid_ratio + test_ratio > 1.0:
             raise BaseException('cannot have ratios go greater than 1.0')
@@ -75,8 +81,6 @@ class AugmentationDataGenerator(AbstractGenerator):
         def get_tuple(idx):
             return lambda x: x[idx]
 
-
-
         augs = augmentor(images, lambda x: map(get_tuple(1), image_augmentor(x)))
         images = augmentor(images, lambda x: map(get_tuple(0), image_augmentor(x)))
         labels = augmentor(labels, label_augmentor)
@@ -92,11 +96,13 @@ class AugmentationDataGenerator(AbstractGenerator):
             l = list(range(0, size))
             np.random.shuffle(l)
             return l
-
+        # shuffle the images, we make sure augs, labels, and ids are preserved in the same order
+        img_ids = np.array(list(range(0, len(images))))
         rand_indxs = random_idxs(len(images))
         images = images[rand_indxs]
         augs = augs[rand_indxs]
         labels = labels[rand_indxs]
+        img_ids = img_ids[rand_indxs]
 
         train_idx = int(len(images) * train_ratio)
         valid_idx = int(len(images) * valid_ratio)
@@ -113,6 +119,11 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.test_images = images[valid_idx:test_idx]
         self.test_image_augs = augs[valid_idx:test_idx]
         self.test_image_classes = labels[valid_idx:test_idx]
+
+        self.full_images = images
+        self.full_augs = augs
+        self.full_labels = labels
+        self.full_img_ids = img_ids
 
     def __next_image(self):
         raise BaseException("not implemented")
@@ -181,13 +192,24 @@ class AugmentationDataGenerator(AbstractGenerator):
         else:
             pass
 
+    def __embedding_visualization_helper(self, clazz):
+        viable_images = (np.argmax(self.full_labels, axis=1) == clazz)
+        img_id = self.full_img_ids[viable_images][0]
+        return self.full_images[self.full_img_ids == img_id]
+
+    def get_embedding_visualization_data(self, classes=range(0, 10)):
+        ret = [np.array([self.__embedding_visualization_helper(clazz)]) for clazz in classes]
+        ret = np.concatenate(ret)
+        print(ret.shape)
+        return ret
+
     def data_shape(self):
         return (28, 28, 1)
 
 file_location = "rotated_dataset.gz"
 augmentation_clazz = AugmentationDataGenerator
 def load_augmentation_data_generator():
-    if os.path.exists(file_location):
+    if os.path.exists(file_location) and False:
         f = gzip.open(file_location, "rb")
         unpickler = pickle.Unpickler(f)
         unpickler.find_class("data_generators.augmentation_data_generator", "AugmentationDataGenerator")
@@ -202,5 +224,5 @@ def load_augmentation_data_generator():
         return rotation_augmentation
 
 if __name__ == "__main__":
-    load_augmentation_data_generator()
-    print(type(load_augmentation_data_generator()))
+    generator = load_augmentation_data_generator()
+    generator.get_embedding_visualization_data()

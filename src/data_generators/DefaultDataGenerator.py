@@ -3,6 +3,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 from enum import Enum
 import random
 from data_generators.augmentation import RotationAugmentation
+from data_generators.abstract_data_generator import AbstractGenerator
 from functools import reduce
 
 class TripletTechnique(Enum):
@@ -61,11 +62,6 @@ class TripletDataset(object):
 
     def __iter__(self):
         return zip(zip(self.r, self.p, self.n), zip(self.r_class, self.p_class, self.n_class), self.weights)
-
-class AbstractGenerator(object):
-    def __next_image(self):
-        raise BaseException("not implemented")
-
 
 class RotatedMNISTDataGenerator(AbstractGenerator):
     def __init__(self,

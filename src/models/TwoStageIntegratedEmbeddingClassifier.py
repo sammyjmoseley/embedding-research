@@ -20,6 +20,9 @@ class TwoStageIntegratedEmbeddingClassifier:
     def __init__(self, freeze_embed=True, track_embedding_loss=True):
         self.freeze_embed = freeze_embed
         self.track_embedding_loss = track_embedding_loss
+        self.image_size = 32
+        self.num_channels = 1
+        self.num_labels = 10
 
     def construct(self, softmax=True, margin=0.2):
         # Input and label placeholders
@@ -88,6 +91,7 @@ class TwoStageIntegratedEmbeddingClassifier:
             run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
             print(run_name)
             train_writer = tf.summary.FileWriter(run_name, sess.graph)
+            saver = tf.train.Saver()
 
             # Visualize:
             vis_batch_x, vis_batch_y_ = data_generator.get_embedding_visualization_data()
@@ -145,4 +149,10 @@ class TwoStageIntegratedEmbeddingClassifier:
 
             train_writer.flush()
             train_writer.close()
+
+            saver.save(sess, run_name+"model")
+            return run_name+"model"
+
+    def predict(self, data):
+        # TODO
 

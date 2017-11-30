@@ -11,7 +11,7 @@ from data_generators.augmentation_data_generator import AugmentationDataGenerato
 datagen = DataGenerator.load_augmentation_data_generator()
 softmax = True
 
-batch_size = 128
+batch_size = 50
 iterations = 1000
 
 # Softmax loss:

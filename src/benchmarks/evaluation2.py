@@ -1,4 +1,3 @@
-# TODO make sure it's epochal, onlyOriginals
 # Evaluation 2: Can the classifier learn augmentations via the embedding?
 # Strategy: train an embedding network for some number of iterations. Then, epochally train
 # the classifier using the embedding as an initialization, only on the originals. Test error?
@@ -14,9 +13,9 @@ datagen = DataGenerator.load_augmentation_data_generator(is_epochal=True)
 softmax = True
 
 embed_bs = 50
-embed_iter = 100
+embed_iter = 1000
 class_bs = 50
-class_iter = 100
+class_iter = 1000
 kp = 0.5
 
 # Softmax loss:

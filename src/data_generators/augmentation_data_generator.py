@@ -23,7 +23,7 @@ def __rotator(old_img, rot_ang):
     data = np.float64(data) / 255.0
     return data, np.array([rot_ang])
 
-default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 50)]
+default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 5)]
 
 class AugmentationDataGenerator(AbstractGenerator):
     """

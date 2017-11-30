@@ -43,7 +43,7 @@ class TwoStageConcatenatedEmbeddingClassifier:
             if softmax:
                 self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
             else:
-                self.embed_loss = tf.reduce_mean(tf.square(self.dp) - tf.square(self.dn) + margin)
+                self.embed_loss = tf.reduce_mean(tf.maximum(tf.square(self.dp) - tf.square(self.dn) + margin, 0))
 
         with tf.variable_scope('classifier'):
             self.f = e.construct(self.x, init_dim=2)

@@ -46,7 +46,7 @@ class TwoStageIntegratedEmbeddingClassifier:
             if softmax:
                 self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
             else:
-                self.embed_loss = tf.reduce_mean(tf.square(self.dp) - tf.square(self.dn) + margin)
+                self.embed_loss = tf.reduce_mean(tf.maximum(tf.square(self.dp) - tf.square(self.dn) + margin, 0))
             collections = ["embedding"]
             if self.track_embedding_loss:
                 collections.append("classification")

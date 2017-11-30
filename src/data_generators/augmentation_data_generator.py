@@ -4,7 +4,7 @@ from functools import reduce
 import random
 from PIL import Image
 import gzip
-import pickle
+import _pickle as pickle
 import os
 
 from data_generators.abstract_data_generator import AbstractGenerator
@@ -196,12 +196,16 @@ class AugmentationDataGenerator(AbstractGenerator):
     def __embedding_visualization_helper(self, clazz):
         viable_images = (np.argmax(self.full_labels, axis=1) == clazz)
         img_id = self.full_img_ids[viable_images][0]
-        return self.full_images[self.full_img_ids == img_id]
+        idxs = self.full_img_ids == img_id
+        return self.full_images[idxs], self.full_labels[idxs]
 
     def get_embedding_visualization_data(self, classes=range(0, 10)):
         ret = [self.__embedding_visualization_helper(clazz) for clazz in classes]
-        ret = np.concatenate(ret)
-        return ret
+        ret_img = [x for (x, _) in ret]
+        ret_lbl = [y for (_, y) in ret]
+        ret_img = np.concatenate(ret_img)
+        ret_lbl = np.concatenate(ret_lbl)
+        return ret_img, ret_lbl
 
     def data_shape(self):
         return (28, 28, 1)
@@ -225,4 +229,5 @@ def load_augmentation_data_generator():
 
 if __name__ == "__main__":
     generator = load_augmentation_data_generator()
-    generator.get_embedding_visualization_data()
+    v_embed = generator.get_embedding_visualization_data()
+    print(v_embed[0].shape, v_embed[1].shape)

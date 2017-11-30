@@ -8,6 +8,9 @@ class AbstractGenerator(object):
     def triplet_train(self, batch_size):
         raise BaseException("not implemented")
 
+    def validation(self, batch_size=None):
+        raise BaseException("not implemented")
+
     def test(self, batch_size=None, augment=True):
         raise BaseException("not implemented")
 

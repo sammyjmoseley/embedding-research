@@ -2,16 +2,31 @@ import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 from functools import reduce
 import random
+from PIL import Image
 
 from data_generators.abstract_data_generator import AbstractGenerator
+from data_generators.triplet_dataset import TripletDataset
 
+
+def __rotator(img, rot_ang):
+    img = np.reshape(np.uint8(img * 255), (28, 28))
+    src_im = Image.fromarray(img)
+    im = src_im.convert('RGBA')
+    dst_im = Image.new("RGBA", img.shape, "black")
+    rot = im.rotate(rot_ang, expand=1).resize((28, 28))
+    dst_im.paste(rot, (0, 0), rot)
+    data = np.matmul(np.asarray(dst_im), [1.0 / 3.0, 1.0 / 3.0, 1 / 3.0, 0]).reshape(img.shape)
+    data = np.float64(data) / 255.0
+    return data, np.array([rot_ang])
+
+default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30)]
 
 class AugmentationDataGenerator(AbstractGenerator):
     """
     augmentations (img) -> (augmented image, numpy vec repr)
     """
     def __init__(self,
-                 augmentations,
+                 augmentations=default_augmentations,
                  train_ratio=0.85,
                  valid_ratio=0.05,
                  test_ratio=0.1,
@@ -76,6 +91,10 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.test_image_augs = augs[valid_idx:test_idx]
         self.test_image_classes = labels[valid_idx:test_idx]
 
+        # make it deterministic
+        np.random.seed(1)
+        random.seed(1)
+
         def random_idxs(size):
             l = list(range(0, size))
             np.random.shuffle(l)
@@ -128,12 +147,30 @@ class AugmentationDataGenerator(AbstractGenerator):
             pos_imgs, pos_augs, pos_classes = tripleter(ref_classes, lambda x, y: x == y)
             neg_imgs, neg_augs, neg_classes = tripleter(ref_classes, lambda x, y: x != y)
 
+            weights = ref_augs - neg_augs
+            weights = np.linalg.norm(weights, axis=1)
+
+            return TripletDataset(r=ref_imgs,
+                                  p=pos_imgs,
+                                  n=neg_imgs,
+                                  r_class=ref_classes,
+                                  p_class=pos_classes,
+                                  n_class=neg_classes,
+                                  weights=weights)
+
+    def validation(self, batch_size=None):
+        if self.is_epochal:
+            raise BaseException("not implemented")
+        else:
+            idxs = random.choice(range(0, len(self.valid_images)), batch_size)
+            return self.valid_images[idxs], self.valid_image_classes[idxs]
 
     def test(self, batch_size=None, augment=True):
         if self.is_epochal:
             raise BaseException("not implemented")
         else:
-            pass
+            idxs = random.choice(range(0, len(self.test_images)), batch_size)
+            return self.test_images[idxs], self.test_image_classes[idxs]
 
     def reset(self):
         if self.is_epochal:
@@ -142,7 +179,4 @@ class AugmentationDataGenerator(AbstractGenerator):
             pass
 
     def data_shape(self):
-        if self.is_epochal:
-            raise BaseException("not implemented")
-        else:
-            pass
+        return (28, 28, 1)

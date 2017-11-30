@@ -24,7 +24,7 @@ def __rotator(old_img, rot_ang):
     data = np.float64(data) / 255.0
     return data, np.array([rot_ang])
 
-default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 5)]
+default_augmentations = [(lambda ang: lambda x: __rotator(x, ang))(i) for i in range(-30, 30, 5)]
 
 
 class AugmentationDataGenerator(AbstractGenerator):
@@ -242,7 +242,7 @@ is_epochal None indicates used saved preference, boolean value overrides saved v
 """
 
 def load_augmentation_data_generator(is_epochal=None):
-    if os.path.exists(file_location):
+    if os.path.exists(file_location) and False:
         f = gzip.open(file_location, "rb")
         unpickler = pickle.Unpickler(f)
         unpickler.find_class("data_generators.augmentation_data_generator", "AugmentationDataGenerator")

@@ -1,15 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import offsetbox
-from sklearn import decomposition
+from sklearn import decomposition, manifold
 
 
 def pca_visualize(x, embed, y_):
-    if (x.shape[3] == 1):
-        x = x[:,:,:,0]
-    embed = embed.reshape(embed.shape[0], -1)
-    y_ = np.argmax(y_, axis=1)
-    print (x.shape, embed.shape, y_.shape)
     
     pca = decomposition.PCA(n_components=2)
     embed = pca.fit_transform(embed)
@@ -24,8 +19,16 @@ def pca_visualize(x, embed, y_):
     ax_max = np.max(embed,0)
     ax_dist_sq = np.sum((ax_max-ax_min)**2)
 
-    plt.figure()
-    ax = plt.subplot(111)
+    plt.figure(1, figsize=(10,40))
+    ax = plt.subplot(411)
+    colors = []
+    for i in range(embed.shape[0]):
+        colors.append(plt.cm.Set1(y_[i] / 10.))
+    plt.scatter(embed[:, 0], embed[:, 1], c=colors)
+    plt.axis([ax_min[0], ax_max[0], ax_min[1], ax_max[1]])
+    plt.title('PCA Embedding Classes')
+
+    ax = plt.subplot(412)
     shown_images = np.array([[1., 1.]])
     for i in range(feat.shape[0]):
         dist = np.sum((feat[i] - shown_images)**2, 1)
@@ -39,39 +42,32 @@ def pca_visualize(x, embed, y_):
         ax.add_artist(imagebox)
 
     plt.axis([ax_min[0], ax_max[0], ax_min[1], ax_max[1]])
-    # plt.xticks([]), plt.yticks([])
-    plt.title('PCA Embedding')
-    plt.show()
+    plt.title('PCA Embedding Images')
 
 
 def tsne_visualize(x, embed, y_):
     print("Computing t-SNE embedding")
     tsne = manifold.TSNE(n_components=2, init='pca', random_state=0)
-    t0 = time()
     X_tsne = tsne.fit_transform(embed)
     plot_tsne_embedding(x, X_tsne, y_, "t-SNE Embedding")
-    plt.show()
 
 def plot_tsne_embedding(x, embed, y_, title):
-    if (x.shape[3] == 1):
-        x = x[:,:,:,0]
-    embed = embed.reshape(embed.shape[0], -1)
-    y_ = np.argmax(y_, axis=1)
     x_min, x_max = np.min(embed, 0), np.max(embed, 0)
     embed = (embed - x_min) / (x_max - x_min)
     ax_dist_sq = np.sum((x_max-x_min)**2)
 
-    plt.figure()
-    ax = plt.subplot(111)
-    for i in range(X.shape[0]):
-        plt.text(embed[i, 0], embed[i, 1], str(y_[i]),
-                 color=plt.cm.Set1(y_[i] / 10.),
-                 fontdict={'weight': 'bold', 'size': 9})
+    ax = plt.subplot(413)
+    colors = []
+    for i in range(embed.shape[0]):
+        colors.append(plt.cm.Set1(y_[i] / 10.))
+    plt.scatter(embed[:, 0], embed[:, 1], c=colors)
+    plt.title('t-SNE Embedding Classes')
 
+    ax = plt.subplot(414)
     if hasattr(offsetbox, 'AnnotationBbox'):
         # only print thumbnails with matplotlib > 1.0
         shown_images = np.array([[1., 1.]])  # just something big
-        for i in range(images.shape[0]):
+        for i in range(x.shape[0]):
             dist = np.sum((embed[i] - shown_images)**2, 1)
             if np.min(dist) < 5e-6*ax_dist_sq:   # don't show points that are too close
                 continue
@@ -80,6 +76,13 @@ def plot_tsne_embedding(x, embed, y_, title):
                 offsetbox.OffsetImage(x[i], cmap=plt.cm.gray_r, zoom=0.5),
                 xy=embed[i], frameon=False)
             ax.add_artist(imagebox)
-    plt.xticks([]), plt.yticks([])
-    if title is not None:
-        plt.title(title)
+    plt.title('t-SNE Embedding Images')
+
+def visualize(x, embed, y_, file_path):
+    if (x.shape[3] == 1):
+        x = x[:,:,:,0]
+    embed = embed.reshape(embed.shape[0], -1)
+    y_ = np.argmax(y_, axis=1)
+    pca_visualize(x, embed, y_)
+    tsne_visualize(x, embed, y_)
+    plt.savefig(file_path+".png")

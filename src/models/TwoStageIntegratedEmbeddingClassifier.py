@@ -6,6 +6,7 @@ from models import Classifier
 import tensorflow as tf
 import numpy as np
 from datetime import datetime
+from visualizations import EmbeddingVisualizer
 
 def compute_euclidean_distances(x, y, w=None):
     d = tf.square(tf.subtract(x, y))
@@ -64,7 +65,8 @@ class TwoStageIntegratedEmbeddingClassifier:
               log_freq=5,
               keep_prob=1.0,
               embed_iterations=100,
-              embed_batch_size=16):
+              embed_batch_size=16,
+              embed_visualize=True):
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
         embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
         class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
@@ -78,6 +80,13 @@ class TwoStageIntegratedEmbeddingClassifier:
 
             merged = tf.summary.merge_all("embedding")
             train_writer = tf.summary.FileWriter('./train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S')), sess.graph)
+
+            # Visualize:
+            if embed_visualize:
+                t_batch_x, t_batch_y_ = data_generator.test(100)
+                t_batch_embed = sess.run(self.o, feed_dict={self.x: t_batch_x, self.keep_prob: 1.0})
+                EmbeddingVisualizer.pca_visualize(t_batch_x, t_batch_embed, t_batch_y_)
+
             # Stage 1: Embedding
             for i in range(embed_iterations):
                 triplet_batch = data_generator.triplet_train(embed_batch_size)
@@ -98,13 +107,14 @@ class TwoStageIntegratedEmbeddingClassifier:
                 if i % log_freq == 0:
                     feed_dict = {self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0}
                     if self.track_embedding_loss:
-                        feed_dict[self.xp]
+                        #feed_dict[self.xp]
+                        pass 
 
                     summary, loss, acc = sess.run([merged, self.class_loss, self.accuracy], feed_dict=feed_dict)
                     train_writer.add_summary(summary, i)
                     v_batch_x, v_batch_y_ = data_generator.validation()
                     v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
-                    	feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
+                        feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
                     print('iteration %d, training loss %g, training accuracy %g, validation loss %g, validation accuracy %g' % (i, loss, acc, v_loss, v_acc))
 
                 class_train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})

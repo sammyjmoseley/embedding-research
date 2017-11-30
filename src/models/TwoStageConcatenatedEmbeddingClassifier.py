@@ -18,7 +18,7 @@ class TwoStageConcatenatedEmbeddingClassifier:
     def __init__(self, freeze_embed=True):
         self.freeze_embed = freeze_embed
 
-    def construct(self):
+    def construct(self, softmax=True, margin=0.2):
         # Input and label placeholders
         with tf.variable_scope('input'):
             self.x = tf.placeholder(tf.float32, shape=[None, 28, 28, 1], name='x')
@@ -40,7 +40,10 @@ class TwoStageConcatenatedEmbeddingClassifier:
             self.logits = tf.nn.softmax([self.dp, self.dn], name="logits")
 
         with tf.variable_scope('embed_loss'):
-            self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
+            if softmax:
+                self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
+            else:
+                self.embed_loss = tf.reduce_mean(tf.square(self.dp) - tf.square(self.dn) + margin)
 
         with tf.variable_scope('classifier'):
             self.f = e.construct(self.x, init_dim=2)
@@ -50,7 +53,9 @@ class TwoStageConcatenatedEmbeddingClassifier:
         with tf.variable_scope('class_loss'):
             self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
 
-    def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0, embed_iterations=100, embed_batch_size=16):
+    def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0, embed_iterations=100, embed_batch_size=16,
+              embed_visualize=False,
+              embed_visualize_size=100):
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
         embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
         class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
@@ -61,6 +66,14 @@ class TwoStageConcatenatedEmbeddingClassifier:
 
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
+
+            run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+
+            # Visualize:
+            vis_batch_x, vis_batch_y_ = data_generator.test(batch_size=embed_visualize_size)
+            if embed_visualize:
+                vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
+                EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/init")
 
             # Stage 1: Embedding
             for i in range(embed_iterations):
@@ -73,6 +86,10 @@ class TwoStageConcatenatedEmbeddingClassifier:
 
                 embed_train_step.run(feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
 
+            if embed_visualize:
+                vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
+                EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/embed")
+
             # Stage 2: Classification
             for i in range(iterations):
                 batch_x, batch_y_ = data_generator.train(batch_size)
@@ -82,10 +99,14 @@ class TwoStageConcatenatedEmbeddingClassifier:
                         feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
                     v_batch_x, v_batch_y_ = data_generator.validation()
                     v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
-                    	feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
+                        feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
                     print('iteration %d, training loss %g, training accuracy %g, validation loss %g, validation accuracy %g' % (i, loss, acc, v_loss, v_acc))
 
                 class_train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
+
+            if embed_visualize:
+                vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
+                EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/final")
 
             t_batch_x, t_batch_y_ = data_generator.test()
             t_loss, t_acc = sess.run([self.class_loss, self.accuracy],

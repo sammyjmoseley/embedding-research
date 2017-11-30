@@ -21,7 +21,7 @@ class TwoStageIntegratedEmbeddingClassifier:
         self.freeze_embed = freeze_embed
         self.track_embedding_loss = track_embedding_loss
 
-    def construct(self):
+    def construct(self, softmax=True, margin=0.2):
         # Input and label placeholders
         with tf.variable_scope('input'):
             self.x = tf.placeholder(tf.float32, shape=[None, 28, 28, 1], name='x')
@@ -43,7 +43,10 @@ class TwoStageIntegratedEmbeddingClassifier:
             self.logits = tf.nn.softmax([self.dp, self.dn], name="logits")
 
         with tf.variable_scope('embed_loss'):
-            self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
+            if softmax:
+                self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
+            else:
+                self.embed_loss = tf.reduce_mean(tf.square(self.dp) - tf.square(self.dn) + margin)
             collections = ["embedding"]
             if self.track_embedding_loss:
                 collections.append("classification")
@@ -66,7 +69,8 @@ class TwoStageIntegratedEmbeddingClassifier:
               keep_prob=1.0,
               embed_iterations=100,
               embed_batch_size=16,
-              embed_visualize=False):
+              embed_visualize=False,
+              embed_visualize_size=100):
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
         embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
         class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
@@ -84,7 +88,7 @@ class TwoStageIntegratedEmbeddingClassifier:
             train_writer = tf.summary.FileWriter(run_name, sess.graph)
 
             # Visualize:
-            vis_batch_x, vis_batch_y_ = data_generator.test(100)
+            vis_batch_x, vis_batch_y_ = data_generator.test(batch_size=embed_visualize_size)
             if embed_visualize:
                 vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/init")
@@ -112,10 +116,12 @@ class TwoStageIntegratedEmbeddingClassifier:
                 batch_x, batch_y_ = data_generator.train(batch_size)
 
                 if i % log_freq == 0:
+
                     feed_dict = {self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0}
                     if self.track_embedding_loss:
-                        #feed_dict[self.xp]
-                        pass 
+                        # draw triplet
+                        # manipulate feed_dict accordingly
+                        pass
 
                     summary, loss, acc = sess.run([merged, self.class_loss, self.accuracy], feed_dict=feed_dict)
                     train_writer.add_summary(summary, i)

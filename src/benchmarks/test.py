@@ -1,7 +1,8 @@
 from models import NoEmbeddingClassifier, TwoStageIntegratedEmbeddingClassifier, OneStageIntegratedEmbeddingClassifier, OneStageConcatenatedEmbeddingClassifier, TwoStageConcatenatedEmbeddingClassifier
-from data_generators import DefaultDataGenerator
+# from data_generators import DefaultDataGenerator as DataGenerator
+from data_generators.augmentation_data_generator import AugmentationDataGenerator as DataGenerator
 
-datagen = DefaultDataGenerator.RotatedMNISTDataGenerator()
+datagen = DataGenerator()
 #model = NoEmbeddingClassifier.NoEmbeddingClassifier()
 model = TwoStageIntegratedEmbeddingClassifier.TwoStageIntegratedEmbeddingClassifier(freeze_embed=False)
 #model = OneStageIntegratedEmbeddingClassifier.OneStageIntegratedEmbeddingClassifier()

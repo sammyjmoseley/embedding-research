@@ -7,19 +7,20 @@ from PIL import Image
 from data_generators.abstract_data_generator import AbstractGenerator
 from data_generators.triplet_dataset import TripletDataset
 
+image_shape = (28, 28, 1)
 
-def __rotator(img, rot_ang):
-    img = np.reshape(np.uint8(img * 255), (28, 28))
+def __rotator(old_img, rot_ang):
+    img = np.reshape(np.uint8(old_img * 255), (28, 28))
     src_im = Image.fromarray(img)
     im = src_im.convert('RGBA')
     dst_im = Image.new("RGBA", img.shape, "black")
     rot = im.rotate(rot_ang, expand=1).resize((28, 28))
     dst_im.paste(rot, (0, 0), rot)
-    data = np.matmul(np.asarray(dst_im), [1.0 / 3.0, 1.0 / 3.0, 1 / 3.0, 0]).reshape(img.shape)
+    data = np.matmul(np.asarray(dst_im), [1.0 / 3.0, 1.0 / 3.0, 1 / 3.0, 0]).reshape(image_shape)
     data = np.float64(data) / 255.0
     return data, np.array([rot_ang])
 
-default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30)]
+default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 50)]
 
 class AugmentationDataGenerator(AbstractGenerator):
     """
@@ -60,16 +61,17 @@ class AugmentationDataGenerator(AbstractGenerator):
         label_augmentor = lambda x: map(lambda f: x, augmentations)
 
         def augmentor(l, f):
-            l = map(f, l)
-            l = reduce(lambda x,y: x+y, l)
-            l = list(l)
-            return np.concatenate(l)
+            ret = map(f, l)
+            ret = reduce(lambda x,y: list(x)+list(y), ret)
+            ret = map(lambda x: np.array([x]), ret)
+            ret = list(ret)
+            return np.concatenate(ret)
 
         def get_tuple(idx):
             return lambda x: x[idx]
 
-        images = augmentor(images, lambda x: map(get_tuple(0), image_augmentor(x)))
         augs = augmentor(images, lambda x: map(get_tuple(1), image_augmentor(x)))
+        images = augmentor(images, lambda x: map(get_tuple(0), image_augmentor(x)))
         labels = augmentor(labels, label_augmentor)
 
         valid_ratio += train_ratio
@@ -122,26 +124,28 @@ class AugmentationDataGenerator(AbstractGenerator):
         if self.is_epochal:
             raise BaseException("not implemented")
         else:
-            idxs = random.choice(range(0, len(self.train_images)), batch_size)
+            idxs = random.sample(range(0, len(self.train_images)), batch_size)
             return self.train_images[idxs], self.train_image_classes[idxs]
 
     def triplet_train(self, batch_size):
         if self.is_epochal:
             raise BaseException("not implemented")
         else:
-            idxs = random.choice(range(0, len(self.train_images)), batch_size)
+            idxs = random.sample(range(0, len(self.train_images)), batch_size)
             ref_imgs = self.train_images[idxs]
             ref_augs = self.train_image_augs[idxs]
             ref_classes = self.train_image_classes[idxs]
 
             def tripleter(classes, eq):
-                func = lambda clazz: eq(self.train_image_classes, clazz)
-                choices = map(func, classes)
-                idxs = np.array(list(range(0, len(self.train_images))))
-                idxs = map(lambda x: np.random.choice(idxs[x]), choices)
-                pics = self.train_images[idxs]
-                augs = self.train_image_augs[idxs]
-                labels = self.train_images[idxs]
+                func = lambda clazz: eq(np.argmax(self.train_image_classes, axis=1),
+                                        np.argmax(clazz))
+                choices = np.array(list(map(func, classes)))
+                idxs_arr = np.array(list(range(0, len(self.train_images))))
+                idxs_new = map(lambda x: np.random.choice(idxs_arr[x]), choices)
+                idxs_new = np.array(list(idxs_new))
+                pics = self.train_images[idxs_new]
+                augs = self.train_image_augs[idxs_new]
+                labels = self.train_images[idxs_new]
                 return pics, augs, labels
 
             pos_imgs, pos_augs, pos_classes = tripleter(ref_classes, lambda x, y: x == y)
@@ -162,14 +166,14 @@ class AugmentationDataGenerator(AbstractGenerator):
         if self.is_epochal:
             raise BaseException("not implemented")
         else:
-            idxs = random.choice(range(0, len(self.valid_images)), batch_size)
+            idxs = random.sample(range(0, len(self.valid_images)), batch_size)
             return self.valid_images[idxs], self.valid_image_classes[idxs]
 
     def test(self, batch_size=None, augment=True):
         if self.is_epochal:
             raise BaseException("not implemented")
         else:
-            idxs = random.choice(range(0, len(self.test_images)), batch_size)
+            idxs = random.sample(range(0, len(self.test_images)), batch_size)
             return self.test_images[idxs], self.test_image_classes[idxs]
 
     def reset(self):

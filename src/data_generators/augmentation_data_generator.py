@@ -1,8 +1,7 @@
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 from functools import reduce
-from random import random
-import collections
+import random
 
 from data_generators.abstract_data_generator import AbstractGenerator
 
@@ -21,9 +20,9 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.valid_images = []
         self.test_images = []
 
-        self.train_images_augs = []
-        self.valid_images_augs = []
-        self.test_images_augs = []
+        self.train_image_augs = []
+        self.valid_image_augs = []
+        self.test_image_augs = []
 
         self.train_image_classes = []
         self.valid_image_classes = []
@@ -104,13 +103,31 @@ class AugmentationDataGenerator(AbstractGenerator):
         if self.is_epochal:
             raise BaseException("not implemented")
         else:
-            pass
+            idxs = random.choice(range(0, len(self.train_images)), batch_size)
+            return self.train_images[idxs], self.train_image_classes[idxs]
 
     def triplet_train(self, batch_size):
         if self.is_epochal:
             raise BaseException("not implemented")
         else:
-            pass
+            idxs = random.choice(range(0, len(self.train_images)), batch_size)
+            ref_imgs = self.train_images[idxs]
+            ref_augs = self.train_image_augs[idxs]
+            ref_classes = self.train_image_classes[idxs]
+
+            def tripleter(classes, eq):
+                func = lambda clazz: eq(self.train_image_classes, clazz)
+                choices = map(func, classes)
+                idxs = np.array(list(range(0, len(self.train_images))))
+                idxs = map(lambda x: np.random.choice(idxs[x]), choices)
+                pics = self.train_images[idxs]
+                augs = self.train_image_augs[idxs]
+                labels = self.train_images[idxs]
+                return pics, augs, labels
+
+            pos_imgs, pos_augs, pos_classes = tripleter(ref_classes, lambda x, y: x == y)
+            neg_imgs, neg_augs, neg_classes = tripleter(ref_classes, lambda x, y: x != y)
+
 
     def test(self, batch_size=None, augment=True):
         if self.is_epochal:

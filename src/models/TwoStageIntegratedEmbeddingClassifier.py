@@ -66,7 +66,7 @@ class TwoStageIntegratedEmbeddingClassifier:
               keep_prob=1.0,
               embed_iterations=100,
               embed_batch_size=16,
-              embed_visualize=True):
+              embed_visualize=False):
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
         embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
         class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
@@ -79,13 +79,15 @@ class TwoStageIntegratedEmbeddingClassifier:
             sess.run(tf.global_variables_initializer())
 
             merged = tf.summary.merge_all("embedding")
-            train_writer = tf.summary.FileWriter('./train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S')), sess.graph)
+
+            run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+            train_writer = tf.summary.FileWriter(run_name, sess.graph)
 
             # Visualize:
+            vis_batch_x, vis_batch_y_ = data_generator.test(100)
             if embed_visualize:
-                t_batch_x, t_batch_y_ = data_generator.test(100)
-                t_batch_embed = sess.run(self.o, feed_dict={self.x: t_batch_x, self.keep_prob: 1.0})
-                EmbeddingVisualizer.pca_visualize(t_batch_x, t_batch_embed, t_batch_y_)
+                vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
+                EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/init")
 
             # Stage 1: Embedding
             for i in range(embed_iterations):
@@ -100,6 +102,11 @@ class TwoStageIntegratedEmbeddingClassifier:
                 embed_train_step.run(feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
 
             merged = tf.summary.merge_all("classification")
+
+            if embed_visualize:
+                vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
+                EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/embed")
+
             # Stage 2: Classification
             for i in range(iterations):
                 batch_x, batch_y_ = data_generator.train(batch_size)
@@ -118,6 +125,10 @@ class TwoStageIntegratedEmbeddingClassifier:
                     print('iteration %d, training loss %g, training accuracy %g, validation loss %g, validation accuracy %g' % (i, loss, acc, v_loss, v_acc))
 
                 class_train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
+
+            if embed_visualize:
+                vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
+                EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/final")
 
             t_batch_x, t_batch_y_ = data_generator.test()
             t_loss, t_acc = sess.run([self.class_loss, self.accuracy],

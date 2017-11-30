@@ -24,7 +24,7 @@ def __rotator(old_img, rot_ang):
     data = np.float64(data) / 255.0
     return data, np.array([rot_ang])
 
-default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 60)]
+default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 5)]
 
 
 class AugmentationDataGenerator(AbstractGenerator):
@@ -67,6 +67,7 @@ class AugmentationDataGenerator(AbstractGenerator):
             labels.append(label)
         images = np.array(images)
         labels = np.array(labels)
+        img_ids = np.array(list(range(0, len(images))))
 
         image_augmentor = lambda x: map(lambda f: f(x), augmentations)
         label_augmentor = lambda x: map(lambda f: x, augmentations)
@@ -84,6 +85,7 @@ class AugmentationDataGenerator(AbstractGenerator):
         augs = augmentor(images, lambda x: map(get_tuple(1), image_augmentor(x)))
         images = augmentor(images, lambda x: map(get_tuple(0), image_augmentor(x)))
         labels = augmentor(labels, label_augmentor)
+        img_ids = augmentor(img_ids, label_augmentor)
 
         valid_ratio += train_ratio
         test_ratio += valid_ratio
@@ -97,7 +99,6 @@ class AugmentationDataGenerator(AbstractGenerator):
             np.random.shuffle(l)
             return l
         # shuffle the images, we make sure augs, labels, and ids are preserved in the same order
-        img_ids = np.array(list(range(0, len(images))))
         rand_indxs = random_idxs(len(images))
         images = images[rand_indxs]
         augs = augs[rand_indxs]
@@ -198,9 +199,8 @@ class AugmentationDataGenerator(AbstractGenerator):
         return self.full_images[self.full_img_ids == img_id]
 
     def get_embedding_visualization_data(self, classes=range(0, 10)):
-        ret = [np.array([self.__embedding_visualization_helper(clazz)]) for clazz in classes]
+        ret = [self.__embedding_visualization_helper(clazz) for clazz in classes]
         ret = np.concatenate(ret)
-        print(ret.shape)
         return ret
 
     def data_shape(self):

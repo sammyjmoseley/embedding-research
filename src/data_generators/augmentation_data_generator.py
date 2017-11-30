@@ -12,6 +12,7 @@ from data_generators.triplet_dataset import TripletDataset
 
 image_shape = (28, 28, 1)
 
+
 def __rotator(old_img, rot_ang):
     img = np.reshape(np.uint8(old_img * 255), (28, 28))
     src_im = Image.fromarray(img)
@@ -23,7 +24,8 @@ def __rotator(old_img, rot_ang):
     data = np.float64(data) / 255.0
     return data, np.array([rot_ang])
 
-default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 5)]
+default_augmentations = [lambda x: __rotator(x, ang) for ang in range(-30, 30, 60)]
+
 
 class AugmentationDataGenerator(AbstractGenerator):
     """
@@ -73,12 +75,28 @@ class AugmentationDataGenerator(AbstractGenerator):
         def get_tuple(idx):
             return lambda x: x[idx]
 
+
+
         augs = augmentor(images, lambda x: map(get_tuple(1), image_augmentor(x)))
         images = augmentor(images, lambda x: map(get_tuple(0), image_augmentor(x)))
         labels = augmentor(labels, label_augmentor)
 
         valid_ratio += train_ratio
         test_ratio += valid_ratio
+
+        # make it deterministic
+        np.random.seed(1)
+        random.seed(1)
+
+        def random_idxs(size):
+            l = list(range(0, size))
+            np.random.shuffle(l)
+            return l
+
+        rand_indxs = random_idxs(len(images))
+        images = images[rand_indxs]
+        augs = augs[rand_indxs]
+        labels = labels[rand_indxs]
 
         train_idx = int(len(images) * train_ratio)
         valid_idx = int(len(images) * valid_ratio)
@@ -95,30 +113,6 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.test_images = images[valid_idx:test_idx]
         self.test_image_augs = augs[valid_idx:test_idx]
         self.test_image_classes = labels[valid_idx:test_idx]
-
-        # make it deterministic
-        np.random.seed(1)
-        random.seed(1)
-
-        def random_idxs(size):
-            l = list(range(0, size))
-            np.random.shuffle(l)
-            return l
-
-        train_randomizer = random_idxs(len(self.train_images))
-        self.train_images = self.train_images[train_randomizer]
-        self.train_image_augs = self.train_image_augs[train_randomizer]
-        self.train_image_classes = self.train_image_classes[train_randomizer]
-
-        valid_randomizer = random_idxs(len(self.valid_images))
-        self.valid_images = self.valid_images[valid_randomizer]
-        self.valid_image_classes = self.valid_image_classes[valid_randomizer]
-        self.valid_image_classes = self.valid_image_classes[valid_randomizer]
-
-        test_randomizer = random_idxs(len(self.test_images))
-        self.test_images = self.test_images[test_randomizer]
-        self.test_image_classes = self.test_image_classes[test_randomizer]
-        self.test_image_classes = self.test_image_classes[test_randomizer]
 
     def __next_image(self):
         raise BaseException("not implemented")
@@ -148,7 +142,7 @@ class AugmentationDataGenerator(AbstractGenerator):
                 idxs_new = np.array(list(idxs_new))
                 pics = self.train_images[idxs_new]
                 augs = self.train_image_augs[idxs_new]
-                labels = self.train_images[idxs_new]
+                labels = self.train_image_classes[idxs_new]
                 return pics, augs, labels
 
             pos_imgs, pos_augs, pos_classes = tripleter(ref_classes, lambda x, y: x == y)
@@ -191,10 +185,13 @@ class AugmentationDataGenerator(AbstractGenerator):
         return (28, 28, 1)
 
 file_location = "rotated_dataset.gz"
+augmentation_clazz = AugmentationDataGenerator
 def load_augmentation_data_generator():
     if os.path.exists(file_location):
         f = gzip.open(file_location, "rb")
-        ret = pickle.load(f)
+        unpickler = pickle.Unpickler(f)
+        unpickler.find_class("data_generators.augmentation_data_generator", "AugmentationDataGenerator")
+        ret = unpickler.load()
         f.close()
         return ret
     else:

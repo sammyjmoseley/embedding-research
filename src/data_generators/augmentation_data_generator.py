@@ -3,6 +3,9 @@ from tensorflow.examples.tutorials.mnist import input_data
 from functools import reduce
 import random
 from PIL import Image
+import gzip
+import pickle
+import os
 
 from data_generators.abstract_data_generator import AbstractGenerator
 from data_generators.triplet_dataset import TripletDataset
@@ -186,3 +189,21 @@ class AugmentationDataGenerator(AbstractGenerator):
 
     def data_shape(self):
         return (28, 28, 1)
+
+file_location = "rotated_dataset.gz"
+def load_augmentation_data_generator():
+    if os.path.exists(file_location):
+        f = gzip.open(file_location, "rb")
+        ret = pickle.load(f)
+        f.close()
+        return ret
+    else:
+        rotation_augmentation = AugmentationDataGenerator()
+        f = gzip.open(file_location, "wb")
+        pickle.dump(rotation_augmentation, f)
+        f.close()
+        return rotation_augmentation
+
+if __name__ == "__main__":
+    load_augmentation_data_generator()
+    print(type(load_augmentation_data_generator()))

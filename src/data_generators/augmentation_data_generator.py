@@ -112,6 +112,7 @@ class AugmentationDataGenerator(AbstractGenerator):
         self.train_images = images[:train_idx]
         self.train_image_augs = augs[:train_idx]
         self.train_image_classes = labels[:train_idx]
+        self.train_image_ids = img_ids[:train_idx]
 
         self.valid_images = images[train_idx:valid_idx]
         self.valid_image_augs = augs[train_idx:valid_idx]
@@ -157,10 +158,16 @@ class AugmentationDataGenerator(AbstractGenerator):
         ref_imgs = self.train_images[idxs]
         ref_augs = self.train_image_augs[idxs]
         ref_classes = self.train_image_classes[idxs]
+        ref_img_ids = self.train_image_ids[idxs]
 
-        def tripleter(classes, eq):
-            func = lambda clazz: eq(np.argmax(self.train_image_classes, axis=1),
-                                    np.argmax(clazz))
+        func_clazzes = lambda eq: \
+            lambda clazz: eq(np.argmax(self.train_image_classes, axis=1), np.argmax(clazz))
+
+        func_ids = lambda eq: \
+            lambda id: eq(self.train_image_ids, np.argmax(id))
+
+        def tripleter(classes, func):
+
             choices = np.array(list(map(func, classes)))
             idxs_arr = np.array(list(range(0, len(self.train_images))))
             idxs_new = map(lambda x: np.random.choice(idxs_arr[x]), choices)
@@ -170,8 +177,10 @@ class AugmentationDataGenerator(AbstractGenerator):
             labels = self.train_image_classes[idxs_new]
             return pics, augs, labels
 
-        pos_imgs, pos_augs, pos_classes = tripleter(ref_classes, lambda x, y: x == y)
-        neg_imgs, neg_augs, neg_classes = tripleter(ref_classes, lambda x, y: x != y)
+        eq = lambda x, y: x == y
+        neq = lambda x, y: x != y
+        pos_imgs, pos_augs, pos_classes = tripleter(ref_img_ids, func_ids(eq))
+        neg_imgs, neg_augs, neg_classes = tripleter(ref_classes, func_clazzes(neq))
 
         weights = ref_augs - neg_augs
         weights = np.linalg.norm(weights, axis=1)

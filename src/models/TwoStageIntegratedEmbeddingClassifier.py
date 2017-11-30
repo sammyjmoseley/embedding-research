@@ -16,8 +16,9 @@ def compute_euclidean_distances(x, y, w=None):
 
 class TwoStageIntegratedEmbeddingClassifier:
 
-    def __init__(self, freeze_embed=True):
+    def __init__(self, freeze_embed=True, track_embedding_loss=True):
         self.freeze_embed = freeze_embed
+        self.track_embedding_loss = track_embedding_loss
 
     def construct(self):
         # Input and label placeholders
@@ -42,6 +43,9 @@ class TwoStageIntegratedEmbeddingClassifier:
 
         with tf.variable_scope('embed_loss'):
             self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
+            collections = ["embedding"]
+            if self.track_embedding_loss:
+                collections.append("classification")
             tf.summary.scalar('embed_loss', self.embed_loss, collections=["embedding"])
 
         with tf.variable_scope('classifier'):
@@ -53,7 +57,14 @@ class TwoStageIntegratedEmbeddingClassifier:
             self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
             tf.summary.scalar('class_loss', self.class_loss, collections=["classification"])
 
-    def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0, embed_iterations=100, embed_batch_size=16):
+    def train(self,
+              data_generator,
+              batch_size=50,
+              iterations=100,
+              log_freq=5,
+              keep_prob=1.0,
+              embed_iterations=100,
+              embed_batch_size=16):
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
         embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
         class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
@@ -85,8 +96,11 @@ class TwoStageIntegratedEmbeddingClassifier:
                 batch_x, batch_y_ = data_generator.train(batch_size)
 
                 if i % log_freq == 0:
-                    summary, loss, acc = sess.run([merged, self.class_loss, self.accuracy],
-                        feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
+                    feed_dict = {self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0}
+                    if self.track_embedding_loss:
+                        feed_dict[self.xp]
+
+                    summary, loss, acc = sess.run([merged, self.class_loss, self.accuracy], feed_dict=feed_dict)
                     train_writer.add_summary(summary, i)
                     v_batch_x, v_batch_y_ = data_generator.validation()
                     v_loss, v_acc = sess.run([self.class_loss, self.accuracy],

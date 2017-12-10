@@ -17,12 +17,13 @@ def compute_euclidean_distances(x, y, w=None):
 
 class TwoStageIntegratedEmbeddingClassifier:
 
-    def __init__(self, freeze_embed=True, track_embedding_loss=True):
+    def __init__(self, freeze_embed=True, track_embedding_loss=True, use_hardest_n_examples=None):
         self.freeze_embed = freeze_embed
         self.track_embedding_loss = track_embedding_loss
         self.image_size = 28
         self.num_channels = 1
         self.num_labels = 10
+        self.use_hardest_n_examples = use_hardest_n_examples
 
     def construct(self, softmax=True, margin=0.2):
         # Input and label placeholders
@@ -47,9 +48,15 @@ class TwoStageIntegratedEmbeddingClassifier:
 
         with tf.variable_scope('embed_loss'):
             if softmax:
-                self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
+                self.embed_loss = tf.pow(self.logits[0], 2)
             else:
-                self.embed_loss = tf.reduce_mean(tf.maximum(tf.square(self.dp) - tf.square(self.dn) + margin, 0))
+                self.embed_loss = tf.maximum(tf.square(self.dp) - tf.square(self.dn) + margin, 0)
+
+            if self.use_hardest_n_examples is not None:
+                self.embed_loss = tf.reduce_mean(tf.nn.top_k(self.embed_loss, k=self.use_hardest_n_examples).values)
+
+            self.embed_loss = tf.reduce_mean(self.embed_loss)
+
             collections = ["embedding"]
             if self.track_embedding_loss:
                 collections.append("classification")

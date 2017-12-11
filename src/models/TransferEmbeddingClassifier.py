@@ -124,9 +124,9 @@ class NoEmbeddingClassifier:
             self.train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
 
         t_batch_x, t_batch_y_ = data_generator.test(augment=False)
-        t_loss = sess.run([self.class_loss],
+        t_loss, acc = sess.run([self.class_loss, self.accuracy],
                                  feed_dict={self.x: t_batch_x, self.y_: t_batch_y_, self.keep_prob: 1.0})
-        print('test loss {}, test accuracy'.format(t_loss))
+        print('test loss {}, test accuracy {}'.format(t_loss, acc))
 
     def convolution_embed(self, sess, x):
         embedding, = sess.run([self.convolution_embedding],
@@ -142,6 +142,7 @@ class RotatedEmbeddingClassifier:
         with tf.variable_scope('input'):
             self.x_ = no_embedding_classifier.x
             self.x = tf.placeholder(tf.float32, shape=self.x_.shape, name="x")
+            self.y_ = tf.placeholder(tf.float32, shape=[None, 10], name='y_')
             self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
         dim = 1
         init_dim = 2
@@ -185,6 +186,33 @@ class RotatedEmbeddingClassifier:
                 print("embedding shape: {}".format(embedding_dist.shape))
                 self.loss = tf.reduce_mean(embedding_dist)
 
+        with tf.variable_scope('classifier'):
+            with tf.variable_scope('fc1', reuse=True):
+                out = 10
+                x = tf.nn.dropout(x, keep_prob=self.keep_prob)
+
+                w = weight_variable([dim, out])
+                b = bias_variable([out])
+                h = tf.nn.relu(tf.matmul(x, w) + b)
+                dim = out
+                x = h
+
+            with tf.variable_scope('fc2', reuse=True):
+                out = 10
+                x = tf.nn.dropout(x, keep_prob=self.keep_prob)
+                w = weight_variable([dim, out])
+                b = bias_variable([out])
+                self.before_softmax = tf.matmul(x, w) + b
+                print(self.before_softmax.shape)
+                self.y = tf.nn.softmax(self.before_softmax, dim=1)
+
+            with tf.variable_scope('class_loss', reuse=True):
+                print(self.y_.shape)
+                print(self.before_softmax.shape)
+                self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
+                correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
+                self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
         train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
                                        "rotated_embedding")
         self.train_step = tf.train.AdamOptimizer(1e-3).minimize(self.loss, var_list=train_vars)
@@ -215,18 +243,21 @@ class RotatedEmbeddingClassifier:
                                            self.keep_prob: keep_prob})
 
         t_batch_x, t_batch_y_ = data_generator.test(augment=False)
-        t_loss, = sess.run([self.loss],
+        t_loss, acc = sess.run([self.loss, self.accuracy],
                                  feed_dict={self.x: t_batch_x,
                                             self.x_: t_batch_x,
-                                            self.keep_prob: 1.0})
-        print('test loss no augment {}, test accuracy'.format(t_loss))
+                                            self.keep_prob: 1.0,
+                                            self.y_: t_batch_y_
+                                            })
+        print('test loss no augment {}, test accuracy {}'.format(t_loss, acc))
 
         (t_batch_x, t_batch_x_), t_batch_y_ = data_generator.test(augment=True)
-        t_loss, = sess.run([self.loss],
+        t_loss, acc = sess.run([self.loss, self.accuracy],
                            feed_dict={self.x: t_batch_x,
                                       self.x_: t_batch_x_,
-                                      self.keep_prob: 1.0})
-        print('test loss no augment {}, test accuracy'.format(t_loss))
+                                      self.keep_prob: 1.0,
+                                      self.y_: t_batch_y_})
+        print('test loss augment {}, test accuracy {}'.format(t_loss, acc))
 
 if __name__ == "__main__":
     classifier = NoEmbeddingClassifier()

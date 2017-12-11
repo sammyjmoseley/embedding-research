@@ -38,7 +38,8 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
                  valid_ratio=0.05,
                  test_ratio=0.1,
                  triplet_technique=TripletTechnique.AUGMENTATION,
-                 train_iteration_technique=RandomIterationTechnique):
+                 train_iteration_technique=RandomIterationTechnique,
+                 augment=True):
         self.train_images = []
         self.valid_images = []
         self.test_images = []
@@ -48,6 +49,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         self.triplet_technique = triplet_technique
         self.train_images_iteration_technique = train_iteration_technique()
         self.augmentor = RotationAugmentation()
+        self.augment = augment
 
         if train_ratio + valid_ratio + test_ratio > 1.0:
             raise BaseException('cannot have ratios go greater than 1.0')
@@ -93,12 +95,18 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
                 return None
             idxs = idxs[:max(len(idxs), batch_size)]
             mask[idxs] = False
-            return self.__single_augment(self.train_images[idxs]), self.train_image_classes[idxs]
+            if self.augment:
+                return self.__single_augment(self.train_images[idxs]), self.train_image_classes[idxs]
+            else:
+                return self.__reshape(self.train_images[idxs]), self.train_image_classes[idxs]
 
         else:
             raise BaseException('unknown iteration technique')
 
     def triplet_train(self, batch_size):
+        if not self.augment:
+            raise BaseException()
+
         if self.triplet_technique == TripletTechnique.AUGMENTATION:
             references = []
             positives = []
@@ -168,7 +176,10 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         random.seed(a=1)
         idx = len(self.valid_images) if batch_size is None else batch_size
         valid_images = self.valid_images[:idx]
-        valid_images = self.__single_augment(valid_images)
+        if self.augment:
+            valid_images = self.__single_augment(valid_images)
+        else:
+            valid_images = self.__reshape(valid_images)
         random.seed(a=None)
         return valid_images, self.valid_image_classes[:idx]
 
@@ -188,12 +199,18 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
     def data_shape(self):
         return 28, 28, 1
 
-
     def __single_augment(self, images):
         new_shape = (1, 28, 28, 1)
         f = lambda x: np.reshape(self.augmentor.random_single_augmentation()(x), new_shape)
         images = np.concatenate(list(map(f, images)))
         return images
+
+    def __reshape(self, images):
+        new_shape = (1, 28, 28, 1)
+        f = lambda x: np.reshape(x, new_shape)
+        images = np.concatenate(list(map(f, images)))
+        return images
+
 
 if __name__ == "__main__":
     generator = RotatedMNISTDataGenerator()

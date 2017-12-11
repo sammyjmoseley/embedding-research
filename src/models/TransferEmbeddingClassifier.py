@@ -130,7 +130,7 @@ class NoEmbeddingClassifier:
                                      feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
                 v_batch_x, v_batch_y_ = data_generator.validation()
                 v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
-                                         feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: keep_prob})
+                                         feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
                 print(
                     'iteration {}, training loss {}, validation loss {}, acc {}'.format(i, loss, v_loss, v_acc))
 
@@ -140,7 +140,7 @@ class NoEmbeddingClassifier:
         t_loss, acc = sess.run([self.class_loss, self.accuracy],
                                feed_dict={self.x: t_batch_x,
                                           self.y_: t_batch_y_,
-                                          self.keep_prob: keep_prob,
+                                          self.keep_prob: 1.0,
                                           })
         print('test loss no augment {}, test accuracy {}'.format(t_loss, acc))
 
@@ -148,7 +148,7 @@ class NoEmbeddingClassifier:
         t_loss, acc = sess.run([self.class_loss, self.accuracy],
                                feed_dict={self.x: t_batch_x,
                                           self.y_: t_batch_y_,
-                                          self.keep_prob: keep_prob})
+                                          self.keep_prob: 1.0})
         print('test loss augment {}, test accuracy {}'.format(t_loss, acc))
 
     def convolution_embed(self, sess, x):
@@ -259,7 +259,7 @@ class RotatedEmbeddingClassifier:
                                          feed_dict={self.x: v_batch_x,
                                                     self.x_: v_batch_x_,
                                                     self.y_: v_batch_y_,
-                                                    self.keep_prob: keep_prob})
+                                                    self.keep_prob: 1.0})
                 v_acc = "-1"
                 print(
                     'iteration {}, training loss {}, validation loss {}, acc {}'.format(i, loss, v_loss, v_acc))
@@ -274,7 +274,7 @@ class RotatedEmbeddingClassifier:
                                  feed_dict={self.x: t_batch_x,
                                             self.x_: t_batch_x,
                                             self.y_: t_batch_y_,
-                                            self.keep_prob: keep_prob,
+                                            self.keep_prob: 1.0,
                                             })
         print('test loss no augment {}, test accuracy {}'.format(t_loss, acc))
 
@@ -283,7 +283,7 @@ class RotatedEmbeddingClassifier:
                            feed_dict={self.x: t_batch_x,
                                       self.x_: t_batch_x_,
                                       self.y_: t_batch_y_,
-                                      self.keep_prob: keep_prob})
+                                      self.keep_prob: 1.0})
         print('test loss augment {}, test accuracy {}'.format(t_loss, acc))
 
     def train_fc(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
@@ -298,7 +298,7 @@ class RotatedEmbeddingClassifier:
                                      feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
                 v_batch_x, v_batch_y_ = data_generator.validation()
                 v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
-                                         feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: keep_prob})
+                                         feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
                 print(
                     'iteration {}, training loss {}, validation loss {}, acc {}'.format(i, loss, v_loss, v_acc))
 
@@ -309,7 +309,7 @@ class RotatedEmbeddingClassifier:
                                feed_dict={self.x: t_batch_x,
                                           self.x_: t_batch_x,
                                           self.y_: t_batch_y_,
-                                          self.keep_prob: keep_prob,
+                                          self.keep_prob: 1.0,
                                           })
         print('test loss no augment {}, test accuracy {}'.format(t_loss, acc))
 
@@ -318,7 +318,7 @@ class RotatedEmbeddingClassifier:
                                feed_dict={self.x: t_batch_x,
                                           self.x_: t_batch_x_,
                                           self.y_: t_batch_y_,
-                                          self.keep_prob: keep_prob})
+                                          self.keep_prob: 1.0})
         print('test loss augment {}, test accuracy {}'.format(t_loss, acc))
 
 if __name__ == "__main__":

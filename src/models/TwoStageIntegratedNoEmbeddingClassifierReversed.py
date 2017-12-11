@@ -20,7 +20,7 @@ def compute_euclidean_distances(x, y, w=None):
     d = tf.sqrt(tf.reduce_sum(d))
     return d
 
-class TwoStageIntegratedEmbeddingClassifierReversed:
+class TwoStageIntegratedNoEmbeddingClassifierReversed:
 
     def __init__(self, freeze_embed=True, track_embedding_loss=True):
         self.freeze_embed = freeze_embed
@@ -61,8 +61,6 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
             else:
                 self.embed_loss = tf.reduce_mean(tf.log1p(tf.maximum(-1+1e-10, self.dp - self.dn)))
             collections = ["embedding"]
-            if self.track_embedding_loss:
-                collections.append("classification")
             tf.summary.scalar('embed_loss', self.embed_loss, collections=collections)
 
         with tf.variable_scope('classifier'):
@@ -92,7 +90,7 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
         else:
             class_train_step = tf.train.AdamOptimizer().minimize(self.class_loss)
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding/conv3")
-        embed_train_step = tf.train.AdamOptimizer(1e-3).minimize(0.9*self.class_loss+0.1*self.embed_loss, var_list=[embed_train_vars, class_train_vars])
+        embed_train_step = tf.train.AdamOptimizer(1e-3).minimize(self.class_loss, var_list=[embed_train_vars, class_train_vars])
 
         with tf.Session() as sess:
             def weight_variable(shape):
@@ -190,7 +188,6 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
                                 candidate_negative_distances[nindx] = np.inf"""
                             if (nindx >= i*k):
                                 nindx = nindx + k
-                            break
                         negative_images[idx] = stacked_images[nindx]
                         
                         negative_classes[idx] = np.zeros(10)
@@ -210,16 +207,10 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
 
             # Stage 1: Classification
             for i in range(iterations):
-                batch_x, batch_y_ = data_generator.train(batch_size, only_originals=only_originals)
+                batch_x, batch_y_ = data_generator.train(batch_size, only_originals=True)
 
                 if i % log_freq == 0:
-
                     feed_dict = {self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0}
-                    if self.track_embedding_loss:
-                        triplet_batch, triplet_classes = data_generator.triplet_train(16, 3)
-                        triplet_batch = hard_mining(triplet_batch, triplet_classes)
-                        feed_dict = {self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: 1.0}
-
                     summary, loss, acc = sess.run([merged, self.class_loss, self.accuracy], feed_dict=feed_dict)
                     train_writer.add_summary(summary, i)
                     v_batch_x, v_batch_y_ = data_generator.validation()
@@ -239,18 +230,18 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
 
             # Stage 2: Embedding
             for i in range(embed_iterations):
-                triplet_batch, triplet_classes = data_generator.triplet_train(16, 3)
-                triplet_batch = hard_mining(triplet_batch, triplet_classes)
+                batch_x, batch_y_ = data_generator.train(batch_size, only_originals=False)
 
                 if i % log_freq == 0:
-                    summary, loss = sess.run([merged, self.embed_loss],
-                        feed_dict = {self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: 1.0})
-                    print('iteration %d, embedding loss %g' % (i, loss))
+                    feed_dict = {self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0}
+                    summary, loss, acc = sess.run([merged, self.class_loss, self.accuracy], feed_dict=feed_dict)
                     train_writer.add_summary(summary, i+iterations)
-                    train_writer.flush()
+                    v_batch_x, v_batch_y_ = data_generator.validation()
+                    v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
+                        feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
+                    print('iteration %d, training loss %g, training accuracy %g, validation loss %g, validation accuracy %g' % (i, loss, acc, v_loss, v_acc))
 
-                embed_train_step.run(feed_dict = {self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: keep_prob})
-
+                embed_train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
             if embed_visualize:
                 vis_batch_embed, vis_prediction = sess.run([self.o, self.correct_prediction], feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0, self.y_: vis_batch_y_})
                 print("Num correct: " + str(np.sum(vis_prediction)))

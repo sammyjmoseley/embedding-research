@@ -35,4 +35,4 @@ class Classifier:
 		correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(y_, 1))
 		self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 		
-		return self.y, self.accuracy, self.before_softmax
+		return self.y, self.accuracy, self.before_softmax, correct_prediction

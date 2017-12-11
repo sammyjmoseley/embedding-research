@@ -182,11 +182,14 @@ class RotatedEmbeddingClassifier:
             with tf.variable_scope('read_out'):
                 non_rotated_embedding = self.no_embedding_classifier.convolution_embedding
                 embedding_dist = compute_euclidean_distances(non_rotated_embedding, self.convolution_embedding)
+                embedding_dist = embedding_dist / tf.norm(non_rotated_embedding, axis=1)
                 print("embedding shape: {}".format(embedding_dist.shape))
                 self.loss = tf.reduce_mean(embedding_dist)
 
     def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
-        train_step = tf.train.AdamOptimizer(1e-3).minimize(self.loss)
+        train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
+                                             "rotated_embedding")
+        train_step = tf.train.AdamOptimizer(1e-3).minimize(self.loss, var_list=train_vars)
 
         with tf.Session(graph=graph) as sess:
             sess.run(tf.global_variables_initializer())
@@ -218,9 +221,9 @@ if __name__ == "__main__":
     classifier = NoEmbeddingClassifier()
     embeddor = RotatedEmbeddingClassifier(classifier)
     data_generator = RotatedMNISTDataGenerator(augment=False)
-    classifier.train(data_generator=data_generator, batch_size=200, iterations=1000)
+    classifier.train(data_generator=data_generator, batch_size=200, iterations=100)
 
     data_generator = RotatedMNISTDataGenerator(augment=False)
-    embeddor.train(data_generator=data_generator, batch_size=200, iterations=1000)
+    embeddor.train(data_generator=data_generator, batch_size=200, iterations=10)
 
 

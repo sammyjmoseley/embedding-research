@@ -46,7 +46,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         self.valid_image_classes = []
         self.test_image_classes = []
         self.triplet_technique = triplet_technique
-        self.augmentor = RotationAugmentation()
+        self.augmentor = RotationAugmentation(ang_range=(-30, 30))
         self.augment = augment
         self.idx = 0
 
@@ -71,6 +71,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
         self.train_images = images[:train_idx]
         self.train_image_classes = labels[:train_idx]
+        self.train_augmentations = self.__single_augment(self.train_images)
 
         self.valid_images = images[train_idx:valid_idx]
         self.valid_image_classes = labels[train_idx:valid_idx]
@@ -80,18 +81,33 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def train(self, batch_size):
         length = self.train_images.shape[0]
-        indices = range(self.idx%length, min(self.idx%length + length, length))
+        indices = self.idx%length, min(self.idx%length + batch_size, length)
+        shuffle = True if self.idx%length + batch_size > length else False
+        self.idx += batch_size
         if self.augment:
-            return self.__single_augment(self.train_images[indices]), self.train_image_classes[indices]
+            ret = (self.__reshape(self.train_augmentations[indices[0]:indices[1]]),
+                   self.__reshape(self.train_images[indices[0]:indices[1]])), \
+                   self.train_image_classes[indices[0]:indices[1]]
         else:
-            return self.__reshape(self.train_images[indices]), self.train_image_classes[indices]
+            ret = self.__reshape(self.train_images[indices[0]:indices[1]]), self.train_image_classes[indices[0]:indices[1]]
+
+        if shuffle:
+            # idxs = np.array(list(range(0, length)))
+            # np.random.shuffle(idxs)
+            # self.train_images = self.train_images[idxs]
+            # self.train_image_classes = self.train_image_classes[idxs]
+            if self.augment:
+                self.train_augmentations = self.__single_augment(self.train_images)
+
+        return ret
 
     def validation(self, batch_size=None):
         random.seed(a=1)
         idx = len(self.valid_images) if batch_size is None else batch_size
         valid_images = self.valid_images[:idx]
         if self.augment:
-            valid_images = self.__single_augment(valid_images)
+            valid_images = self.__single_augment(valid_images), \
+                           self.__reshape(valid_images)
         else:
             valid_images = self.__reshape(valid_images)
         random.seed(a=None)
@@ -102,7 +118,8 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         idx = len(self.test_images) if batch_size is None else batch_size
         test_images = self.test_images[:idx]
         if augment:
-            test_images = self.__single_augment(test_images)
+            test_images = self.__single_augment(test_images), \
+                          test_images
         random.seed(a=None)
         return test_images, self.test_image_classes[:idx]
 

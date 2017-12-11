@@ -15,7 +15,8 @@ class AbstractAugmentation(object):
 
 
 class RotationAugmentation(AbstractAugmentation):
-    ang_range = (0, 360)
+    def __init__(self, ang_range=(0, 360)):
+        self.ang_range = ang_range
     @staticmethod
     def rotator(img, rot_ang):
         img = np.reshape(np.uint8(img * 255), (28, 28))

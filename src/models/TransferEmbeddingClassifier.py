@@ -68,14 +68,14 @@ class NoEmbeddingClassifier:
             h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
             dim = out
             x = h
+            dim = 128
+            x = tf.reshape(x, [-1, dim])
             self.convolution_embedding = tf.placeholder_with_default(x,
                                                                      x.shape,
                                                                      name="convolution_embedding")
             print(self.convolution_embedding.shape)
 
         with tf.variable_scope('fc1'):
-            dim = 128
-            x = tf.reshape(self.convolution_embedding, [-1, dim])
             out = 10
             x = tf.nn.dropout(x, keep_prob=self.keep_prob)
 
@@ -174,12 +174,16 @@ class RotatedEmbeddingClassifier:
                 h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
                 dim = out
                 x = h
+                dim = 128
+                x = tf.reshape(x, [-1, dim])
                 self.convolution_embedding = x
                 print(x.shape)
 
             with tf.variable_scope('read_out'):
                 non_rotated_embedding = self.no_embedding_classifier.convolution_embedding
-                self.loss = tf.reduce_mean(compute_euclidean_distances(non_rotated_embedding, self.convolution_embedding))
+                embedding_dist = compute_euclidean_distances(non_rotated_embedding, self.convolution_embedding)
+                print("embedding shape: {}".format(embedding_dist.shape))
+                self.loss = tf.reduce_mean(embedding_dist)
 
     def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
         train_step = tf.train.AdamOptimizer(1e-3).minimize(self.loss)

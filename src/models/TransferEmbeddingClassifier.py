@@ -214,12 +214,19 @@ class RotatedEmbeddingClassifier:
                                            self.x_: batch_x,
                                            self.keep_prob: keep_prob})
 
-        (t_batch_x, t_batch_x_), t_batch_y_ = data_generator.test(augment=False)
+        t_batch_x, t_batch_y_ = data_generator.test(augment=False)
         t_loss, = sess.run([self.loss],
                                  feed_dict={self.x: t_batch_x,
-                                            self.x_: t_batch_x_,
+                                            self.x_: t_batch_x,
                                             self.keep_prob: 1.0})
-        print('test loss {}, test accuracy'.format(t_loss))
+        print('test loss no augment {}, test accuracy'.format(t_loss))
+
+        (t_batch_x, t_batch_x_), t_batch_y_ = data_generator.test(augment=True)
+        t_loss, = sess.run([self.loss],
+                           feed_dict={self.x: t_batch_x,
+                                      self.x_: t_batch_x_,
+                                      self.keep_prob: 1.0})
+        print('test loss no augment {}, test accuracy'.format(t_loss))
 
 if __name__ == "__main__":
     classifier = NoEmbeddingClassifier()

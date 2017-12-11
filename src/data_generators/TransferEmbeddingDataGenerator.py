@@ -46,7 +46,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         self.valid_image_classes = []
         self.test_image_classes = []
         self.triplet_technique = triplet_technique
-        self.augmentor = RotationAugmentation()
+        self.augmentor = RotationAugmentation(ang_range=(-30, 30))
         self.augment = augment
         self.idx = 0
 

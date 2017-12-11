@@ -43,3 +43,20 @@ class RotationAugmentation(AbstractAugmentation):
             return rotator(r, rot_ang_p), rotator(p, rot_ang_p), rotator(n, rot_ang_n), delta
 
         return lambda r, p, n: augmentor(r, p, n)
+
+    def random_hard_augmentation(self, loss_pos, loss_neg):
+        def augmentor(r, ps, ns):
+            rotator = RotationAugmentation.rotator
+            rot_ang_p = random.randrange(*self.ang_range)
+            # rot_ang_n = random.randrange(0, 360)
+            rot_ang_n = 0
+            delta = math.pow(rot_ang_p-rot_ang_n, 2.0)/math.pow(2.0*math.pi, 2.0)
+            ref = rotator(r, rot_ang_p)
+            loss_ps = np.array(map(lambda x: loss_pos(x, ref), map(lambda p: rotator(p, rot_ang_p), ps)))
+            loss_ns = np.array(map(lambda x: loss_neg(x, ref), map(lambda n: rotator(n, rot_ang_n), ns)))
+
+            max_loss_ps_idx = np.argmax(loss_ps)
+            max_loss_ns_idx = np.argmax(loss_ns)
+            return ref, rotator(ps[max_loss_ps_idx], rot_ang_p), rotator(ns[max_loss_ns_idx], rot_ang_n), delta
+
+        return lambda r, ps, ns: augmentor(r, ps, ns)

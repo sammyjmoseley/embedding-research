@@ -10,6 +10,8 @@ from visualizations import EmbeddingVisualizer
 from data_generators.triplet_dataset import TripletDataset
 from scipy.spatial import distance_matrix
 from matplotlib import pyplot as plt
+from tensorflow.contrib.tensorboard.plugins import projector
+import os
 
 def compute_euclidean_distances(x, y, w=None):
     d = tf.square(tf.subtract(x, y))
@@ -92,6 +94,14 @@ class TwoStageIntegratedEmbeddingClassifier:
             class_train_step = tf.train.AdamOptimizer().minimize(self.class_loss)
 
         with tf.Session() as sess:
+            def weight_variable(shape):
+                initial = tf.truncated_normal(shape, stddev=0.01)
+                return tf.get_variable("weights", dtype=tf.float32, initializer=initial)
+            with tf.variable_scope('projection'):
+                projection = weight_variable([50, 256])
+            with tf.variable_scope('originals'):
+                originals = weight_variable([50, 784])
+
             sess.run(tf.global_variables_initializer())
 
             merged = tf.summary.merge_all("embedding")
@@ -101,11 +111,23 @@ class TwoStageIntegratedEmbeddingClassifier:
             train_writer = tf.summary.FileWriter(run_name, sess.graph)
             saver = tf.train.Saver()
 
+            config = projector.ProjectorConfig()
+            embedding_conf = config.embeddings.add()
+            embedding_conf.tensor_name = projection.name
+            embedding_conf.metadata_path = '../../test-labels.tsv'
+            embedding_conf = config.embeddings.add()
+            embedding_conf.tensor_name = originals.name
+            embedding_conf.metadata_path = '../../test-labels.tsv'
+            projector.visualize_embeddings(train_writer, config)
+
             # Visualize:
             vis_batch_x, vis_batch_y_ = data_generator.get_embedding_visualization_data()
+            originals = tf.reshape(vis_batch_x, [50, 784])
             if embed_visualize:
                 vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/init")
+                projection = tf.reshape(vis_batch_embed,[50, 256])
+                saver.save(sess, run_name+"/model", 1)
 
             def hard_mining(pk, classes):
                 p = pk.shape[0]
@@ -201,6 +223,8 @@ class TwoStageIntegratedEmbeddingClassifier:
             if embed_visualize:
                 vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/embed")
+                projection = tf.reshape(vis_batch_embed,[50, 256])
+                saver.save(sess, run_name+"/model", 2)
 
             # Stage 2: Classification
             for i in range(iterations):
@@ -226,17 +250,20 @@ class TwoStageIntegratedEmbeddingClassifier:
             if embed_visualize:
                 vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/final")
+                projection = tf.reshape(vis_batch_embed,[50, 256])
+                saver.save(sess, run_name+"/model", 3)
 
             t_batch_x, t_batch_y_ = data_generator.test()
             t_loss, t_acc = sess.run([self.class_loss, self.accuracy],
                 feed_dict={self.x: t_batch_x, self.y_: t_batch_y_, self.keep_prob: 1.0})
             print('test loss %g, test accuracy %g' % (t_loss, t_acc))
+            print (np.argmax(vis_batch_y_, axis=1))
 
             train_writer.flush()
             train_writer.close()
 
             self.run_name = run_name
-            self.model_path = saver.save(sess, run_name+"/model")
+            self.model_path = saver.save(sess, run_name+"/model", 2)
 
     def predict(self, data):
         with tf.Session() as sess:

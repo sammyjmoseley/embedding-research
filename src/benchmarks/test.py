@@ -11,4 +11,4 @@ model = TwoStageIntegratedEmbeddingClassifier.TwoStageIntegratedEmbeddingClassif
 #model = TwoStageConcatenatedEmbeddingClassifier.TwoStageConcatenatedEmbeddingClassifier(freeze_embed=False)
 model.construct(softmax=False)
 # model.train(datagen, log_freq=5, embed_iterations=100, iterations=100, keep_prob=0.5)
-model.train(datagen, keep_prob=0.5, iterations=0, batch_size=50, embed_iterations=1000, embed_batch_size=50, embed_visualize=True, only_originals=True)
+model.train(datagen, keep_prob=0.5, iterations=1000, batch_size=50, embed_iterations=0, embed_batch_size=50, embed_visualize=True, only_originals=True)

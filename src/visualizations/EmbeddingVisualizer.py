@@ -1,7 +1,10 @@
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import offsetbox
 from sklearn import decomposition, manifold
+
 
 
 def pca_visualize(x, embed, y_):

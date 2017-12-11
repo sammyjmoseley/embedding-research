@@ -1,0 +1,4 @@
+12/11: 13:11 and 13:18 runs were run on 2-stage reversed with alpha=0.9.
+First one is 1000 iterations pure classification, 1000 fine-tuning
+Second one is full 2000 iterations pure classification
+14:29 2000 classification iterations with isepochal=False, only_originals=False

@@ -256,7 +256,6 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
             t_loss, t_acc = sess.run([self.class_loss, self.accuracy],
                 feed_dict={self.x: t_batch_x, self.y_: t_batch_y_, self.keep_prob: 1.0})
             print('test loss %g, test accuracy %g' % (t_loss, t_acc))
-            print (np.argmax(vis_batch_y_, axis=1))
 
             train_writer.flush()
             train_writer.close()

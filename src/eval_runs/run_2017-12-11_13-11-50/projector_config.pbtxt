@@ -1,0 +1,8 @@
+embeddings {
+  tensor_name: "projection/weights:0"
+  metadata_path: "../../test-labels.tsv"
+}
+embeddings {
+  tensor_name: "originals/weights:0"
+  metadata_path: "../../test-labels.tsv"
+}

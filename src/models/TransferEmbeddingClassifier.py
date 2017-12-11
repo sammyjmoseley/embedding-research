@@ -228,7 +228,7 @@ if __name__ == "__main__":
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        classifier.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1)
+        classifier.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1000)
 
         data_generator = RotatedMNISTDataGenerator(augment=True)
         embeddor.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1000)

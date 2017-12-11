@@ -71,6 +71,7 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
         self.train_images = images[:train_idx]
         self.train_image_classes = labels[:train_idx]
+        self.train_augmentations = self.__single_augment(self.train_images)
 
         self.valid_images = images[train_idx:valid_idx]
         self.valid_image_classes = labels[train_idx:valid_idx]
@@ -80,13 +81,24 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
 
     def train(self, batch_size):
         length = self.train_images.shape[0]
-        indices = range(self.idx%length, min(self.idx%length + length, length))
+        indices = self.idx%length, min(self.idx%length + batch_size, length)
+        shuffle = True if self.idx%length + batch_size > length else False
+        self.idx += batch_size
         if self.augment:
-            return (self.__single_augment(self.train_images[indices]),
-                    self.__reshape(self.train_images[indices])), \
-                    self.train_image_classes[indices]
+            ret = (self.__reshape(self.train_augmentations[indices[0]:indices[1]]),
+                   self.__reshape(self.train_images[indices[0]:indices[1]])), \
+                   self.train_image_classes[indices[0]:indices[1]]
         else:
-            return self.__reshape(self.train_images[indices]), self.train_image_classes[indices]
+            ret = self.__reshape(self.train_images[indices[0]:indices[1]]), self.train_image_classes[indices[0]:indices[1]]
+
+        if shuffle:
+            idxs = np.array(list(range(0, length)))
+            np.random.shuffle(idxs)
+            self.train_images = self.train_images[idxs]
+            self.train_image_classes = self.train_image_classes[idxs]
+            self.train_augmentations = self.__single_augment(self.train_images)
+
+        return ret
 
     def validation(self, batch_size=None):
         random.seed(a=1)

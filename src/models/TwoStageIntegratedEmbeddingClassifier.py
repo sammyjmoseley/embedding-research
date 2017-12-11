@@ -115,6 +115,7 @@ class TwoStageIntegratedEmbeddingClassifier:
                         feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
                     print('iteration %d, embedding loss %g' % (i, loss))
                     train_writer.add_summary(summary, i)
+                    train_writer.flush()
 
                 embed_train_step.run(feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
 

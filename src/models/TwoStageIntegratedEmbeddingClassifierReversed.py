@@ -92,7 +92,7 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
         else:
             class_train_step = tf.train.AdamOptimizer().minimize(self.class_loss)
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding/conv3")
-        embed_train_step = tf.train.AdamOptimizer(1e-4).minimize(0.95*self.class_loss+0.05*self.embed_loss, var_list=[embed_train_vars, class_train_vars])
+        embed_train_step = tf.train.AdamOptimizer(1e-3).minimize(0.9*self.class_loss+0.1*self.embed_loss, var_list=[embed_train_vars, class_train_vars])
 
         with tf.Session() as sess:
             def weight_variable(shape):

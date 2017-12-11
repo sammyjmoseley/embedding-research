@@ -84,7 +84,7 @@ class TwoStageIntegratedEmbeddingClassifier:
               embed_visualize_size=100,
               only_originals=False):
         embed_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "embedding")
-        embed_train_step = tf.train.AdamOptimizer().minimize(self.embed_loss, var_list=embed_train_vars)
+        embed_train_step = tf.train.AdamOptimizer(1e-4).minimize(self.embed_loss, var_list=embed_train_vars)
         class_train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "classifier")
         if (self.freeze_embed == True):
             class_train_step = tf.train.AdamOptimizer().minimize(self.class_loss, var_list = class_train_vars)
@@ -154,11 +154,15 @@ class TwoStageIntegratedEmbeddingClassifier:
                         candidate_negative_distances = candidate_negative_distances[:]
                         nindx = idx
                         while(classes[(int)(nindx / k)] == classes[i]):
-                            if (np.random.choice(2) == 0):
+                            s = np.argsort(candidate_negative_distances)
+                            candidate_indx = s[:(int)(0.2*len(candidate_negative_distances))]
+                            nindx = np.random.choice(candidate_indx)
+                            candidate_negative_distances[nindx] = np.inf
+                            """if (np.random.choice(3) == 0):
                                 nindx = np.random.choice(len(candidate_negative_distances))
                             else:
                                 nindx = np.argmin(candidate_negative_distances)
-                                candidate_negative_distances[nindx] = np.inf
+                                candidate_negative_distances[nindx] = np.inf"""
                             if (nindx >= i*k):
                                 nindx = nindx + k
                         negative_images[idx] = stacked_images[nindx]
@@ -180,7 +184,7 @@ class TwoStageIntegratedEmbeddingClassifier:
 
             # Stage 1: Embedding
             for i in range(embed_iterations):
-                triplet_batch, triplet_classes = data_generator.triplet_train(16, 4)
+                triplet_batch, triplet_classes = data_generator.triplet_train(16, 3)
                 triplet_batch = hard_mining(triplet_batch, triplet_classes)
 
                 if i % log_freq == 0:
@@ -206,7 +210,7 @@ class TwoStageIntegratedEmbeddingClassifier:
 
                     feed_dict = {self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0}
                     if self.track_embedding_loss:
-                        triplet_batch, triplet_classes = data_generator.triplet_train(16, 4)
+                        triplet_batch, triplet_classes = data_generator.triplet_train(16, 3)
                         triplet_batch = hard_mining(triplet_batch, triplet_classes)
                         feed_dict = {self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: 1.0}
 

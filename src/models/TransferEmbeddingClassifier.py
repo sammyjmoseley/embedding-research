@@ -140,7 +140,8 @@ class RotatedEmbeddingClassifier:
 
         # Input and label placeholders
         with tf.variable_scope('input'):
-            self.x = no_embedding_classifier.x
+            self.x_ = no_embedding_classifier.x
+            self.x = tf.placeholder(tf.float32, shape=self.x_.shape, name="x")
             self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
         dim = 1
         init_dim = 2
@@ -197,19 +198,27 @@ class RotatedEmbeddingClassifier:
 
             if i % log_freq == 0:
                 loss, = sess.run([self.loss],
-                                     feed_dict={self.x: batch_x, self.keep_prob: 1.0})
+                                     feed_dict={self.x: batch_x,
+                                                self.x_: batch_x,
+                                                self.keep_prob: 1.0})
                 v_batch_x, v_batch_y_ = data_generator.validation()
                 v_loss,  = sess.run([self.loss],
-                                         feed_dict={self.x: v_batch_x, self.keep_prob: 1.0})
+                                         feed_dict={self.x: v_batch_x,
+                                                    self.x_: v_batch_x,
+                                                    self.keep_prob: 1.0})
                 v_acc = "-1"
                 print(
                     'iteration {}, training loss {}, validation loss {}, acc {}'.format(i, loss, v_loss, v_acc))
 
-            self.train_step.run(feed_dict={self.x: batch_x, self.keep_prob: keep_prob})
+            self.train_step.run(feed_dict={self.x: batch_x,
+                                           self.x_: batch_x,
+                                           self.keep_prob: keep_prob})
 
         t_batch_x, t_batch_y_ = data_generator.test(augment=False)
         t_loss, = sess.run([self.loss],
-                                 feed_dict={self.x: t_batch_x, self.keep_prob: 1.0})
+                                 feed_dict={self.x: t_batch_x,
+                                            self.x_: t_batch_x,
+                                            self.keep_prob: 1.0})
         print('test loss {}, test accuracy'.format(t_loss))
 
 if __name__ == "__main__":

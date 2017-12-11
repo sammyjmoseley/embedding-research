@@ -82,7 +82,9 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         length = self.train_images.shape[0]
         indices = range(self.idx%length, min(self.idx%length + length, length))
         if self.augment:
-            return self.__single_augment(self.train_images[indices]), self.train_image_classes[indices]
+            return (self.__single_augment(self.train_images[indices]),
+                    self.__reshape(self.train_images[indices])), \
+                    self.train_image_classes[indices]
         else:
             return self.__reshape(self.train_images[indices]), self.train_image_classes[indices]
 
@@ -91,7 +93,8 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         idx = len(self.valid_images) if batch_size is None else batch_size
         valid_images = self.valid_images[:idx]
         if self.augment:
-            valid_images = self.__single_augment(valid_images)
+            valid_images = self.__single_augment(valid_images), \
+                           self.__reshape(valid_images)
         else:
             valid_images = self.__reshape(valid_images)
         random.seed(a=None)
@@ -102,7 +105,8 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
         idx = len(self.test_images) if batch_size is None else batch_size
         test_images = self.test_images[:idx]
         if augment:
-            test_images = self.__single_augment(test_images)
+            test_images = self.__single_augment(test_images), \
+                          test_images
         random.seed(a=None)
         return test_images, self.test_image_classes[:idx]
 

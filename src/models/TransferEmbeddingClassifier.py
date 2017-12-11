@@ -5,7 +5,7 @@ from models import Embedding
 from models import Classifier
 import tensorflow as tf
 import numpy as np
-from data_generators.SequentialDataGenerator import RotatedMNISTDataGenerator
+from data_generators.TransferEmbeddingDataGenerator import RotatedMNISTDataGenerator
 from datetime import datetime
 
 graph = tf.get_default_graph()
@@ -194,17 +194,17 @@ class RotatedEmbeddingClassifier:
         print(run_name)
 
         for i in range(iterations):
-            batch_x, batch_y_ = data_generator.train(batch_size)
+            (batch_x, batch_x_), classes = data_generator.train(batch_size)
 
             if i % log_freq == 0:
                 loss, = sess.run([self.loss],
                                      feed_dict={self.x: batch_x,
-                                                self.x_: batch_x,
+                                                self.x_: batch_x_,
                                                 self.keep_prob: 1.0})
-                v_batch_x, v_batch_y_ = data_generator.validation()
+                (v_batch_x, v_batch_x_), v_batch_y_ = data_generator.validation()
                 v_loss,  = sess.run([self.loss],
                                          feed_dict={self.x: v_batch_x,
-                                                    self.x_: v_batch_x,
+                                                    self.x_: v_batch_x_,
                                                     self.keep_prob: 1.0})
                 v_acc = "-1"
                 print(
@@ -214,10 +214,10 @@ class RotatedEmbeddingClassifier:
                                            self.x_: batch_x,
                                            self.keep_prob: keep_prob})
 
-        t_batch_x, t_batch_y_ = data_generator.test(augment=False)
+        (t_batch_x, t_batch_x_), t_batch_y_ = data_generator.test(augment=False)
         t_loss, = sess.run([self.loss],
                                  feed_dict={self.x: t_batch_x,
-                                            self.x_: t_batch_x,
+                                            self.x_: t_batch_x_,
                                             self.keep_prob: 1.0})
         print('test loss {}, test accuracy'.format(t_loss))
 
@@ -228,9 +228,9 @@ if __name__ == "__main__":
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        classifier.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1000)
+        classifier.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1)
 
-        data_generator = RotatedMNISTDataGenerator(augment=False)
+        data_generator = RotatedMNISTDataGenerator(augment=True)
         embeddor.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1000)
 
 

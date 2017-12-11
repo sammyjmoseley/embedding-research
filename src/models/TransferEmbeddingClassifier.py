@@ -103,33 +103,30 @@ class NoEmbeddingClassifier:
                 correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
                 self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-    def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
-        train_step = tf.train.AdamOptimizer(1e-3).minimize(self.class_loss)
+        self.train_step = tf.train.AdamOptimizer(1e-3).minimize(self.class_loss)
 
-        with tf.Session(graph=graph) as sess:
-            sess.run(tf.global_variables_initializer())
+    def train(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
+        run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        print(run_name)
 
-            run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-            print(run_name)
+        for i in range(iterations):
+            batch_x, batch_y_ = data_generator.train(batch_size)
 
-            for i in range(iterations):
-                batch_x, batch_y_ = data_generator.train(batch_size)
+            if i % log_freq == 0:
+                loss, = sess.run([self.class_loss],
+                                     feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
+                v_batch_x, v_batch_y_ = data_generator.validation()
+                v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
+                                         feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
+                print(
+                    'iteration {}, training loss {}, validation loss {}, acc {}'.format(i, loss, v_loss, v_acc))
 
-                if i % log_freq == 0:
-                    loss, = sess.run([self.class_loss],
-                                         feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
-                    v_batch_x, v_batch_y_ = data_generator.validation()
-                    v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
-                                             feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
-                    print(
-                        'iteration {}, training loss {}, validation loss {}, acc {}'.format(i, loss, v_loss, v_acc))
+            self.train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
 
-                train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
-
-            t_batch_x, t_batch_y_ = data_generator.test(augment=False)
-            t_loss = sess.run([self.class_loss],
-                                     feed_dict={self.x: t_batch_x, self.y_: t_batch_y_, self.keep_prob: 1.0})
-            print('test loss {}, test accuracy'.format(t_loss))
+        t_batch_x, t_batch_y_ = data_generator.test(augment=False)
+        t_loss = sess.run([self.class_loss],
+                                 feed_dict={self.x: t_batch_x, self.y_: t_batch_y_, self.keep_prob: 1.0})
+        print('test loss {}, test accuracy'.format(t_loss))
 
     def convolution_embed(self, sess, x):
         embedding, = sess.run([self.convolution_embedding],
@@ -187,44 +184,44 @@ class RotatedEmbeddingClassifier:
                 print("embedding shape: {}".format(embedding_dist.shape))
                 self.loss = tf.reduce_mean(embedding_dist)
 
-    def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
         train_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
-                                             "rotated_embedding")
-        train_step = tf.train.AdamOptimizer(1e-3).minimize(self.loss, var_list=train_vars)
+                                       "rotated_embedding")
+        self.train_step = tf.train.AdamOptimizer(1e-3).minimize(self.loss, var_list=train_vars)
 
-        with tf.Session(graph=graph) as sess:
-            sess.run(tf.global_variables_initializer())
+    def train(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
+        run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        print(run_name)
 
-            run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-            print(run_name)
+        for i in range(iterations):
+            batch_x, batch_y_ = data_generator.train(batch_size)
 
-            for i in range(iterations):
-                batch_x, batch_y_ = data_generator.train(batch_size)
+            if i % log_freq == 0:
+                loss, = sess.run([self.loss],
+                                     feed_dict={self.x: batch_x, self.keep_prob: 1.0})
+                v_batch_x, v_batch_y_ = data_generator.validation()
+                v_loss,  = sess.run([self.loss],
+                                         feed_dict={self.x: v_batch_x, self.keep_prob: 1.0})
+                v_acc = "-1"
+                print(
+                    'iteration {}, training loss {}, validation loss {}, acc {}'.format(i, loss, v_loss, v_acc))
 
-                if i % log_freq == 0:
-                    loss, = sess.run([self.loss],
-                                         feed_dict={self.x: batch_x, self.keep_prob: 1.0})
-                    v_batch_x, v_batch_y_ = data_generator.validation()
-                    v_loss,  = sess.run([self.loss],
-                                             feed_dict={self.x: v_batch_x, self.keep_prob: 1.0})
-                    v_acc = "-1"
-                    print(
-                        'iteration {}, training loss {}, validation loss {}, acc {}'.format(i, loss, v_loss, v_acc))
+            self.train_step.run(feed_dict={self.x: batch_x, self.keep_prob: keep_prob})
 
-                train_step.run(feed_dict={self.x: batch_x, self.keep_prob: keep_prob})
-
-            t_batch_x, t_batch_y_ = data_generator.test(augment=False)
-            t_loss, = sess.run([self.loss],
-                                     feed_dict={self.x: t_batch_x, self.keep_prob: 1.0})
-            print('test loss {}, test accuracy'.format(t_loss))
+        t_batch_x, t_batch_y_ = data_generator.test(augment=False)
+        t_loss, = sess.run([self.loss],
+                                 feed_dict={self.x: t_batch_x, self.keep_prob: 1.0})
+        print('test loss {}, test accuracy'.format(t_loss))
 
 if __name__ == "__main__":
     classifier = NoEmbeddingClassifier()
     embeddor = RotatedEmbeddingClassifier(classifier)
     data_generator = RotatedMNISTDataGenerator(augment=False)
-    classifier.train(data_generator=data_generator, batch_size=200, iterations=100)
 
-    data_generator = RotatedMNISTDataGenerator(augment=False)
-    embeddor.train(data_generator=data_generator, batch_size=200, iterations=10)
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+        classifier.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1000)
+
+        data_generator = RotatedMNISTDataGenerator(augment=False)
+        embeddor.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1000)
 
 

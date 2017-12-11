@@ -34,73 +34,74 @@ def compute_euclidean_distances(x, y, w=None):
 
 class NoEmbeddingClassifier:
     def __init__(self):
-        # Input and label placeholders
-        with tf.variable_scope('input'):
-            self.x = tf.placeholder(tf.float32, shape=[None, 28, 28, 1], name='x')
-            self.y_ = tf.placeholder(tf.float32, shape=[None, 10], name='y_')
-            self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
-        dim = 1
-        init_dim = 2
-        x = self.x
-        with tf.variable_scope('conv1'):
-            print(x.shape)
-            out = init_dim
-            w = weight_variable([3, 3, dim, out])
-            b = bias_variable([out])
-            h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
-            dim = out
-            x = h
-            print(x.shape)
+        with tf.variable_scope('classifier'):
+            # Input and label placeholders
+            with tf.variable_scope('input'):
+                self.x = tf.placeholder(tf.float32, shape=[None, 28, 28, 1], name='x')
+                self.y_ = tf.placeholder(tf.float32, shape=[None, 10], name='y_')
+                self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
+            dim = 1
+            init_dim = 2
+            x = self.x
+            with tf.variable_scope('conv1'):
+                print(x.shape)
+                out = init_dim
+                w = weight_variable([3, 3, dim, out])
+                b = bias_variable([out])
+                h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
+                dim = out
+                x = h
+                print(x.shape)
 
-        with tf.variable_scope('conv2'):
-            out = dim * 2
-            w = weight_variable([3, 3, dim, out])
-            b = bias_variable([out])
-            h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
-            dim = out
-            x = h
-            print(x.shape)
+            with tf.variable_scope('conv2'):
+                out = dim * 2
+                w = weight_variable([3, 3, dim, out])
+                b = bias_variable([out])
+                h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
+                dim = out
+                x = h
+                print(x.shape)
 
-        with tf.variable_scope('conv3'):
-            out = dim * 2
-            w = weight_variable([3, 3, dim, out])
-            b = bias_variable([out])
-            h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
-            dim = out
-            x = h
-            dim = 128
-            x = tf.reshape(x, [-1, dim])
-            self.convolution_embedding = tf.placeholder_with_default(x,
-                                                                     x.shape,
-                                                                     name="convolution_embedding")
-            print(self.convolution_embedding.shape)
+            with tf.variable_scope('conv3'):
+                out = dim * 2
+                w = weight_variable([3, 3, dim, out])
+                b = bias_variable([out])
+                h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
+                dim = out
+                x = h
+                dim = 128
+                x = tf.reshape(x, [-1, dim])
+                self.convolution_embedding = tf.placeholder_with_default(x,
+                                                                         x.shape,
+                                                                         name="convolution_embedding")
+                print(self.convolution_embedding.shape)
 
-        with tf.variable_scope('fc1'):
-            out = 10
-            x = tf.nn.dropout(x, keep_prob=self.keep_prob)
+            with tf.variable_scope('fc1'):
+                out = 10
+                x = tf.nn.dropout(x, keep_prob=self.keep_prob)
 
-            w = weight_variable([dim, out])
-            b = bias_variable([out])
-            h = tf.nn.relu(tf.matmul(x, w) + b)
-            dim = out
-            x = h
+                w = weight_variable([dim, out])
+                b = bias_variable([out])
+                h = tf.nn.relu(tf.matmul(x, w) + b)
+                dim = out
+                x = h
 
 
-        with tf.variable_scope('fc2'):
-            out = 10
-            x = tf.nn.dropout(x, keep_prob=self.keep_prob)
-            w = weight_variable([dim, out])
-            b = bias_variable([out])
-            self.before_softmax = tf.matmul(x, w) + b
-            print(self.before_softmax.shape)
-            self.y = tf.nn.softmax(self.before_softmax, dim=1)
+            with tf.variable_scope('fc2'):
+                out = 10
+                x = tf.nn.dropout(x, keep_prob=self.keep_prob)
+                w = weight_variable([dim, out])
+                b = bias_variable([out])
+                self.before_softmax = tf.matmul(x, w) + b
+                print(self.before_softmax.shape)
+                self.y = tf.nn.softmax(self.before_softmax, dim=1)
 
-        with tf.variable_scope('class_loss'):
-            print(self.y_.shape)
-            print(self.before_softmax.shape)
-            self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
-            correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
-            self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+            with tf.variable_scope('class_loss'):
+                print(self.y_.shape)
+                print(self.before_softmax.shape)
+                self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
+                correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
+                self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
     def train(self, data_generator, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
         train_step = tf.train.AdamOptimizer(1e-3).minimize(self.class_loss)

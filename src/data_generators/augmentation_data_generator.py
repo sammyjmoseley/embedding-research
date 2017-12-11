@@ -80,6 +80,16 @@ class AugmentationDataGenerator(AbstractGenerator):
         for i in range(images.shape[0]):
             images[i] = random_augmentation(images[i])[0]
 
+        def random_idxs(size):
+            l = list(range(0, size))
+            np.random.shuffle(l)
+            return l
+        # shuffle the images, we make sure augs, labels, and ids are preserved in the same order
+        rand_indxs = random_idxs(len(images))
+        images = images[rand_indxs]
+        labels = labels[rand_indxs]
+        img_ids = img_ids[rand_indxs]
+
         image_augmentor = lambda x: map(lambda f: f(x), augmentations)
         label_augmentor = lambda x: map(lambda f: x, augmentations)
 
@@ -100,17 +110,6 @@ class AugmentationDataGenerator(AbstractGenerator):
 
         valid_ratio += train_ratio
         test_ratio += valid_ratio
-
-        def random_idxs(size):
-            l = list(range(0, size))
-            np.random.shuffle(l)
-            return l
-        # shuffle the images, we make sure augs, labels, and ids are preserved in the same order
-        rand_indxs = random_idxs(len(images))
-        images = images[rand_indxs]
-        augs = augs[rand_indxs]
-        labels = labels[rand_indxs]
-        img_ids = img_ids[rand_indxs]
 
         train_idx = int(len(images) * train_ratio)
         valid_idx = int(len(images) * valid_ratio)
@@ -159,54 +158,17 @@ class AugmentationDataGenerator(AbstractGenerator):
             idxs = random.sample(range(0, len(actual_train_images)), batch_size)
             return actual_train_images[idxs], actual_train_image_classes[idxs]
 
-    def triplet_train(self, batch_size):
-        if self.is_epochal:
-            if self.train_epochal >= len(self.train_images):
-                self.reset()
-            batch_size = min(batch_size, len(self.train_images)-self.train_epochal)
-            idxs = range(np.sum(self.train_epochal), len(self.train_images))[:batch_size]
-            self.train_epochal += batch_size
-
-        else:
-            idxs = random.sample(range(0, len(self.train_images)), batch_size)
-
-        ref_imgs = self.train_images[idxs]
-        ref_augs = self.train_image_augs[idxs]
-        ref_classes = self.train_image_classes[idxs]
-        ref_img_ids = self.train_image_ids[idxs]
-
-        func_clazzes = lambda eq: \
-            lambda clazz: eq(np.argmax(self.train_image_classes, axis=1), np.argmax(clazz))
-
-        func_ids = lambda eq: \
-            lambda id: eq(self.train_image_ids, np.argmax(id))
-
-        def tripleter(classes, func):
-
-            choices = np.array(list(map(func, classes)))
-            idxs_arr = np.array(list(range(0, len(self.train_images))))
-            idxs_new = map(lambda x: np.random.choice(idxs_arr[x]), choices)
-            idxs_new = np.array(list(idxs_new))
-            pics = self.train_images[idxs_new]
-            augs = self.train_image_augs[idxs_new]
-            labels = self.train_image_classes[idxs_new]
-            return pics, augs, labels
-
-        eq = lambda x, y: x == y
-        neq = lambda x, y: x != y
-        pos_imgs, pos_augs, pos_classes = tripleter(ref_img_ids, func_ids(eq))
-        neg_imgs, neg_augs, neg_classes = tripleter(ref_classes, func_clazzes(neq))
-
-        weights = ref_augs - neg_augs
-        weights = np.linalg.norm(weights, axis=1)
-
-        return TripletDataset(r=ref_imgs,
-                              p=pos_imgs,
-                              n=neg_imgs,
-                              r_class=ref_classes,
-                              p_class=pos_classes,
-                              n_class=neg_classes,
-                              weights=weights)
+    def triplet_train(self, p, k):
+        p_img = np.random.choice(self.train_image_ids, p, replace=False)
+        batch = np.zeros([p, k, 28, 28, 1])
+        classes = np.zeros(p)
+        for i in range(p):
+            candidates = self.train_images[self.train_image_ids == p_img[i]]
+            indices = np.random.choice(candidates.shape[0], k, replace=False)
+            batch[i] = candidates[indices]
+            classes[i] = np.argmax(self.train_image_classes[self.train_image_ids == p_img[i]][0])
+            
+        return batch, classes
 
     def validation(self, batch_size=None):
         batch_size = len(self.valid_images) if batch_size is None else min(len(self.valid_images), batch_size)

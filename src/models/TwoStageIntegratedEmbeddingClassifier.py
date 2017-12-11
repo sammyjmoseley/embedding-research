@@ -7,6 +7,9 @@ import tensorflow as tf
 import numpy as np
 from datetime import datetime
 from visualizations import EmbeddingVisualizer
+from data_generators.triplet_dataset import TripletDataset
+from scipy.spatial import distance_matrix
+from matplotlib import pyplot as plt
 
 def compute_euclidean_distances(x, y, w=None):
     d = tf.square(tf.subtract(x, y))
@@ -32,6 +35,9 @@ class TwoStageIntegratedEmbeddingClassifier:
             self.xn = tf.placeholder(tf.float32, shape=[None, 28, 28, 1], name='xn')
             self.y_ = tf.placeholder(tf.float32, shape=[None, 10], name='y_')
             self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
+            tf.summary.image('reference', self.x, collections=["embedding"], max_outputs=1)
+            tf.summary.image('positive', self.xp, collections=["embedding"], max_outputs=1)
+            tf.summary.image('negative', self.xn, collections=["embedding"], max_outputs=1)
 
         with tf.variable_scope('embedding') as scope:
             e = Embedding.Embedding()
@@ -43,13 +49,15 @@ class TwoStageIntegratedEmbeddingClassifier:
         with tf.variable_scope('distances'):
             self.dp = compute_euclidean_distances(self.o, self.op)
             self.dn = compute_euclidean_distances(self.o, self.on)
-            self.logits = tf.nn.softmax([self.dp, self.dn], name="logits")
+            tf.summary.scalar('p_distance', self.dp, collections=["embedding"])
+            tf.summary.scalar('n_distance', self.dn, collections=["embedding"])
 
         with tf.variable_scope('embed_loss'):
             if softmax:
+                self.logits = tf.nn.softmax([self.dp, self.dn], name="logits")
                 self.embed_loss = tf.reduce_mean(tf.pow(self.logits[0], 2))
             else:
-                self.embed_loss = tf.reduce_mean(tf.maximum(tf.square(self.dp) - tf.square(self.dn) + margin, 0))
+                self.embed_loss = tf.reduce_mean(tf.log1p(tf.maximum(-1+1e-10, self.dp - self.dn)))
             collections = ["embedding"]
             if self.track_embedding_loss:
                 collections.append("classification")
@@ -99,9 +107,81 @@ class TwoStageIntegratedEmbeddingClassifier:
                 vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/init")
 
+            def hard_mining(pk, classes):
+                p = pk.shape[0]
+                k = pk.shape[1]
+                reference_images = np.zeros([p*k, 28, 28, 1])
+                positive_images = np.zeros([p*k, 28, 28, 1])
+                negative_images = np.zeros([p*k, 28, 28, 1])
+                reference_classes = np.zeros([p*k, 10])
+                positive_classes = np.zeros([p*k, 10])
+                negative_classes = np.zeros([p*k, 10])
+
+                stacked_images = pk.reshape((p*k, 28, 28, 1))
+                embeds = sess.run(self.o, feed_dict={self.x: stacked_images, self.keep_prob:1.0})
+                embeds = embeds.reshape(embeds.shape[0], -1)
+                De = distance_matrix(embeds, embeds)
+
+                for i in range(p):
+                    for j in range(k):
+                        idx = i*k + j
+
+                        reference_images[idx] = pk[i][j]
+
+                        reference_classes[idx] = np.zeros(10)
+                        reference_classes[idx, (int)(classes[i])] = 1
+                        #print ("showing reference...")
+                        #plt.imshow(reference_images[idx][:,:,0])
+                        #print (reference_classes[idx])
+                        #plt.show()
+
+                        positive_mask = np.zeros(p*k).astype(bool)
+                        for counter in range(i*k, (i+1)*k):
+                            positive_mask[counter] = True
+                        candidate_positive_distances = De[idx][positive_mask]
+                        positive_images[idx] = stacked_images[i*k + np.argmax(candidate_positive_distances)]
+
+                        positive_classes[idx] = np.zeros(10)
+                        positive_classes[idx, (int)(classes[i])] = 1
+                        #print ("showing positive...")
+                        #plt.imshow(positive_images[idx][:,:,0])
+                        #print (positive_classes[idx])
+                        #plt.show()
+                        
+
+                        # find negative
+                        candidate_negative_distances = De[idx][positive_mask == False]
+                        candidate_negative_distances = candidate_negative_distances[:]
+                        nindx = idx
+                        while(classes[(int)(nindx / k)] == classes[i]):
+                            if (np.random.choice(2) == 0):
+                                nindx = np.random.choice(len(candidate_negative_distances))
+                            else:
+                                nindx = np.argmin(candidate_negative_distances)
+                                candidate_negative_distances[nindx] = np.inf
+                            if (nindx >= i*k):
+                                nindx = nindx + k
+                        negative_images[idx] = stacked_images[nindx]
+                        
+                        negative_classes[idx] = np.zeros(10)
+                        negative_classes[idx, (int)(classes[(int)(nindx / k)])] = 1
+                        #print ("showing negative...")
+                        #print(negative_classes[idx])
+                        #plt.imshow(negative_images[idx][:,:,0])
+                        #plt.show()
+
+                return TripletDataset(r=reference_images,
+                                      p=positive_images,
+                                      n=negative_images,
+                                      r_class=reference_classes,
+                                      p_class=positive_classes,
+                                      n_class=negative_classes,
+                                      weights=np.zeros(p*k))
+
             # Stage 1: Embedding
             for i in range(embed_iterations):
-                triplet_batch = data_generator.triplet_train(embed_batch_size)
+                triplet_batch, triplet_classes = data_generator.triplet_train(16, 4)
+                triplet_batch = hard_mining(triplet_batch, triplet_classes)
 
                 if i % log_freq == 0:
                     summary, loss = sess.run([merged, self.embed_loss],
@@ -126,7 +206,8 @@ class TwoStageIntegratedEmbeddingClassifier:
 
                     feed_dict = {self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0}
                     if self.track_embedding_loss:
-                        triplet_batch = data_generator.triplet_train(batch_size)
+                        triplet_batch, triplet_classes = data_generator.triplet_train(16, 4)
+                        triplet_batch = hard_mining(triplet_batch, triplet_classes)
                         feed_dict = {self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: 1.0}
 
                     summary, loss, acc = sess.run([merged, self.class_loss, self.accuracy], feed_dict=feed_dict)

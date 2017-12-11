@@ -15,7 +15,6 @@ generator = augmentation_data_generator.load_augmentation_data_generator()
 #
 images = generator.get_embedding_visualization_data()
 
-i = 0
 for img in images[0]:
-    cv2.imwrite("image_output/{}.jpg".format(i), np.uint8(img*255))
-    i += 1
+    cv2.imshow("reference", img)
+    cv2.waitKey(0)

@@ -27,13 +27,29 @@ def conv2d(x, W):
 def max_pool_2x2(x):
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
                           strides=[1, 2, 2, 1], padding='SAME')
+
+
 def compute_euclidean_distances(x, y, w=None):
     d = tf.square(tf.subtract(x, y))
     d = tf.sqrt(tf.reduce_sum(d, axis=1))
     return d
 
+
+def create_fc_layer(this, name, x, dim, out, reuse=None):
+    with tf.variable_scope(name, reuse=reuse):
+        x = tf.nn.dropout(x, keep_prob=this.keep_prob)
+
+        w = weight_variable([dim, out])
+        b = bias_variable([out])
+        h = tf.nn.relu(tf.matmul(x, w) + b)
+        x = h
+        return x
+
 class NoEmbeddingClassifier:
     def __init__(self):
+
+        self.layers = [("fc1", (128, 10))]
+
         with tf.variable_scope('classifier'):
             # Input and label placeholders
             with tf.variable_scope('input'):
@@ -76,18 +92,14 @@ class NoEmbeddingClassifier:
                                                                          name="convolution_embedding")
                 print(self.convolution_embedding.shape)
 
-            with tf.variable_scope('fc1'):
-                out = 10
-                x = tf.nn.dropout(x, keep_prob=self.keep_prob)
+            x = self.convolution_embedding
 
-                w = weight_variable([dim, out])
-                b = bias_variable([out])
-                h = tf.nn.relu(tf.matmul(x, w) + b)
+            for layer in self.layers:
+                name, (dim, out) = layer
+                x = create_fc_layer(self, name, x, dim, out)
                 dim = out
-                x = h
 
-
-            with tf.variable_scope('fc2'):
+            with tf.variable_scope('softmax'):
                 out = 10
                 x = tf.nn.dropout(x, keep_prob=self.keep_prob)
                 w = weight_variable([dim, out])
@@ -183,21 +195,15 @@ class RotatedEmbeddingClassifier:
                 non_rotated_embedding = self.no_embedding_classifier.convolution_embedding
                 embedding_dist = compute_euclidean_distances(non_rotated_embedding, self.convolution_embedding)
                 embedding_dist = embedding_dist / tf.norm(non_rotated_embedding, axis=1)
-                print("embedding shape: {}".format(embedding_dist.shape))
-                self.loss = tf.reduce_mean(embedding_dist)
+                self.loss = tf.reduce_mean(tf.square(embedding_dist))
 
         with tf.variable_scope('classifier'):
-            with tf.variable_scope('fc1', reuse=True):
-                out = 10
-                x = tf.nn.dropout(x, keep_prob=self.keep_prob)
-
-                w = weight_variable([dim, out])
-                b = bias_variable([out])
-                h = tf.nn.relu(tf.matmul(x, w) + b)
+            for layer in self.no_embedding_classifier.layers:
+                name, (dim, out) = layer
+                x = create_fc_layer(self, name, x, dim, out, reuse=True)
                 dim = out
-                x = h
 
-            with tf.variable_scope('fc2', reuse=True):
+            with tf.variable_scope('softmax', reuse=True):
                 out = 10
                 x = tf.nn.dropout(x, keep_prob=self.keep_prob)
                 w = weight_variable([dim, out])
@@ -266,9 +272,9 @@ if __name__ == "__main__":
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        classifier.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1000)
+        classifier.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=3000)
 
         data_generator = RotatedMNISTDataGenerator(augment=True)
-        embeddor.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=1000)
+        embeddor.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=2000)
 
 

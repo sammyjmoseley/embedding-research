@@ -92,11 +92,12 @@ class RotatedMNISTDataGenerator(AbstractGenerator):
             ret = self.__reshape(self.train_images[indices[0]:indices[1]]), self.train_image_classes[indices[0]:indices[1]]
 
         if shuffle:
-            idxs = np.array(list(range(0, length)))
-            np.random.shuffle(idxs)
-            self.train_images = self.train_images[idxs]
-            self.train_image_classes = self.train_image_classes[idxs]
-            self.train_augmentations = self.__single_augment(self.train_images)
+            # idxs = np.array(list(range(0, length)))
+            # np.random.shuffle(idxs)
+            # self.train_images = self.train_images[idxs]
+            # self.train_image_classes = self.train_image_classes[idxs]
+            if self.augment:
+                self.train_augmentations = self.__single_augment(self.train_images)
 
         return ret
 

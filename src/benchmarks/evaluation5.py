@@ -14,4 +14,4 @@ kp = 0.5
 
 tripModel = TwoStageIntegratedEmbeddingClassifierReversed.TwoStageIntegratedEmbeddingClassifierReversed(freeze_embed=False, track_embedding_loss=True)
 tripModel.construct(softmax=False, margin=1.0)
-tripModel.train(datagen, embed_batch_size=embed_bs, embed_iterations=embed_iter, embed_visualize=True, iterations=class_iter, batch_size=class_bs, only_originals=True, keep_prob=kp)
+tripModel.train(datagen, embed_batch_size=embed_bs, embed_iterations=embed_iter, embed_visualize=True, iterations=class_iter, batch_size=class_bs, only_originals=False, keep_prob=kp)

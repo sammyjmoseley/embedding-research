@@ -51,8 +51,8 @@ class TwoStageIntegratedEmbeddingClassifier:
         with tf.variable_scope('distances'):
             self.dp = compute_euclidean_distances(self.o, self.op)
             self.dn = compute_euclidean_distances(self.o, self.on)
-            tf.summary.scalar('p_distance', self.dp, collections=["embedding"])
-            tf.summary.scalar('n_distance', self.dn, collections=["embedding"])
+            tf.summary.scalar('p_distance', self.dp, collections=["embedding", "classification"])
+            tf.summary.scalar('n_distance', self.dn, collections=["embedding", "classification"])
 
         with tf.variable_scope('embed_loss'):
             if softmax:
@@ -64,15 +64,16 @@ class TwoStageIntegratedEmbeddingClassifier:
             if self.track_embedding_loss:
                 collections.append("classification")
             tf.summary.scalar('embed_loss', self.embed_loss, collections=collections)
+            tf.summary.scalar('embed_loss_stag1', self.embed_loss, collections=["embedding"])
 
         with tf.variable_scope('classifier'):
             c = Classifier.Classifier()
             self.y, self.accuracy, self.before_softmax, self.correct_predictions = c.construct(self.o, self.y_, self.keep_prob)
-            tf.summary.scalar('class_acc', self.accuracy, collections=["classification"])
+            tf.summary.scalar('class_acc', self.accuracy, collections=["embedding","classification"])
 
         with tf.variable_scope('class_loss'):
             self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
-            tf.summary.scalar('class_loss', self.class_loss, collections=["classification"])
+            tf.summary.scalar('class_loss', self.class_loss, collections=["embedding","classification"])
 
     def train(self,
               data_generator,
@@ -212,17 +213,17 @@ class TwoStageIntegratedEmbeddingClassifier:
 
                 if i % log_freq == 0:
                     summary, loss = sess.run([merged, self.embed_loss],
-                        feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
+                        feed_dict = {self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative(), self.y_: triplet_batch.get_reference_class(), self.keep_prob: 1.0})
                     print('iteration %d, embedding loss %g' % (i, loss))
                     train_writer.add_summary(summary, i)
                     train_writer.flush()
 
                 embed_train_step.run(feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
 
-                if (i+1) % 50 == 0:
-                    if embed_visualize:
-                        vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
-                        EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/"+str(i))
+                #if (i+1) % 50 == 0:
+                #    if embed_visualize:
+                #        vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
+                #        EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/"+str(i))
 
             merged = tf.summary.merge_all("classification")
 
@@ -263,13 +264,12 @@ class TwoStageIntegratedEmbeddingClassifier:
             t_loss, t_acc = sess.run([self.class_loss, self.accuracy],
                 feed_dict={self.x: t_batch_x, self.y_: t_batch_y_, self.keep_prob: 1.0})
             print('test loss %g, test accuracy %g' % (t_loss, t_acc))
-            print (np.argmax(vis_batch_y_, axis=1))
 
             train_writer.flush()
             train_writer.close()
 
             self.run_name = run_name
-            self.model_path = saver.save(sess, run_name+"/model", 2)
+            self.model_path = saver.save(sess, run_name+"/model", 4)
 
     def predict(self, data):
         with tf.Session() as sess:

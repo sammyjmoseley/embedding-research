@@ -9,7 +9,6 @@ from data_generators.TransferEmbeddingDataGenerator import RotatedMNISTDataGener
 from datetime import datetime
 
 dropout = 1.0
-epsilon = 1e-8
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev=0.01)
@@ -109,7 +108,7 @@ class NoEmbeddingClassifier:
                 correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
                 self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-            self.train_step = tf.train.AdamOptimizer(1e-3).minimize(self.class_loss)
+            self.train_step = tf.train.GradientDescentOptimizer(1e-3).minimize(self.class_loss)
 
     def train(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
         run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
@@ -209,9 +208,9 @@ class RotatedEmbeddingClassifier:
             train_vars_fc = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
                                               "classifier")
 
-            self.train_step_conv = tf.train.AdamOptimizer(1e-3, name="AdamConv").minimize(self.embedding_loss,
+            self.train_step_conv = tf.train.GradientDescentOptimizer(1e-4, name="AdamConv").minimize(self.embedding_loss,
                                                                                           var_list=train_vars_conv)
-            self.train_step_fc = tf.train.AdamOptimizer(1e-3, name="AdamFC").minimize(self.class_loss,
+            self.train_step_fc = tf.train.GradientDescentOptimizer(1e-3, name="AdamFC").minimize(self.class_loss,
                                                                                       var_list=train_vars_fc)
 
     def train_convolution(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):

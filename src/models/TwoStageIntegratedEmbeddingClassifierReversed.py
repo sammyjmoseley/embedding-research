@@ -51,8 +51,8 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
         with tf.variable_scope('distances'):
             self.dp = compute_euclidean_distances(self.o, self.op)
             self.dn = compute_euclidean_distances(self.o, self.on)
-            tf.summary.scalar('p_distance', self.dp, collections=["embedding"])
-            tf.summary.scalar('n_distance', self.dn, collections=["embedding"])
+            tf.summary.scalar('p_distance', self.dp, collections=["embedding", "classification"])
+            tf.summary.scalar('n_distance', self.dn, collections=["embedding", "classification"])
 
         with tf.variable_scope('embed_loss'):
             if softmax:
@@ -127,6 +127,7 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
             if embed_visualize:
                 vis_batch_embed, vis_prediction = sess.run([self.o, self.correct_prediction], feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0, self.y_: vis_batch_y_})
                 print("Num correct: " + str(np.sum(vis_prediction)))
+                print("Num originals: " + str(len(np.where((np.where(vis_prediction)[0])%5 == 0)[0])))
                 print(vis_prediction)
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/init")
                 projection = tf.reshape(vis_batch_embed,[50, 256])
@@ -232,6 +233,7 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
             if embed_visualize:
                 vis_batch_embed, vis_prediction = sess.run([self.o, self.correct_prediction], feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0, self.y_: vis_batch_y_})
                 print("Num correct: " + str(np.sum(vis_prediction)))
+                print("Num originals: " + str(len(np.where((np.where(vis_prediction)[0])%5 == 0)[0])))
                 print(vis_prediction)
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/embed")
                 projection = tf.reshape(vis_batch_embed,[50, 256])
@@ -254,6 +256,7 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
             if embed_visualize:
                 vis_batch_embed, vis_prediction = sess.run([self.o, self.correct_prediction], feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0, self.y_: vis_batch_y_})
                 print("Num correct: " + str(np.sum(vis_prediction)))
+                print("Num originals: " + str(len(np.where((np.where(vis_prediction)[0])%5 == 0)[0])))
                 print(vis_prediction)
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/final")
                 projection = tf.reshape(vis_batch_embed,[50, 256])
@@ -268,7 +271,7 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
             train_writer.close()
 
             self.run_name = run_name
-            self.model_path = saver.save(sess, run_name+"/model", 2)
+            self.model_path = saver.save(sess, run_name+"/model", 4)
 
     def predict(self, data):
         with tf.Session() as sess:

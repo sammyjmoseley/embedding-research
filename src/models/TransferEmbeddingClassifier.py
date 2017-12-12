@@ -334,6 +334,13 @@ if __name__ == "__main__":
                          keep_prob=dropout,
                          log_freq=100)
 
+        data_generator_augmented = RotatedMNISTDataGenerator(ang_range=(0, 1), augment=True)
+        embeddor.train_convolution(data_generator=data_generator_augmented,
+                                   sess=sess, batch_size=200,
+                                   iterations=2000,
+                                   log_freq=100,
+                                   keep_prob=dropout)
+
         data_generator_augmented = RotatedMNISTDataGenerator(ang_range=(-30, 30), augment=True)
         embeddor.train_convolution(data_generator=data_generator_augmented,
                                    sess=sess, batch_size=200,

@@ -7,7 +7,7 @@ datagen = DataGenerator.load_augmentation_data_generator(is_epochal=True)
 softmax = False
 
 embed_bs = 50
-embed_iter = 1000
+embed_iter = 5000
 class_bs = 50
 class_iter = 5000
 kp = 0.5

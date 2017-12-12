@@ -8,7 +8,8 @@ import numpy as np
 from data_generators.TransferEmbeddingDataGenerator import RotatedMNISTDataGenerator
 from datetime import datetime
 
-graph = tf.get_default_graph()
+dropout = 0.9
+
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev=0.01)
@@ -126,7 +127,7 @@ class NoEmbeddingClassifier:
 
             if i % log_freq == 0:
                 loss, = sess.run([self.class_loss],
-                                     feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
+                                     feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
                 v_batch_x, v_batch_y_ = data_generator.validation()
                 v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
                                          feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
@@ -135,15 +136,15 @@ class NoEmbeddingClassifier:
 
             self.train_step.run(feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
 
-        t_batch_x, t_batch_y_ = data_generator.test(augment=False)
+        (t_batch_x, t_batch_x_), t_batch_y_ = data_generator.test(augment=True)
+
         t_loss, acc = sess.run([self.class_loss, self.accuracy],
-                               feed_dict={self.x: t_batch_x,
+                               feed_dict={self.x: t_batch_x_,
                                           self.y_: t_batch_y_,
                                           self.keep_prob: 1.0,
                                           })
         print('test loss no augment {}, test accuracy {}'.format(t_loss, acc))
 
-        (t_batch_x, t_batch_x_), t_batch_y_ = data_generator.test(augment=True)
         t_loss, acc = sess.run([self.class_loss, self.accuracy],
                                feed_dict={self.x: t_batch_x,
                                           self.y_: t_batch_y_,
@@ -252,7 +253,7 @@ class RotatedEmbeddingClassifier:
                                      feed_dict={self.x: batch_x,
                                                 self.x_: batch_x_,
                                                 self.y_: batch_y_,
-                                                self.keep_prob: 1.0})
+                                                self.keep_prob: keep_prob})
                 (v_batch_x, v_batch_x_), v_batch_y_ = data_generator.validation()
                 v_loss,  = sess.run([self.embedding_loss],
                                          feed_dict={self.x: v_batch_x,
@@ -294,7 +295,7 @@ class RotatedEmbeddingClassifier:
 
             if i % log_freq == 0:
                 loss, = sess.run([self.class_loss],
-                                     feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: 1.0})
+                                     feed_dict={self.x: batch_x, self.y_: batch_y_, self.keep_prob: keep_prob})
                 v_batch_x, v_batch_y_ = data_generator.validation()
                 v_loss, v_acc = sess.run([self.class_loss, self.accuracy],
                                          feed_dict={self.x: v_batch_x, self.y_: v_batch_y_, self.keep_prob: 1.0})
@@ -323,15 +324,25 @@ class RotatedEmbeddingClassifier:
 if __name__ == "__main__":
     classifier = NoEmbeddingClassifier()
     embeddor = RotatedEmbeddingClassifier(classifier)
-    data_generator = RotatedMNISTDataGenerator(augment=False)
+    data_generator = RotatedMNISTDataGenerator(ang_range=(0, 1))
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        classifier.train(data_generator=data_generator, sess=sess, batch_size=200, iterations=3000)
+        classifier.train(data_generator=data_generator,
+                         sess=sess,
+                         batch_size=200,
+                         iterations=2000,
+                         keep_prob=dropout)
 
-        data_generator_augmented = RotatedMNISTDataGenerator(augment=True)
-        embeddor.train_convolution(data_generator=data_generator_augmented, sess=sess, batch_size=200, iterations=1000)
-        embeddor.train_fc(data_generator=data_generator, sess=sess, batch_size=200, iterations=3000)
+        data_generator_augmented = RotatedMNISTDataGenerator(ang_range=(0, 1), augment=True)
+        embeddor.train_convolution(data_generator=data_generator_augmented,
+                                   sess=sess, batch_size=200,
+                                   iterations=1000,
+                                   keep_prob=dropout)
+        embeddor.train_fc(data_generator=data_generator,
+                          sess=sess, batch_size=200,
+                          iterations=1000,
+                          keep_prob=dropout)
 
 
 

@@ -177,7 +177,7 @@ class RotatedEmbeddingClassifier:
                 self.y_ = tf.placeholder(tf.float32, shape=[None, 10], name='y_')
                 self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
             dim = 1
-            scale = 4
+            scale = 10
             init_dim = 2*scale
             x = self.x
 

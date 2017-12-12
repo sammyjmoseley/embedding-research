@@ -8,7 +8,7 @@ import numpy as np
 from data_generators.TransferEmbeddingDataGenerator import RotatedMNISTDataGenerator
 from datetime import datetime
 
-dropout = 0.9
+dropout = 1.0
 
 
 def weight_variable(shape):
@@ -16,10 +16,17 @@ def weight_variable(shape):
     return tf.get_variable("weights", dtype=tf.float32, initializer=initial)
 
 
+def identity_weight_variable(var):
+    return tf.get_variable("weights", dtype=tf.float32, initializer=var)
+
+
 def bias_variable(shape):
     initial = tf.constant(0.01, shape=shape, dtype=tf.float32)
     return tf.get_variable("biases", dtype=tf.float32, initializer=initial)
 
+
+def identity_bias_variable(var):
+    return tf.get_variable("biases", dtype=tf.float32, initializer=var)
 
 def conv2d(x, W):
     return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
@@ -116,7 +123,7 @@ class NoEmbeddingClassifier:
                 correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
                 self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-        self.train_step = tf.train.AdamOptimizer(1e-3).minimize(self.class_loss)
+            self.train_step = tf.train.AdamOptimizer(1e-3).minimize(self.class_loss)
 
     def train(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
         run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
@@ -176,8 +183,10 @@ class RotatedEmbeddingClassifier:
             with tf.variable_scope('conv1'):
                 print(x.shape)
                 out = init_dim
-                w = weight_variable([3, 3, dim, out])
-                b = bias_variable([out])
+                w_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/weights:0".format("conv1"))
+                b_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/biases:0".format("conv1"))
+                w = identity_weight_variable(w_var)
+                b = identity_bias_variable(b_var)
                 h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
                 dim = out
                 x = h
@@ -185,8 +194,10 @@ class RotatedEmbeddingClassifier:
 
             with tf.variable_scope('conv2'):
                 out = dim * 2
-                w = weight_variable([3, 3, dim, out])
-                b = bias_variable([out])
+                w_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/weights:0".format("conv2"))
+                b_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/biases:0".format("conv2"))
+                w = identity_weight_variable(w_var)
+                b = identity_bias_variable(b_var)
                 h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
                 dim = out
                 x = h
@@ -194,8 +205,10 @@ class RotatedEmbeddingClassifier:
 
             with tf.variable_scope('conv3'):
                 out = dim * 2
-                w = weight_variable([3, 3, dim, out])
-                b = bias_variable([out])
+                w_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/weights:0".format("conv3"))
+                b_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/biases:0".format("conv3"))
+                w = identity_weight_variable(w_var)
+                b = identity_bias_variable(b_var)
                 h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
                 dim = out
                 x = h
@@ -230,14 +243,16 @@ class RotatedEmbeddingClassifier:
                 self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
                 correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
                 self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        train_vars_conv = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
-                                            "rotated_embedding")
-        train_vars_fc = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
-                                            "classifier")
 
-        self.train_step_conv = tf.train.AdamOptimizer(1e-3, name="AdamConv").minimize(self.embedding_loss,
-                                                                     var_list=train_vars_conv)
-        self.train_step_fc = tf.train.AdamOptimizer(1e-3, name="AdamFC").minimize(self.class_loss,
+        with tf.variable_scope('rotated_embedding'):
+            train_vars_conv = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
+                                                "rotated_embedding")
+            train_vars_fc = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
+                                                "classifier")
+
+            self.train_step_conv = tf.train.AdamOptimizer(1e-3, name="AdamConv").minimize(self.embedding_loss,
+                                                                         var_list=train_vars_conv)
+            self.train_step_fc = tf.train.AdamOptimizer(1e-3, name="AdamFC").minimize(self.class_loss,
                                                                    var_list=train_vars_fc)
 
     def train_convolution(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
@@ -326,20 +341,31 @@ if __name__ == "__main__":
     data_generator = RotatedMNISTDataGenerator(ang_range=(-30, 30))
 
     with tf.Session() as sess:
-        sess.run(tf.global_variables_initializer())
+        classifier_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,
+                                            scope="classifier")
+        rotated_embedding = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES,
+                                              scope="rotated_embedding")
+        sess.run(tf.variables_initializer(classifier_vars))
         classifier.train(data_generator=data_generator,
                          sess=sess,
                          batch_size=200,
                          iterations=3000,
                          keep_prob=dropout,
                          log_freq=100)
-
-        data_generator_augmented = RotatedMNISTDataGenerator(ang_range=(0, 1), augment=True)
-        embeddor.train_convolution(data_generator=data_generator_augmented,
-                                   sess=sess, batch_size=200,
-                                   iterations=2000,
-                                   log_freq=100,
-                                   keep_prob=dropout)
+        # layers = ["conv1", "conv2", "conv3"]
+        # for layer in layers:
+        #
+        #     var1 = tf.get_default_graph().get_tensor_by_name("rotated_embedding/{}/weights:0".format(layer))
+        #     var2 = tf.get_default_graph().get_tensor_by_name("classifier/{}/weights:0".format(layer))
+        #     tf.assign(var1, var2, name="rotated_embedding/{}/weights".format(layer))
+        #
+        #     var1 = tf.get_default_graph().get_tensor_by_name("rotated_embedding/{}/biases:0".format(layer))
+        #     var2 = tf.get_default_graph().get_tensor_by_name("classifier/{}/biases:0".format(layer))
+        #     tf.assign(var1, var2, name="rotated_embedding/{}/biases".format(layer))
+        #
+        #     # tf.assign(tf.get_variable("rotated_embedding/{}/weights".format(layer)),
+        #     #           tf.get_variable("classifier/{}/weights".format(layer)))
+        sess.run(tf.variables_initializer(rotated_embedding))
 
         data_generator_augmented = RotatedMNISTDataGenerator(ang_range=(-30, 30), augment=True)
         embeddor.train_convolution(data_generator=data_generator_augmented,

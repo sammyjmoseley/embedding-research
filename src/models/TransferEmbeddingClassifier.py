@@ -209,6 +209,20 @@ class RotatedEmbeddingClassifier:
                 dim = 128*scale
                 x = tf.reshape(x, [-1, dim])
 
+            with tf.variable_scope('conv_fc1'):
+                out = dim
+                w = weight_variable([dim, out])
+                b = bias_variable([out])
+                x = tf.nn.relu(tf.matmul(x, w) + b)
+                dim = out
+
+            with tf.variable_scope('conv_fc2'):
+                out = dim
+                w = weight_variable([dim, out])
+                b = bias_variable([out])
+                x = tf.nn.relu(tf.matmul(x, w) + b)
+                dim = out
+
             with tf.variable_scope('read_out'):
                 out = 128
                 w = weight_variable([dim, out])

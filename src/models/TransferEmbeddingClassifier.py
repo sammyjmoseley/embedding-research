@@ -236,7 +236,7 @@ class RotatedEmbeddingClassifier:
         train_vars_fc = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
                                             "classifier")
 
-        self.train_step_conv = tf.train.AdamOptimizer(1e-3, name="AdamConv").minimize(self.embedding_loss,
+        self.train_step_conv = tf.train.AdamOptimizer(1e-5, name="AdamConv").minimize(self.embedding_loss,
                                                                      var_list=train_vars_conv)
         self.train_step_fc = tf.train.AdamOptimizer(1e-3, name="AdamFC").minimize(self.class_loss,
                                                                    var_list=train_vars_fc)

@@ -1,3 +1,4 @@
 run_2017-12-12_00-27-24 Evaluation 1: with class constraint for triplet negatives, 2000 iterations
 run_2017-12-12_00-31-34 Evaluation 1: without class constraint, 2000 iterations
 run_2017-12-12_00-42-36 Evaluation 1: without class constraint, 10000 iterations
+run_2017-12-12_01-25-56 Evaluation 2: model A, 5000 embedding iterations, 5000 classification iterations, 2 stage integrated embedding classifier

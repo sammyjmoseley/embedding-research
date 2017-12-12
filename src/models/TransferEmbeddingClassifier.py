@@ -8,7 +8,7 @@ import numpy as np
 from data_generators.TransferEmbeddingDataGenerator import RotatedMNISTDataGenerator
 from datetime import datetime
 
-dropout = 1.0
+dropout = 0.8
 
 
 def weight_variable(shape):

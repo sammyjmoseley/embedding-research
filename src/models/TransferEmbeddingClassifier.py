@@ -235,7 +235,7 @@ class RotatedEmbeddingClassifier:
         train_vars_fc = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
                                             "classifier")
 
-        self.train_step_conv = tf.train.AdamOptimizer(1e-4, name="AdamConv").minimize(self.embedding_loss,
+        self.train_step_conv = tf.train.AdamOptimizer(1e-3, name="AdamConv").minimize(self.embedding_loss,
                                                                      var_list=train_vars_conv)
         self.train_step_fc = tf.train.AdamOptimizer(1e-3, name="AdamFC").minimize(self.class_loss,
                                                                    var_list=train_vars_fc)
@@ -323,7 +323,7 @@ class RotatedEmbeddingClassifier:
 if __name__ == "__main__":
     classifier = NoEmbeddingClassifier()
     embeddor = RotatedEmbeddingClassifier(classifier)
-    data_generator = RotatedMNISTDataGenerator(ang_range=(0, 1))
+    data_generator = RotatedMNISTDataGenerator(ang_range=(-30, 30))
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
@@ -334,10 +334,10 @@ if __name__ == "__main__":
                          keep_prob=dropout,
                          log_freq=100)
 
-        data_generator_augmented = RotatedMNISTDataGenerator(ang_range=(0, 1), augment=True)
+        data_generator_augmented = RotatedMNISTDataGenerator(ang_range=(-30, 30), augment=True)
         embeddor.train_convolution(data_generator=data_generator_augmented,
                                    sess=sess, batch_size=200,
-                                   iterations=1000,
+                                   iterations=2000,
                                    log_freq=100,
                                    keep_prob=dropout)
         embeddor.train_fc(data_generator=data_generator,

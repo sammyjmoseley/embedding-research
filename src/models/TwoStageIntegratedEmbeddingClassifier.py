@@ -67,7 +67,7 @@ class TwoStageIntegratedEmbeddingClassifier:
 
         with tf.variable_scope('classifier'):
             c = Classifier.Classifier()
-            self.y, self.accuracy, self.before_softmax = c.construct(self.o, self.y_, self.keep_prob)
+            self.y, self.accuracy, self.before_softmax, self.correct_predictions = c.construct(self.o, self.y_, self.keep_prob)
             tf.summary.scalar('class_acc', self.accuracy, collections=["classification"])
 
         with tf.variable_scope('class_loss'):
@@ -217,6 +217,11 @@ class TwoStageIntegratedEmbeddingClassifier:
                     train_writer.flush()
 
                 embed_train_step.run(feed_dict={self.x: triplet_batch.get_reference(), self.xp: triplet_batch.get_positive(), self.xn: triplet_batch.get_negative()})
+
+                if (i+1) % 50 == 0:
+                    if embed_visualize:
+                        vis_batch_embed = sess.run(self.o, feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0})
+                        EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/"+str(i))
 
             merged = tf.summary.merge_all("classification")
 

@@ -12,7 +12,7 @@ datagen = DataGenerator.load_augmentation_data_generator()
 softmax = False
 
 batch_size = 50
-iterations = 2000
+iterations = 10000
 
 # Softmax loss:
 if (softmax):

@@ -69,7 +69,7 @@ class TwoStageIntegratedNoEmbeddingClassifierReversed:
             tf.summary.scalar('class_acc', self.accuracy, collections=["classification"])
 
         with tf.variable_scope('class_loss'):
-            self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
+            self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y+1e-10), reduction_indices=[1]))
             tf.summary.scalar('class_loss', self.class_loss, collections=["classification"])
 
     def train(self,
@@ -125,6 +125,7 @@ class TwoStageIntegratedNoEmbeddingClassifierReversed:
             if embed_visualize:
                 vis_batch_embed, vis_prediction = sess.run([self.o, self.correct_prediction], feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0, self.y_: vis_batch_y_})
                 print("Num correct: " + str(np.sum(vis_prediction)))
+                print("Num originals: " + str(len(np.where((np.where(vis_prediction)[0])%5 == 0)[0])))
                 print(vis_prediction)
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/init")
                 projection = tf.reshape(vis_batch_embed,[50, 256])
@@ -188,6 +189,7 @@ class TwoStageIntegratedNoEmbeddingClassifierReversed:
                                 candidate_negative_distances[nindx] = np.inf"""
                             if (nindx >= i*k):
                                 nindx = nindx + k
+                            break
                         negative_images[idx] = stacked_images[nindx]
                         
                         negative_classes[idx] = np.zeros(10)
@@ -223,6 +225,7 @@ class TwoStageIntegratedNoEmbeddingClassifierReversed:
             if embed_visualize:
                 vis_batch_embed, vis_prediction = sess.run([self.o, self.correct_prediction], feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0, self.y_: vis_batch_y_})
                 print("Num correct: " + str(np.sum(vis_prediction)))
+                print("Num originals: " + str(len(np.where((np.where(vis_prediction)[0])%5 == 0)[0])))
                 print(vis_prediction)
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/embed")
                 projection = tf.reshape(vis_batch_embed,[50, 256])
@@ -245,6 +248,7 @@ class TwoStageIntegratedNoEmbeddingClassifierReversed:
             if embed_visualize:
                 vis_batch_embed, vis_prediction = sess.run([self.o, self.correct_prediction], feed_dict={self.x: vis_batch_x, self.keep_prob: 1.0, self.y_: vis_batch_y_})
                 print("Num correct: " + str(np.sum(vis_prediction)))
+                print("Num originals: " + str(len(np.where((np.where(vis_prediction)[0])%5 == 0)[0])))
                 print(vis_prediction)
                 EmbeddingVisualizer.visualize(vis_batch_x, vis_batch_embed, vis_batch_y_, run_name+"/final")
                 projection = tf.reshape(vis_batch_embed,[50, 256])

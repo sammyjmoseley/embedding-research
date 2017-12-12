@@ -71,7 +71,7 @@ class TwoStageIntegratedEmbeddingClassifierReversed:
             tf.summary.scalar('class_acc', self.accuracy, collections=["classification"])
 
         with tf.variable_scope('class_loss'):
-            self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y), reduction_indices=[1]))
+            self.class_loss = tf.reduce_mean(-tf.reduce_sum(self.y_ * tf.log(self.y+1e-10), reduction_indices=[1]))
             tf.summary.scalar('class_loss', self.class_loss, collections=["classification"])
 
     def train(self,

@@ -177,16 +177,15 @@ class RotatedEmbeddingClassifier:
                 self.y_ = tf.placeholder(tf.float32, shape=[None, 10], name='y_')
                 self.keep_prob = tf.placeholder(tf.float32, name='keep_prob')
             dim = 1
-            init_dim = 2
+            scale = 4
+            init_dim = 2*scale
             x = self.x
 
             with tf.variable_scope('conv1'):
                 print(x.shape)
                 out = init_dim
-                w_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/weights:0".format("conv1"))
-                b_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/biases:0".format("conv1"))
-                w = identity_weight_variable(w_var)
-                b = identity_bias_variable(b_var)
+                w = weight_variable([3, 3, dim, out])
+                b = bias_variable([out])
                 h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
                 dim = out
                 x = h
@@ -194,30 +193,29 @@ class RotatedEmbeddingClassifier:
 
             with tf.variable_scope('conv2'):
                 out = dim * 2
-                w_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/weights:0".format("conv2"))
-                b_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/biases:0".format("conv2"))
-                w = identity_weight_variable(w_var)
-                b = identity_bias_variable(b_var)
+                w = weight_variable([3, 3, dim, out])
+                b = bias_variable([out])
                 h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
                 dim = out
                 x = h
-                print(x.shape)
 
             with tf.variable_scope('conv3'):
                 out = dim * 2
-                w_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/weights:0".format("conv3"))
-                b_var = tf.get_default_graph().get_tensor_by_name("classifier/{}/biases:0".format("conv3"))
-                w = identity_weight_variable(w_var)
-                b = identity_bias_variable(b_var)
+                w = weight_variable([3, 3, dim, out])
+                b = bias_variable([out])
                 h = max_pool_2x2(tf.nn.relu(conv2d(x, w) + b))
                 dim = out
                 x = h
-                dim = 128
+                dim = 128*scale
                 x = tf.reshape(x, [-1, dim])
-                self.convolution_embedding = x
-                print(x.shape)
 
             with tf.variable_scope('read_out'):
+                out = 128
+                w = weight_variable([dim, out])
+                b = bias_variable([out])
+                x = tf.matmul(x, w) + b
+                dim = out
+                self.convolution_embedding = x
                 non_rotated_embedding = self.no_embedding_classifier.convolution_embedding
                 embedding_dist = compute_euclidean_distances(non_rotated_embedding, self.convolution_embedding)
                 self.embedding_loss = tf.reduce_mean(tf.square(embedding_dist))

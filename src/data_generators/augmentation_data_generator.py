@@ -234,6 +234,7 @@ def load_augmentation_data_generator(is_epochal=None):
         f.close()
         if is_epochal is not None:
             ret.is_epochal = is_epochal
+        ret.reset()
         return ret
     else:
         if is_epochal is not None:
@@ -243,6 +244,7 @@ def load_augmentation_data_generator(is_epochal=None):
         f = gzip.open(file_location, "wb")
         pickle.dump(rotation_augmentation, f)
         f.close()
+        rotation_augmentation.reset()
         return rotation_augmentation
 
 if __name__ == "__main__":

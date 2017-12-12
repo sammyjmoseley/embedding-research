@@ -331,17 +331,17 @@ if __name__ == "__main__":
         classifier.train(data_generator=data_generator,
                          sess=sess,
                          batch_size=200,
-                         iterations=10,
+                         iterations=2000,
                          keep_prob=dropout)
 
         data_generator_augmented = RotatedMNISTDataGenerator(ang_range=(0, 1), augment=True)
         embeddor.train_convolution(data_generator=data_generator_augmented,
                                    sess=sess, batch_size=200,
-                                   iterations=10,
+                                   iterations=1000,
                                    keep_prob=dropout)
         embeddor.train_fc(data_generator=data_generator,
                           sess=sess, batch_size=200,
-                          iterations=10,
+                          iterations=1000,
                           keep_prob=dropout)
 
 

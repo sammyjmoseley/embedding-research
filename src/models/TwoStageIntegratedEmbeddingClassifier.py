@@ -187,6 +187,7 @@ class TwoStageIntegratedEmbeddingClassifier:
                                 candidate_negative_distances[nindx] = np.inf"""
                             if (nindx >= i*k):
                                 nindx = nindx + k
+                            break
                         negative_images[idx] = stacked_images[nindx]
                         
                         negative_classes[idx] = np.zeros(10)

@@ -53,9 +53,9 @@ def create_fc_layer(this, name, x, dim, out, reuse=None):
         return x
 
 embedding_layers \
-    = [("em_fc1", (784, 392)),
-       ("em_fc2", (392, 98)),
-       ("em_fc3", (98, 16)),
+    = [("em_fc1", (784, 50)),
+       ("em_fc2", (50, 50)),
+       ("em_fc3", (50, 16)),
        ("em_fc4", (16, 16)),
        ("em_fc5", (16, 16)),
        ]
@@ -108,7 +108,7 @@ class NoEmbeddingClassifier:
                 correct_prediction = tf.equal(tf.argmax(self.y, 1), tf.argmax(self.y_, 1))
                 self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
-            self.train_step = tf.train.GradientDescentOptimizer(1e-3).minimize(self.class_loss)
+            self.train_step = tf.train.AdamOptimizer(1e-3).minimize(self.class_loss)
 
     def train(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
         run_name = './train/run_{}'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
@@ -208,9 +208,9 @@ class RotatedEmbeddingClassifier:
             train_vars_fc = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,
                                               "classifier")
 
-            self.train_step_conv = tf.train.GradientDescentOptimizer(1e-4, name="AdamConv").minimize(self.embedding_loss,
+            self.train_step_conv = tf.train.AdamOptimizer(1e-3, name="AdamConv").minimize(self.embedding_loss,
                                                                                           var_list=train_vars_conv)
-            self.train_step_fc = tf.train.GradientDescentOptimizer(1e-3, name="AdamFC").minimize(self.class_loss,
+            self.train_step_fc = tf.train.AdamOptimizer(1e-3, name="AdamFC").minimize(self.class_loss,
                                                                                       var_list=train_vars_fc)
 
     def train_convolution(self, data_generator, sess, batch_size=50, iterations=100, log_freq=5, keep_prob=1.0):
